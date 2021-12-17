@@ -5,6 +5,7 @@ import Task.Management.System.models.contracts.ChangesLogger;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,11 +20,9 @@ public class ChangesLoggerImpl implements ChangesLogger {
     @Override
     public void addChange(String description) {
         LocalDateTime currentTime = LocalDateTime.now();
-        DateFormat dateTimeFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
         String timeStampedChange = String.format("Description: %s,%nChange made at: %s%n",
                 description, dateTimeFormatter.format(currentTime));
-
         changes.add(timeStampedChange);
     }
 

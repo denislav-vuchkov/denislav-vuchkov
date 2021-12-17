@@ -28,7 +28,6 @@ public class ParsingHelpers {
                 }
                 command.append(ch);
             }
-            System.out.println(command.toString().substring(1).toUpperCase());
             return Enum.valueOf(type, command.substring(1).toUpperCase());
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException(String.format(NO_SUCH_ENUM, valueToParse, type.getSimpleName()));

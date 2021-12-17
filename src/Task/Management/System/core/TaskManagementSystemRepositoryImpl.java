@@ -2,8 +2,10 @@ package Task.Management.System.core;
 
 
 import Task.Management.System.core.contracts.TaskManagementSystemRepository;
-import Task.Management.System.models.*;
-import Task.Management.System.models.contracts.*;
+import Task.Management.System.models.contracts.Task;
+import Task.Management.System.models.teams.contracts.Board;
+import Task.Management.System.models.teams.contracts.Member;
+import Task.Management.System.models.teams.contracts.Team;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,84 +13,43 @@ import java.util.List;
 
 public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemRepository {
 
-    private static final String NO_LOGGED_IN_USER = "There is no logged in user.";
-    private final static String NO_SUCH_USER = "There is no user with username %s!";
-
-    private final List<User> users;
-    private User loggedUser;
+    private final List<Team> teams;
+    private final List<Board> boards;
+    private final List<Member> members;
+    private final List<Task> tasks;
 
     public TaskManagementSystemRepositoryImpl() {
-        this.users = new ArrayList<>();
-        this.loggedUser = null;
+        teams = new ArrayList<>();
+        boards = new ArrayList<>();
+        members = new ArrayList<>();
+        tasks = new ArrayList<>();
     }
 
     @Override
-    public List<User> getUsers() {
-        return new ArrayList<>(users);
+    public List<Team> getTeams() {
+        return new ArrayList<>(teams);
     }
 
     @Override
-    public void addUser(User userToAdd) {
-        if (!users.contains(userToAdd)) {
-            this.users.add(userToAdd);
+    public List<Board> getBoards() {
+        return new ArrayList<>(boards);
+    }
+
+    @Override
+    public List<Member> getMembers() {
+        return new ArrayList<>(members);
+    }
+
+    @Override
+    public List<Task> getTasks() {
+        return new ArrayList<>(tasks);
+    }
+
+    @Override
+    public void addNewMember(Member member) {
+        if (getMembers().contains(member)) {
+            throw new IllegalArgumentException(MEMBER_ALREADY_EXIST);
         }
-    }
-
-    @Override
-    public User findUserByUsername(String username) {
-        User user = users
-                .stream()
-                .filter(u -> u.getUsername().equalsIgnoreCase(username))
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException(String.format(NO_SUCH_USER, username)));
-        return user;
-    }
-
-    @Override
-    public User getLoggedInUser() {
-        if (loggedUser == null) {
-            throw new IllegalArgumentException(NO_LOGGED_IN_USER);
-        }
-        return loggedUser;
-    }
-
-    @Override
-    public boolean hasLoggedInUser() {
-        return loggedUser != null;
-    }
-
-    @Override
-    public void login(User user) {
-        loggedUser = user;
-    }
-
-    @Override
-    public void logout() {
-        loggedUser = null;
-    }
-
-    @Override
-    public Car createCar(String make, String model, double price, int seats) {
-        return new CarImpl(make, model, price, seats);
-    }
-
-    @Override
-    public Motorcycle createMotorcycle(String make, String model, double price, String category) {
-        return new MotorcycleImpl(make, model, price, category);
-    }
-
-    @Override
-    public Truck createTruck(String make, String model, double price, int weightCapacity) {
-        return new TruckImpl(make, model, price, weightCapacity);
-    }
-
-    @Override
-    public User createUser(String username, String firstName, String lastName, String password, UserRole userRole) {
-        return new UserImpl(username, firstName, lastName, password, userRole);
-    }
-
-    @Override
-    public Comment createComment(String content, String author) {
-        return new CommentImpl(content, author);
+        members.add(member);
     }
 }

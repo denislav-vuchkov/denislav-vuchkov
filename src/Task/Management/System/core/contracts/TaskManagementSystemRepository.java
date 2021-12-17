@@ -1,32 +1,26 @@
 package Task.Management.System.core.contracts;
 
-import Task.Management.System.models.contracts.*;
+
+import Task.Management.System.models.contracts.Task;
+import Task.Management.System.models.teams.contracts.Board;
+import Task.Management.System.models.teams.contracts.Member;
+import Task.Management.System.models.teams.contracts.Team;
 
 import java.util.List;
 
 public interface TaskManagementSystemRepository {
 
-    List<User> getUsers();
+    String MEMBER_ALREADY_EXIST = "Member with this name already exists!";
 
-    User getLoggedInUser();
+    List<Team> getTeams();
 
-    void addUser(User userToAdd);
+    List<Board> getBoards();
 
-    User findUserByUsername(String username);
+    List<Member> getMembers();
 
-    Car createCar(String make, String model, double price, int seats);
+    List<Task> getTasks();
 
-    Motorcycle createMotorcycle(String make, String model, double price, String category);
+    void addNewMember(Member member);
 
-    Truck createTruck(String make, String model, double price, int weightCapacity);
 
-    User createUser(String username, String firstName, String lastName, String password, UserRole userRole);
-
-    Comment createComment(String content, String author);
-
-    boolean hasLoggedInUser();
-
-    void login(User user);
-
-    void logout();
 }

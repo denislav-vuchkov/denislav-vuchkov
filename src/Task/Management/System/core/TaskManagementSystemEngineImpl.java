@@ -41,14 +41,12 @@ public class TaskManagementSystemEngineImpl implements TaskManagementSystemEngin
                 }
                 processCommand(inputLine);
             } catch (Exception ex) {
-                if (ex.getMessage() != null && !ex.getMessage().isEmpty()) {
-                    print(ex.getMessage());
-                } else {
-                    print(ex.toString());
+
+                    ex.printStackTrace();
                 }
             }
         }
-    }
+
 
     private void processCommand(String inputLine) {
         String commandName = extractCommandName(inputLine);
