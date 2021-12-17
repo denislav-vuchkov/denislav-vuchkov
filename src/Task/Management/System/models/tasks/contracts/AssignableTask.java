@@ -2,7 +2,7 @@ package Task.Management.System.models.tasks.contracts;
 
 import Task.Management.System.models.tasks.enums.Priority;
 
-public interface Assignable extends Task {
+public interface AssignableTask extends Task {
 
     Priority getPriority();
 
