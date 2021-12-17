@@ -8,6 +8,8 @@ public interface ChangesLogger {
 
     String getChangeAt(int index);
 
-    boolean addChange(String description, LocalDateTime localDateTime);
+    boolean addChange(String description);
+
+    int size();
 
 }
