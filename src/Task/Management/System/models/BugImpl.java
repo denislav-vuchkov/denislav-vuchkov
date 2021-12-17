@@ -11,6 +11,7 @@ import java.util.List;
 
 public class BugImpl extends TaskBase implements Bug {
 
+    public static final String STEPS_HEADER = "--STEPS TO REPRODUCE--";
     private BugStatus status;
     private final List<String> stepsToReproduce;
     private Priority priority;
@@ -27,7 +28,9 @@ public class BugImpl extends TaskBase implements Bug {
         setSeverity(severity);
         setAssignee(assignee);
 
-        addChangeToHistory(String.format(CREATION_MESSAGE, "Bug", id));
+        addChangeToHistory(String.format(CREATION_MESSAGE,
+                super.getClass().getSimpleName().replace("Base", ""),
+                this.getClass().getSimpleName().replace("Impl", "")));
     }
 
     @Override
@@ -72,10 +75,13 @@ public class BugImpl extends TaskBase implements Bug {
     @Override
     public String getStepsToReproduce() {
         StringBuilder steps = new StringBuilder();
+        steps.append(STEPS_HEADER).append("\n");
 
         for (int i = 1; i <= stepsToReproduce.size(); i++) {
             steps.append(stepsToReproduce.get(i)).append("\n");
         }
+
+        steps.append(STEPS_HEADER).append("\n");
 
         return steps.toString();
     }
@@ -183,11 +189,32 @@ public class BugImpl extends TaskBase implements Bug {
 
     @Override
     public void setAssignee(String assignee) {
-
+        if (this.assignee == null) {
+            this.assignee = assignee;
+        } else if (!this.assignee.equals(assignee)) {
+            addChangeToHistory(String.format(CHANGE_MESSAGE, "Assignee", this.assignee, assignee));
+            this.assignee = assignee;
+        } else {
+            throw new IllegalArgumentException(String.format(IMPOSSIBLE_CHANGE_MESSAGE, "Assignee", this.assignee));
+        }
     }
 
     @Override
     public String displayDetails() {
-        return super.displayDetails();
+        return String.format("Task type: %s%n" +
+                "%s" +
+                "Priority: %s%n" +
+                "Severity: %s%n" +
+                "Status: %s%n" +
+                "Assignee: %s%n" +
+                "%s" +
+                "%s" +
+                "%s",
+                this.getClass().getSimpleName().replace("Impl", ""),
+                super.displayDetails(),
+                getPriority(), getSeverity(), getStatus(), getAssignee(),
+                getStepsToReproduce(),
+                displayComments(),
+                historyOfChanges());
     }
 }
