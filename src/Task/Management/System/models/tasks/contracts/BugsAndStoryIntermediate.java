@@ -1,10 +1,8 @@
-package Task.Management.System.models.contracts;
+package Task.Management.System.models.tasks.contracts;
 
-import Task.Management.System.models.enums.*;
+import Task.Management.System.models.tasks.enums.Priority;
 
-public interface Story extends Task {
-
-    void setStatus(StoryStatus status);
+public interface BugsAndStoryIntermediate extends Task {
 
     Priority getPriority();
 
@@ -13,10 +11,6 @@ public interface Story extends Task {
     void decreasePriority();
 
     void setPriority(Priority priority);
-
-    Size getSize();
-
-    void setSize(Size size);
 
     String getAssignee();
 

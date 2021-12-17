@@ -1,7 +1,7 @@
 package Task.Management.System.core.contracts;
 
 
-import Task.Management.System.models.contracts.Task;
+import Task.Management.System.models.tasks.contracts.Task;
 import Task.Management.System.models.teams.contracts.Board;
 import Task.Management.System.models.teams.contracts.Member;
 import Task.Management.System.models.teams.contracts.Team;

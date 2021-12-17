@@ -1,8 +1,10 @@
 package Task.Management.System.models.teams.contracts;
 
+import Task.Management.System.models.contacts.Changeable;
+
 import java.util.List;
 
-public interface Team extends Loggable,Nameable {
+public interface Team extends Changeable,Nameable {
 
     List<Board> getBoards();
 

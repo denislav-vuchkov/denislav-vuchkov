@@ -1,8 +1,10 @@
-package Task.Management.System.models.contracts;
+package Task.Management.System.models.tasks.contracts;
+
+import Task.Management.System.models.contacts.Changeable;
 
 import java.util.List;
 
-public interface Task {
+public interface Task extends Changeable {
 
     int getID();
 
@@ -21,8 +23,6 @@ public interface Task {
     List<Comment> getComments();
 
     String displayComments();
-
-    String historyOfChanges();
 
     String getChangeAt(int index);
 

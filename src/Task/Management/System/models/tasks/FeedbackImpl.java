@@ -1,23 +1,26 @@
-package Task.Management.System.models;
+package Task.Management.System.models.tasks;
 
-import Task.Management.System.models.contracts.Feedback;
-import Task.Management.System.models.enums.FeedbackStatus;
+import Task.Management.System.models.tasks.contracts.Feedback;
+import Task.Management.System.models.tasks.enums.FeedbackStatus;
+import Task.Management.System.models.tasks.enums.Tasks;
+import Task.Management.System.utils.ValidationHelpers;
 
-import static Task.Management.System.models.contracts.ChangesLogger.*;
+import static Task.Management.System.models.tasks.contracts.ChangesLogger.*;
 
 public class FeedbackImpl extends TaskBase implements Feedback {
+
+    public static final int RATING_MIN = 0;
+    public static final int RATING_MAX = 10;
+    public static final String INVALID_RATING_MESSAGE = String.format("Rating cannot be less than %d or more than %d",
+            RATING_MIN, RATING_MAX);
 
     private FeedbackStatus status;
     private int rating;
 
     public FeedbackImpl(int id, String title, String description, int rating) {
-        super(id, title, description);
+        super(id, Tasks.FEEDBACK, title, description);
         this.status = FeedbackStatus.NEW;
         setRating(rating);
-
-        addChangeToHistory(String.format(CREATION_MESSAGE,
-                super.getClass().getSimpleName().replace("Base", ""),
-                this.getClass().getSimpleName().replace("Impl", "")));
     }
 
     @Override
@@ -82,6 +85,8 @@ public class FeedbackImpl extends TaskBase implements Feedback {
 
     @Override
     public void setRating(int rating) {
+        ValidationHelpers.validateIntRange(rating, RATING_MIN, RATING_MAX, INVALID_RATING_MESSAGE);
+
         if (this.rating != rating) {
             addChangeToHistory(String.format(CHANGE_MESSAGE, "Rating", this.rating, rating));
             this.rating = rating;
@@ -103,6 +108,6 @@ public class FeedbackImpl extends TaskBase implements Feedback {
                 getRating(),
                 getStatus(),
                 displayComments(),
-                historyOfChanges());
+                getHistory());
     }
 }

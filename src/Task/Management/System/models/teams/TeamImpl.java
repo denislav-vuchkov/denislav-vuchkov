@@ -1,7 +1,7 @@
 package Task.Management.System.models.teams;
 
 import Task.Management.System.models.teams.contracts.Board;
-import Task.Management.System.models.teams.contracts.Loggable;
+import Task.Management.System.models.contacts.Changeable;
 import Task.Management.System.models.teams.contracts.Member;
 import Task.Management.System.models.teams.contracts.Team;
 import Task.Management.System.utils.ValidationHelpers;
@@ -70,7 +70,7 @@ public class TeamImpl implements Team {
         } else {
             history.append(getMembers()
                     .stream()
-                    .map(Loggable::getHistory)
+                    .map(Changeable::getHistory)
                     .collect(Collectors.joining(System.lineSeparator())));
         }
         return history.toString().trim();

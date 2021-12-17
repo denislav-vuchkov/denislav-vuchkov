@@ -1,6 +1,6 @@
-package Task.Management.System.models.teams.contracts;
+package Task.Management.System.models.contacts;
 
-public interface Loggable {
+public interface Changeable {
 
     String TEAM_HISTORY_HEADER = "%s %s activity:";
     String TEAM_HISTORY_EMPTY = "Nothing to display";

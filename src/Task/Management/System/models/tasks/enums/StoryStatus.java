@@ -1,4 +1,4 @@
-package Task.Management.System.models.enums;
+package Task.Management.System.models.tasks.enums;
 
 public enum StoryStatus {
     NOT_DONE, IN_PROGRESS, DONE;
