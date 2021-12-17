@@ -2,8 +2,8 @@ package Task.Management.System.models.teams;
 
 import Task.Management.System.models.ChangesLoggerImpl;
 import Task.Management.System.models.contracts.ChangesLogger;
-import Task.Management.System.models.tasks.contracts.Task;
-import Task.Management.System.models.teams.contracts.Member;
+import Task.Management.System.models.tasks.contracts.AssignableTask;
+import Task.Management.System.models.teams.contracts.User;
 import Task.Management.System.utils.ValidationHelpers;
 
 import java.util.ArrayList;
@@ -11,13 +11,13 @@ import java.util.List;
 
 import static Task.Management.System.models.contracts.ChangesLogger.CREATION_MESSAGE;
 
-public class MemberImpl implements Member {
+public class UserImpl implements User {
 
-    private final List<Task> assignedTasks;
+    private final List<AssignableTask> assignedTasks;
     private final ChangesLogger historyOfChanges;
     private String name;
 
-    public MemberImpl(String name) {
+    public UserImpl(String name) {
         setName(name);
         assignedTasks = new ArrayList<>();
         historyOfChanges = new ChangesLoggerImpl();
@@ -38,29 +38,31 @@ public class MemberImpl implements Member {
     }
 
     @Override
-    public List<Task> getAssignedTasks() {
+    public List<AssignableTask> getAssignedTasks() {
         return new ArrayList<>(assignedTasks);
     }
 
     @Override
-    public void assignTask(Task task) {
+    public void assignTask(AssignableTask task) {
         historyOfChanges.addChange(String.format(
-                MEMBER_TASK_ASSIGNED,
+                USER_TASK_ASSIGNED,
                 getClass().getSimpleName().replace("Impl", ""),
                 getName(),
                 task.getClass().getSimpleName().replace("Impl", ""),
                 task.getTitle()));
+        task.setAssignee(getName());
         assignedTasks.add(task);
     }
 
     @Override
-    public void unassignTask(Task task) {
+    public void unAssignTask(AssignableTask task) {
         historyOfChanges.addChange(String.format(
-                MEMBER_TASK_UNASSIGNED,
+                USER_TASK_UNASSIGNED,
                 getClass().getSimpleName().replace("Impl", ""),
                 getName(),
                 task.getClass().getSimpleName().replace("Impl", ""),
                 task.getTitle()));
+        task.unAssign();
         assignedTasks.remove(task);
     }
 

@@ -2,7 +2,7 @@ package Task.Management.System.models.teams;
 
 import Task.Management.System.models.teams.contracts.Board;
 import Task.Management.System.models.contracts.Changeable;
-import Task.Management.System.models.teams.contracts.Member;
+import Task.Management.System.models.teams.contracts.User;
 import Task.Management.System.models.teams.contracts.Team;
 import Task.Management.System.utils.ValidationHelpers;
 
@@ -13,13 +13,13 @@ import java.util.stream.Collectors;
 public class TeamImpl implements Team {
 
     private final List<Board> boards;
-    private final List<Member> members;
+    private final List<User> users;
     private String name;
 
     public TeamImpl(String name) {
-        this.name = name;
+        setName(name);
         boards = new ArrayList<>();
-        members = new ArrayList<>();
+        users = new ArrayList<>();
     }
 
     @Override
@@ -48,27 +48,27 @@ public class TeamImpl implements Team {
     }
 
     @Override
-    public List<Member> getMembers() {
-        return new ArrayList<>(members);
+    public List<User> getUsers() {
+        return new ArrayList<>(users);
     }
 
     @Override
-    public void addMember(Member member) {
-        members.add(member);
+    public void addUser(User user) {
+        users.add(user);
     }
 
     @Override
-    public void removeMember(Member member) {
-        members.add(member);
+    public void removeUser(User user) {
+        users.add(user);
     }
 
     @Override
     public String getHistory() {
         StringBuilder history = new StringBuilder(TEAM_HISTORY_HEADER).append(System.lineSeparator());
-        if (getMembers().isEmpty()) {
+        if (getUsers().isEmpty()) {
             history.append(TEAM_HISTORY_EMPTY).append(System.lineSeparator());
         } else {
-            history.append(getMembers()
+            history.append(getUsers()
                     .stream()
                     .map(Changeable::getHistory)
                     .collect(Collectors.joining(System.lineSeparator())));

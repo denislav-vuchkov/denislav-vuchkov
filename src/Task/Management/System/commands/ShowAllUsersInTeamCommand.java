@@ -4,11 +4,11 @@ import Task.Management.System.core.contracts.TaskManagementSystemRepository;
 
 import java.util.List;
 
-public class ShowPersonActivityCommand extends BaseCommand {
+public class ShowAllUsersInTeamCommand extends BaseCommand {
 
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 666;
 
-    public ShowPersonActivityCommand(TaskManagementSystemRepository taskManagementSystemRepository) {
+    public ShowAllUsersInTeamCommand(TaskManagementSystemRepository taskManagementSystemRepository) {
         super(taskManagementSystemRepository);
     }
 
