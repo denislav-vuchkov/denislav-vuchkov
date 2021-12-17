@@ -38,9 +38,6 @@ public class CommentImpl implements Comment {
 
     @Override
     public String toString() {
-        return "----------" + System.lineSeparator() +
-                getContent() + System.lineSeparator() +
-                "User: " + getAuthor() + System.lineSeparator() +
-                "----------" + System.lineSeparator();
+        return String.format("Author: %s%nDescription: %s%n", getAuthor(), getContent());
     }
 }
