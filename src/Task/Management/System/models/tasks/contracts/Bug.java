@@ -3,7 +3,7 @@ package Task.Management.System.models.tasks.contracts;
 import Task.Management.System.models.tasks.enums.BugStatus;
 import Task.Management.System.models.tasks.enums.Severity;
 
-public interface Bug extends BugsAndStoryIntermediate {
+public interface Bug extends Assignable {
 
     String getStepsToReproduce();
 

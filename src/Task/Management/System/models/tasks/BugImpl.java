@@ -10,7 +10,7 @@ import static Task.Management.System.models.contracts.ChangesLogger.*;
 
 import java.util.List;
 
-public class BugImpl extends BugsAndStoryIntermediateImpl implements Bug {
+public class BugImpl extends AssignableImpl implements Bug {
 
     public static final String STEPS_HEADER = "--STEPS TO REPRODUCE--";
     private BugStatus status;
