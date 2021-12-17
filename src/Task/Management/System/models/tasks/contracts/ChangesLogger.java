@@ -1,4 +1,4 @@
-package Task.Management.System.models.contracts;
+package Task.Management.System.models.tasks.contracts;
 
 public interface ChangesLogger {
 

@@ -1,15 +1,16 @@
-package Task.Management.System.models;
+package Task.Management.System.models.tasks;
 
-import Task.Management.System.models.contracts.Bug;
-import Task.Management.System.models.enums.BugStatus;
-import Task.Management.System.models.enums.Priority;
-import Task.Management.System.models.enums.Severity;
+import Task.Management.System.models.tasks.contracts.Bug;
+import Task.Management.System.models.tasks.enums.BugStatus;
+import Task.Management.System.models.tasks.enums.Priority;
+import Task.Management.System.models.tasks.enums.Severity;
+import Task.Management.System.models.tasks.enums.Tasks;
 
-import static Task.Management.System.models.contracts.ChangesLogger.*;
+import static Task.Management.System.models.tasks.contracts.ChangesLogger.*;
 
 import java.util.List;
 
-public class BugImpl extends TaskBase implements Bug {
+public class BugImpl extends BugsAndStoryIntermediateImpl implements Bug {
 
     public static final String STEPS_HEADER = "--STEPS TO REPRODUCE--";
     private BugStatus status;
@@ -20,23 +21,18 @@ public class BugImpl extends TaskBase implements Bug {
 
     public BugImpl(int id, String title, String description, List<String> stepsToReproduce,
                    Priority priority, Severity severity, String assignee) {
-        super(id, title, description);
+        super(id, Tasks.BUG, title, description, priority, assignee);
         this.status = BugStatus.ACTIVE;
 
         this.stepsToReproduce = stepsToReproduce;
-        setPriority(priority);
         setSeverity(severity);
-        setAssignee(assignee);
-
-        addChangeToHistory(String.format(CREATION_MESSAGE,
-                super.getClass().getSimpleName().replace("Base", ""),
-                this.getClass().getSimpleName().replace("Impl", "")));
     }
 
     public BugImpl(int id, String title, String description, List<String> stepsToReproduce,
                    Priority priority, Severity severity) {
-        this(id, title, description, stepsToReproduce, priority, severity, null);
+        this(id, title, description, stepsToReproduce, priority, severity, "Unassigned");
     }
+
 
     @Override
     public void setStatus(BugStatus status) {
@@ -89,53 +85,6 @@ public class BugImpl extends TaskBase implements Bug {
         steps.append(STEPS_HEADER).append("\n");
 
         return steps.toString();
-    }
-
-    @Override
-    public Priority getPriority() {
-        return priority;
-    }
-
-    @Override
-    public void increasePriority() {
-        switch (priority) {
-            case LOW:
-                addChangeToHistory(String.format(CHANGE_MESSAGE, "Priority", priority, Priority.MEDIUM));
-                priority = Priority.MEDIUM;
-                break;
-            case MEDIUM:
-                addChangeToHistory(String.format(CHANGE_MESSAGE, "Priority", priority, Priority.HIGH));
-                priority = Priority.HIGH;
-                break;
-            case HIGH:
-                throw new IllegalArgumentException("Cannot increase priority beyond High.");
-        }
-    }
-
-    @Override
-    public void decreasePriority() {
-        switch (priority) {
-            case LOW:
-                throw new IllegalArgumentException("Cannot decrease priority further than Low.");
-            case MEDIUM:
-                addChangeToHistory(String.format(CHANGE_MESSAGE, "Priority", priority, Priority.LOW));
-                priority = Priority.LOW;
-                break;
-            case HIGH:
-                addChangeToHistory(String.format(CHANGE_MESSAGE, "Priority", priority, Priority.MEDIUM));
-                priority = Priority.MEDIUM;
-                break;
-        }
-    }
-
-    @Override
-    public void setPriority(Priority priority) {
-        if (this.priority == null) {
-            this.priority = priority;
-        } else if (!this.priority.equals(priority)) {
-            addChangeToHistory(String.format(CHANGE_MESSAGE, "Priority", this.priority, priority));
-            this.priority = priority;
-        }
     }
 
     @Override
@@ -193,23 +142,6 @@ public class BugImpl extends TaskBase implements Bug {
     }
 
     @Override
-    public void setAssignee(String assignee) {
-        if (this.assignee == null) {
-            this.assignee = assignee;
-        } else if (!this.assignee.equals(assignee)) {
-            addChangeToHistory(String.format(CHANGE_MESSAGE, "Assignee", this.assignee, assignee));
-            this.assignee = assignee;
-        } else {
-            throw new IllegalArgumentException(String.format(IMPOSSIBLE_CHANGE_MESSAGE, "Assignee", this.assignee));
-        }
-    }
-
-    @Override
-    public void unAssign() {
-        this.assignee = "Unassigned";
-    }
-
-    @Override
     public String displayDetails() {
         return String.format("Task type: %s%n" +
                 "%s" +
@@ -225,6 +157,6 @@ public class BugImpl extends TaskBase implements Bug {
                 getPriority(), getSeverity(), getStatus(), getAssignee(),
                 getStepsToReproduce(),
                 displayComments(),
-                historyOfChanges());
+                getHistory());
     }
 }

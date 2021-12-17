@@ -1,6 +1,6 @@
-package Task.Management.System.models;
+package Task.Management.System.models.tasks;
 
-import Task.Management.System.models.contracts.Comment;
+import Task.Management.System.models.tasks.contracts.Comment;
 import Task.Management.System.utils.ValidationHelpers;
 
 import static java.lang.String.format;

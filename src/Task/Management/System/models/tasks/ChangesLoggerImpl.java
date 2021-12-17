@@ -1,9 +1,7 @@
-package Task.Management.System.models;
+package Task.Management.System.models.tasks;
 
-import Task.Management.System.models.contracts.ChangesLogger;
+import Task.Management.System.models.tasks.contracts.ChangesLogger;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;

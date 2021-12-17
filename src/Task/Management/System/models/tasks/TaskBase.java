@@ -1,11 +1,12 @@
-package Task.Management.System.models;
+package Task.Management.System.models.tasks;
 
-import Task.Management.System.models.contracts.ChangesLogger;
-import Task.Management.System.models.contracts.Comment;
-import Task.Management.System.models.contracts.Task;
+import Task.Management.System.models.tasks.contracts.ChangesLogger;
+import Task.Management.System.models.tasks.contracts.Comment;
+import Task.Management.System.models.tasks.contracts.Task;
+import Task.Management.System.models.tasks.enums.Tasks;
 import Task.Management.System.utils.ValidationHelpers;
 
-import static Task.Management.System.models.contracts.ChangesLogger.*;
+import static Task.Management.System.models.tasks.contracts.ChangesLogger.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,12 +32,16 @@ public abstract class TaskBase implements Task {
     private final List<Comment> comments;
     private final ChangesLogger historyOfChanges;
 
-    public TaskBase(int id, String title, String description) {
+    public TaskBase(int id, Tasks tasksType, String title, String description) {
         this.id = id;
         setTitle(title);
         setDescription(description);
         this.comments = new ArrayList<>();
         this.historyOfChanges = new ChangesLoggerImpl();
+
+        addChangeToHistory(String.format(CREATION_MESSAGE,
+                super.getClass().getSimpleName().replace("Base", ""),
+                tasksType.toString()));
     }
 
     public void setTitle(String title) {
@@ -96,7 +101,7 @@ public abstract class TaskBase implements Task {
     }
 
     @Override
-    public String historyOfChanges() {
+    public String getHistory() {
         return String.format("%s%n%s%s",
                 HISTORY_HEADER,
                 historyOfChanges.getCompleteHistory(),

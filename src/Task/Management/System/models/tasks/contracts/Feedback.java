@@ -1,6 +1,6 @@
-package Task.Management.System.models.contracts;
+package Task.Management.System.models.tasks.contracts;
 
-import Task.Management.System.models.enums.FeedbackStatus;
+import Task.Management.System.models.tasks.enums.FeedbackStatus;
 
 public interface Feedback extends Task {
 

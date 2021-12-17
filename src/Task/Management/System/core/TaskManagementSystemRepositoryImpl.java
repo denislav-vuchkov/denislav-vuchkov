@@ -2,7 +2,7 @@ package Task.Management.System.core;
 
 
 import Task.Management.System.core.contracts.TaskManagementSystemRepository;
-import Task.Management.System.models.contracts.Task;
+import Task.Management.System.models.tasks.contracts.Task;
 import Task.Management.System.models.teams.contracts.Board;
 import Task.Management.System.models.teams.contracts.Member;
 import Task.Management.System.models.teams.contracts.Team;
