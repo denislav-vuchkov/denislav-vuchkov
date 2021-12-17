@@ -1,6 +1,6 @@
 package Task.Management.System.models.tasks.contracts;
 
-import Task.Management.System.models.contacts.Changeable;
+import Task.Management.System.models.contracts.Changeable;
 
 import java.util.List;
 

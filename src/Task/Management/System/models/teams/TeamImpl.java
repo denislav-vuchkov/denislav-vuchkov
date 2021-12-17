@@ -1,7 +1,7 @@
 package Task.Management.System.models.teams;
 
 import Task.Management.System.models.teams.contracts.Board;
-import Task.Management.System.models.contacts.Changeable;
+import Task.Management.System.models.contracts.Changeable;
 import Task.Management.System.models.teams.contracts.Member;
 import Task.Management.System.models.teams.contracts.Team;
 import Task.Management.System.utils.ValidationHelpers;

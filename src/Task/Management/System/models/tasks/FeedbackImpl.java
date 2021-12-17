@@ -5,7 +5,7 @@ import Task.Management.System.models.tasks.enums.FeedbackStatus;
 import Task.Management.System.models.tasks.enums.Tasks;
 import Task.Management.System.utils.ValidationHelpers;
 
-import static Task.Management.System.models.contacts.ChangesLogger.*;
+import static Task.Management.System.models.contracts.ChangesLogger.*;
 
 public class FeedbackImpl extends TaskBase implements Feedback {
 

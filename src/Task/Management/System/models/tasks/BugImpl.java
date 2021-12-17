@@ -6,7 +6,7 @@ import Task.Management.System.models.tasks.enums.Priority;
 import Task.Management.System.models.tasks.enums.Severity;
 import Task.Management.System.models.tasks.enums.Tasks;
 
-import static Task.Management.System.models.contacts.ChangesLogger.*;
+import static Task.Management.System.models.contracts.ChangesLogger.*;
 
 import java.util.List;
 

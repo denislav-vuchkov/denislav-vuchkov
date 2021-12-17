@@ -6,7 +6,7 @@ import Task.Management.System.models.tasks.enums.Size;
 import Task.Management.System.models.tasks.enums.StoryStatus;
 import Task.Management.System.models.tasks.enums.Tasks;
 
-import static Task.Management.System.models.contacts.ChangesLogger.*;
+import static Task.Management.System.models.contracts.ChangesLogger.*;
 
 public class StoryImpl extends BugsAndStoryIntermediateImpl implements Story {
 
