@@ -1,18 +1,18 @@
 package Task.Management.System.models.tasks;
 
-import Task.Management.System.models.tasks.contracts.Assignable;
+import Task.Management.System.models.tasks.contracts.AssignableTask;
 import Task.Management.System.models.tasks.enums.Priority;
 import Task.Management.System.models.tasks.enums.Tasks;
 
 import static Task.Management.System.models.contracts.ChangesLogger.CHANGE_MESSAGE;
 import static Task.Management.System.models.contracts.ChangesLogger.IMPOSSIBLE_CHANGE_MESSAGE;
 
-public abstract class AssignableImpl extends TaskBase implements Assignable {
+public abstract class AssignableTaskImpl extends TaskBase implements AssignableTask {
 
     private Priority priority;
     private String assignee;
 
-    public AssignableImpl(int id, Tasks tasksType, String title, String description, Priority priority, String assignee) {
+    public AssignableTaskImpl(int id, Tasks tasksType, String title, String description, Priority priority, String assignee) {
         super(id, tasksType, title, description);
         setPriority(priority);
         setAssignee(assignee);

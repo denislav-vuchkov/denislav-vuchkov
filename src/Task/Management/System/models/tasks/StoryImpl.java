@@ -8,7 +8,7 @@ import Task.Management.System.models.tasks.enums.Tasks;
 
 import static Task.Management.System.models.contracts.ChangesLogger.*;
 
-public class StoryImpl extends AssignableImpl implements Story {
+public class StoryImpl extends AssignableTaskImpl implements Story {
 
     private StoryStatus status;
     private Priority priority;
