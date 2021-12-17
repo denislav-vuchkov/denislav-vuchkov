@@ -1,7 +1,6 @@
 package Task.Management.System.core.contracts;
 
 import Task.Management.System.models.contracts.*;
-import Task.Management.System.models.enums.UserRole;
 
 import java.util.List;
 
