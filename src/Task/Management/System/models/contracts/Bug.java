@@ -30,4 +30,6 @@ public interface Bug extends Task {
 
     void setAssignee(String assignee);
 
+    void unAssign();
+
 }

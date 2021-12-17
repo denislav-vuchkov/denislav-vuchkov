@@ -1,7 +1,5 @@
 package Task.Management.System.models.contracts;
 
-import java.time.LocalDateTime;
-
 public interface ChangesLogger {
 
     String CHANGE_MESSAGE = "%s changed from %s to %s.";

@@ -33,6 +33,11 @@ public class BugImpl extends TaskBase implements Bug {
                 this.getClass().getSimpleName().replace("Impl", "")));
     }
 
+    public BugImpl(int id, String title, String description, List<String> stepsToReproduce,
+                   Priority priority, Severity severity) {
+        this(id, title, description, stepsToReproduce, priority, severity, null);
+    }
+
     @Override
     public void setStatus(BugStatus status) {
         if (this.status == null) {
@@ -197,6 +202,11 @@ public class BugImpl extends TaskBase implements Bug {
         } else {
             throw new IllegalArgumentException(String.format(IMPOSSIBLE_CHANGE_MESSAGE, "Assignee", this.assignee));
         }
+    }
+
+    @Override
+    public void unAssign() {
+        this.assignee = "Unassigned";
     }
 
     @Override
