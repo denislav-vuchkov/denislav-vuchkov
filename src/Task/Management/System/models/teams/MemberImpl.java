@@ -1,7 +1,7 @@
 package Task.Management.System.models.teams;
 
-import Task.Management.System.models.tasks.ChangesLoggerImpl;
-import Task.Management.System.models.tasks.contracts.ChangesLogger;
+import Task.Management.System.models.ChangesLoggerImpl;
+import Task.Management.System.models.contacts.ChangesLogger;
 import Task.Management.System.models.tasks.contracts.Task;
 import Task.Management.System.models.teams.contracts.Member;
 import Task.Management.System.utils.ValidationHelpers;
@@ -9,7 +9,7 @@ import Task.Management.System.utils.ValidationHelpers;
 import java.util.ArrayList;
 import java.util.List;
 
-import static Task.Management.System.models.tasks.contracts.ChangesLogger.CREATION_MESSAGE;
+import static Task.Management.System.models.contacts.ChangesLogger.CREATION_MESSAGE;
 
 public class MemberImpl implements Member {
 

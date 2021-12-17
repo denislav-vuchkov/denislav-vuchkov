@@ -1,6 +1,6 @@
-package Task.Management.System.models.tasks;
+package Task.Management.System.models;
 
-import Task.Management.System.models.tasks.contracts.ChangesLogger;
+import Task.Management.System.models.contacts.ChangesLogger;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
