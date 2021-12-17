@@ -12,10 +12,10 @@ public interface Team extends Changeable,Nameable {
 
     void removeBoard(Board board);
 
-    List<Member> getMembers();
+    List<User> getUsers();
 
-    void addMember(Member member);
+    void addUser(User user);
 
-    void removeMember(Member member);
+    void removeUser(User user);
 
 }

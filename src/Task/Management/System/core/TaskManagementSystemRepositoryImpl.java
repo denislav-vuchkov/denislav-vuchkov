@@ -4,8 +4,9 @@ package Task.Management.System.core;
 import Task.Management.System.core.contracts.TaskManagementSystemRepository;
 import Task.Management.System.models.tasks.contracts.Task;
 import Task.Management.System.models.teams.contracts.Board;
-import Task.Management.System.models.teams.contracts.Member;
+import Task.Management.System.models.teams.contracts.Nameable;
 import Task.Management.System.models.teams.contracts.Team;
+import Task.Management.System.models.teams.contracts.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,13 +16,13 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
 
     private final List<Team> teams;
     private final List<Board> boards;
-    private final List<Member> members;
+    private final List<User> users;
     private final List<Task> tasks;
 
     public TaskManagementSystemRepositoryImpl() {
         teams = new ArrayList<>();
         boards = new ArrayList<>();
-        members = new ArrayList<>();
+        users = new ArrayList<>();
         tasks = new ArrayList<>();
     }
 
@@ -36,8 +37,8 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
     }
 
     @Override
-    public List<Member> getMembers() {
-        return new ArrayList<>(members);
+    public List<User> getUsers() {
+        return new ArrayList<>(users);
     }
 
     @Override
@@ -46,10 +47,30 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
     }
 
     @Override
-    public void addNewMember(Member member) {
-        if (getMembers().contains(member)) {
-            throw new IllegalArgumentException(MEMBER_ALREADY_EXIST);
+    public void addNewUser(User user) {
+        if (containsEntry(getUsers(), user.getName())) {
+            throw new IllegalArgumentException(USER_ALREADY_EXIST);
         }
-        members.add(member);
+        users.add(user);
     }
+
+    @Override
+    public void addNewTeam(Team team) {
+        if (containsEntry(getTeams(), team.getName())) {
+            throw new IllegalArgumentException(TEAM_ALREADY_EXIST);
+        }
+        teams.add(team);
+    }
+
+    @Override
+    public User findByName(String name) {
+        return null;
+    }
+
+    @Override
+    public <E extends Nameable> boolean containsEntry(List<E> list, String name) {
+        return list.stream().anyMatch(element -> element.getName().equals(name));
+    }
+
+
 }

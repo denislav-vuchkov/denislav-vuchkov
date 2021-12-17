@@ -4,11 +4,11 @@ import Task.Management.System.core.contracts.TaskManagementSystemRepository;
 
 import java.util.List;
 
-public class CreateNewTaskInBoardCommand extends BaseCommand {
+public class AssignTaskToUserCommand extends BaseCommand {
 
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 666;
 
-    public CreateNewTaskInBoardCommand(TaskManagementSystemRepository taskManagementSystemRepository) {
+    public AssignTaskToUserCommand(TaskManagementSystemRepository taskManagementSystemRepository) {
         super(taskManagementSystemRepository);
     }
 
