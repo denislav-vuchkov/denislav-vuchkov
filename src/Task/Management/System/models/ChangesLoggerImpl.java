@@ -17,19 +17,14 @@ public class ChangesLoggerImpl implements ChangesLogger {
     }
 
     @Override
-    public boolean addChange(String description) {
+    public void addChange(String description) {
         LocalDateTime currentTime = LocalDateTime.now();
         DateFormat dateTimeFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
         String timeStampedChange = String.format("Description: %s,%nChange made at: %s%n",
                 description, dateTimeFormatter.format(currentTime));
 
-        if (!changes.contains(timeStampedChange)) {
-            changes.add(timeStampedChange);
-            return true;
-        } else {
-            return false;
-        }
+        changes.add(timeStampedChange);
     }
 
     @Override

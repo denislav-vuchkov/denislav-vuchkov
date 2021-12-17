@@ -8,7 +8,7 @@ public interface ChangesLogger {
 
     String getChangeAt(int index);
 
-    boolean addChange(String description);
+    void addChange(String description);
 
     int size();
 
