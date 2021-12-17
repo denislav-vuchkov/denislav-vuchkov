@@ -5,6 +5,8 @@ import Task.Management.System.models.contracts.Comment;
 import Task.Management.System.models.contracts.Task;
 import Task.Management.System.utils.ValidationHelpers;
 
+import static Task.Management.System.models.contracts.ChangesLogger.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +24,6 @@ public abstract class TaskBase implements Task {
             DESCRIPTION_MIN_LENGTH, DESCRIPTION_MAX_LENGTH);
     public static final String COMMENTS_HEADER = "--COMMENTS--";
     public static final String HISTORY_HEADER = "--HISTORY--";
-    public static final String CHANGE_MESSAGE = "%s changed from %s to %s.";
 
     private final int id;
     private String title;
@@ -40,7 +41,7 @@ public abstract class TaskBase implements Task {
 
     public void setTitle(String title) {
         ValidationHelpers.validateIntRange(title.length(), NAME_MIN_LENGTH, NAME_MAX_LENGTH, INVALID_NAME_MESSAGE);
-        if (this.title != null && !this.title.equals(title)) {
+        if (!this.title.equals(title)) {
             historyOfChanges.addChange(String.format(CHANGE_MESSAGE, "Title", this.title, title));
         }
         this.title = title;
@@ -52,7 +53,7 @@ public abstract class TaskBase implements Task {
                 DESCRIPTION_MAX_LENGTH,
                 INVALID_DESCRIPTION_MESSAGE);
 
-        if (this.description != null && !this.description.equals(description)) {
+        if (!this.description.equals(description)) {
             historyOfChanges.addChange(String.format(CHANGE_MESSAGE, "Description", this.description, description));
         }
 
