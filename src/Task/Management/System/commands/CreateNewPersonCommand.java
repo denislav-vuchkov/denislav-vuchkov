@@ -20,6 +20,7 @@ public class CreateNewPersonCommand extends BaseCommand {
     protected String executeCommand(List<String> parameters) {
         ValidationHelpers.validateArgumentsCount(parameters,EXPECTED_NUMBER_OF_ARGUMENTS);
         String name = parameters.get(0);
+
         Member member = new MemberImpl(name);
         getTaskManagementSystemRepository().addNewMember(member);
         return String.format(MEMBER_ADDED_SUCCESSFULLY, member.getName());
