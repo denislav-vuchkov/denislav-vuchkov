@@ -4,8 +4,8 @@ import Task.Management.System.models.tasks.contracts.BugsAndStoryIntermediate;
 import Task.Management.System.models.tasks.enums.Priority;
 import Task.Management.System.models.tasks.enums.Tasks;
 
-import static Task.Management.System.models.contacts.ChangesLogger.CHANGE_MESSAGE;
-import static Task.Management.System.models.contacts.ChangesLogger.IMPOSSIBLE_CHANGE_MESSAGE;
+import static Task.Management.System.models.contracts.ChangesLogger.CHANGE_MESSAGE;
+import static Task.Management.System.models.contracts.ChangesLogger.IMPOSSIBLE_CHANGE_MESSAGE;
 
 public abstract class BugsAndStoryIntermediateImpl extends TaskBase implements BugsAndStoryIntermediate {
 

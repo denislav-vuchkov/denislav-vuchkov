@@ -1,13 +1,13 @@
 package Task.Management.System.models.tasks;
 
 import Task.Management.System.models.ChangesLoggerImpl;
-import Task.Management.System.models.contacts.ChangesLogger;
+import Task.Management.System.models.contracts.ChangesLogger;
 import Task.Management.System.models.tasks.contracts.Comment;
 import Task.Management.System.models.tasks.contracts.Task;
 import Task.Management.System.models.tasks.enums.Tasks;
 import Task.Management.System.utils.ValidationHelpers;
 
-import static Task.Management.System.models.contacts.ChangesLogger.*;
+import static Task.Management.System.models.contracts.ChangesLogger.*;
 
 import java.util.ArrayList;
 import java.util.List;
