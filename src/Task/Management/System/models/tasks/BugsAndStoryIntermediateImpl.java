@@ -84,6 +84,7 @@ public abstract class BugsAndStoryIntermediateImpl extends TaskBase implements B
 
     @Override
     public void unAssign() {
+        addChangeToHistory(String.format(CHANGE_MESSAGE, "Assignee", this.assignee, "no assignee"));
         this.assignee = "Unassigned";
     }
 

@@ -24,6 +24,7 @@ public abstract class TaskBase implements Task {
     public static final String INVALID_DESCRIPTION_MESSAGE =
             String.format("Description must be between %d and %d symbols.",
             DESCRIPTION_MIN_LENGTH, DESCRIPTION_MAX_LENGTH);
+
     public static final String COMMENTS_HEADER = "--COMMENTS--";
     public static final String HISTORY_HEADER = "--HISTORY--";
 
@@ -47,10 +48,14 @@ public abstract class TaskBase implements Task {
 
     public void setTitle(String title) {
         ValidationHelpers.validateIntRange(title.length(), NAME_MIN_LENGTH, NAME_MAX_LENGTH, INVALID_NAME_MESSAGE);
+
         if (!this.title.equals(title)) {
             historyOfChanges.addChange(String.format(CHANGE_MESSAGE, "Title", this.title, title));
+            this.title = title;
+        } else {
+            throw new IllegalArgumentException(String.format(IMPOSSIBLE_CHANGE_MESSAGE, "Title", this.title));
+
         }
-        this.title = title;
     }
 
     public void setDescription(String description) {
@@ -61,9 +66,11 @@ public abstract class TaskBase implements Task {
 
         if (!this.description.equals(description)) {
             historyOfChanges.addChange(String.format(CHANGE_MESSAGE, "Description", this.description, description));
+            this.description = description;
+        } else {
+            throw new IllegalArgumentException(String.format(IMPOSSIBLE_CHANGE_MESSAGE, "Description", this.description));
         }
 
-        this.description = description;
     }
 
     @Override
