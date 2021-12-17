@@ -61,15 +61,6 @@ public abstract class TaskBase implements Task {
     }
 
     @Override
-    public abstract String getStatus();
-
-    @Override
-    public abstract void advanceStatus();
-
-    @Override
-    public abstract void retractStatus();
-
-    @Override
     public int getID() {
         return id;
     }
