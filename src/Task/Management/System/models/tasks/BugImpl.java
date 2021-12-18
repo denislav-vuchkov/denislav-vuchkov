@@ -15,9 +15,7 @@ public class BugImpl extends AssignableTaskImpl implements Bug {
     public static final String STEPS_HEADER = "--STEPS TO REPRODUCE--";
     private BugStatus status;
     private final List<String> stepsToReproduce;
-    private Priority priority;
     private Severity severity;
-    private String assignee;
 
     public BugImpl(int id, String title, String description, List<String> stepsToReproduce,
                    Priority priority, Severity severity, String assignee) {
@@ -134,11 +132,6 @@ public class BugImpl extends AssignableTaskImpl implements Bug {
         } else {
             throw new IllegalArgumentException(String.format(IMPOSSIBLE_CHANGE_MESSAGE, "Severity", severity));
         }
-    }
-
-    @Override
-    public String getAssignee() {
-        return assignee;
     }
 
     @Override

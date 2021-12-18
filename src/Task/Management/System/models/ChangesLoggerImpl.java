@@ -21,6 +21,7 @@ public class ChangesLoggerImpl implements ChangesLogger {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
         String timeStampedChange = String.format("Description: %s,%nChange made at: %s%n",
                 description, dateTimeFormatter.format(currentTime));
+
         changes.add(timeStampedChange);
     }
 
