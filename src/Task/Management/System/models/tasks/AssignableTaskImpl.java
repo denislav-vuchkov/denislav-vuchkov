@@ -24,16 +24,6 @@ public abstract class AssignableTaskImpl extends TaskBase implements AssignableT
     }
 
     @Override
-    public void setPriority(Priority priority) {
-        if (this.priority == null) {
-            this.priority = priority;
-        } else if (!this.priority.equals(priority)) {
-            addChangeToHistory(String.format(CHANGE_MESSAGE, "Priority", this.priority, priority));
-            this.priority = priority;
-        }
-    }
-
-    @Override
     public void increasePriority() {
         switch (priority) {
             case LOW:
@@ -62,6 +52,18 @@ public abstract class AssignableTaskImpl extends TaskBase implements AssignableT
                 addChangeToHistory(String.format(CHANGE_MESSAGE, "Priority", priority, Priority.MEDIUM));
                 priority = Priority.MEDIUM;
                 break;
+        }
+    }
+
+    @Override
+    public void setPriority(Priority priority) {
+        if (this.priority == null) {
+            this.priority = priority;
+        } else if (!this.priority.equals(priority)) {
+            addChangeToHistory(String.format(CHANGE_MESSAGE, "Priority", this.priority, priority));
+            this.priority = priority;
+        } else {
+            throw new IllegalArgumentException(String.format(IMPOSSIBLE_CHANGE_MESSAGE, "Priority", this.priority));
         }
     }
 
