@@ -44,8 +44,10 @@ public class BugImpl_Tests {
                 "Works\n" +
                 "Help\n" +
                 "--STEPS TO REPRODUCE--\n";
-
         Assertions.assertEquals(stepsOutput, myBug.getStepsToReproduce());
+
+        myBug.setDescription("This Is The New Valid Description");
+        Assertions.assertEquals("This Is The New Valid Description", myBug.getDescription());
 
         myBug = new BugImpl(
                 99,
@@ -90,8 +92,7 @@ public class BugImpl_Tests {
                 "Long Enough Description",
                 List.of("Nothing", "Works", "Help"),
                 Priority.LOW,
-                Severity.MINOR,
-                "User10"));
+                Severity.MINOR));
     }
 
     @Test
@@ -112,8 +113,7 @@ public class BugImpl_Tests {
                 "!".repeat(1000),
                 List.of("Nothing", "Works", "Help"),
                 Priority.LOW,
-                Severity.MINOR,
-                "User10"));
+                Severity.MINOR));
     }
 
     @Test
@@ -129,11 +129,6 @@ public class BugImpl_Tests {
     @Test
     public void setSeverity_throwsException_whenNewOneIsTheSameAsOld() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> myBug.setSeverity(Severity.MAJOR));
-    }
-
-    @Test
-    public void setStatus_throwsException_whenNewOneIsTheSameAsOld() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> myBug.setStatus(BugStatus.ACTIVE));
     }
 
     @Test
@@ -159,6 +154,11 @@ public class BugImpl_Tests {
     }
 
     @Test
+    public void setStatus_throwsException_whenNewOneIsTheSameAsOld() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> myBug.setStatus(BugStatus.ACTIVE));
+    }
+
+    @Test
     public void advanceStatus_changesStatusIfInRange_orElseThrowsException() {
         myBug.advanceStatus();
         Assertions.assertEquals(BugStatus.FIXED.toString(), myBug.getStatus());
@@ -171,5 +171,18 @@ public class BugImpl_Tests {
         myBug.retractStatus();
         Assertions.assertEquals(BugStatus.ACTIVE.toString(), myBug.getStatus());
         Assertions.assertThrows(IllegalArgumentException.class, () -> myBug.retractStatus());
+    }
+
+    @Test
+    public void setAssignee_throwsException_whenNewOneIsTheSameAsOld() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> myBug.setAssignee("User10"));
+    }
+
+    @Test
+    public void unAssign_changesValueToUnassigned_byCallingSetAssignee() {
+        Assertions.assertEquals("User10", myBug.getAssignee());
+        myBug.unAssign();
+        Assertions.assertEquals("Unassigned", myBug.getAssignee());
+        Assertions.assertThrows(IllegalArgumentException.class, () -> myBug.unAssign());
     }
 }
