@@ -6,7 +6,8 @@ import Task.Management.System.models.tasks.enums.Size;
 import Task.Management.System.models.tasks.enums.StoryStatus;
 import Task.Management.System.models.tasks.enums.Tasks;
 
-import static Task.Management.System.models.contracts.ChangesLogger.*;
+import static Task.Management.System.models.contracts.ChangesLogger.CHANGE_MESSAGE;
+import static Task.Management.System.models.contracts.ChangesLogger.IMPOSSIBLE_CHANGE_MESSAGE;
 
 public class StoryImpl extends AssignableTaskImpl implements Story {
 
@@ -15,28 +16,30 @@ public class StoryImpl extends AssignableTaskImpl implements Story {
 
     public StoryImpl(int id, String title, String description, Priority priority, Size size, String assignee) {
         super(id, Tasks.STORY, title, description, priority, assignee);
-        this.status = StoryStatus.NOT_DONE;
+        setStatus(StoryStatus.NOT_DONE);
         setSize(size);
     }
 
     public StoryImpl(int id, String title, String description, Priority priority, Size size) {
-        this(id, title, description, priority, size,  "Unassigned");
-    }
-
-
-    @Override
-    public void setStatus(StoryStatus status) {
-        if (!this.status.equals(status)) {
-            addChangeToHistory(String.format(CHANGE_MESSAGE, "Status", this.status, status));
-            this.status = status;
-        } else {
-            throw new IllegalArgumentException(String.format(IMPOSSIBLE_CHANGE_MESSAGE, "Status", this.status));
-        }
+        this(id, title, description, priority, size, "Unassigned");
     }
 
     @Override
     public String getStatus() {
         return status.toString();
+    }
+
+    @Override
+    public void setStatus(StoryStatus status) {
+        if (this.status == null) {
+            this.status = status;
+            return;
+        }
+        if (this.status.equals(status)) {
+            throw new IllegalArgumentException(String.format(IMPOSSIBLE_CHANGE_MESSAGE, "Status", this.status));
+        }
+        addChangeToHistory(String.format(CHANGE_MESSAGE, "Status", this.status, status));
+        this.status = status;
     }
 
     @Override
@@ -53,7 +56,6 @@ public class StoryImpl extends AssignableTaskImpl implements Story {
             case DONE:
                 throw new IllegalArgumentException("Cannot advance status from fixed.");
         }
-
     }
 
     @Override
@@ -79,7 +81,15 @@ public class StoryImpl extends AssignableTaskImpl implements Story {
 
     @Override
     public void setSize(Size size) {
-
+        if (this.size == null) {
+            this.size = size;
+            return;
+        }
+        if (this.size.equals(size)) {
+            throw new IllegalArgumentException(String.format(IMPOSSIBLE_CHANGE_MESSAGE, "Size", this.size));
+        }
+        addChangeToHistory(String.format(CHANGE_MESSAGE, "Size", this.size, size));
+        this.size = size;
     }
 
     @Override

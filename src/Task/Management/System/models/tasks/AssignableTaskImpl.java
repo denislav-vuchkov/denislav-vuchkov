@@ -88,7 +88,6 @@ public abstract class AssignableTaskImpl extends TaskBase implements AssignableT
 
     @Override
     public void unAssign() {
-        addChangeToHistory(String.format(CHANGE_MESSAGE, "Assignee", this.assignee, "no assignee"));
-        this.assignee = "Unassigned";
+        setAssignee("Unassigned");
     }
 }
