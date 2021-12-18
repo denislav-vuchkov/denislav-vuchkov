@@ -42,11 +42,9 @@ public class BugImpl extends AssignableTaskImpl implements Bug {
             this.status = status;
             return;
         }
-
         if (this.status.equals(status)) {
             throw new IllegalArgumentException(String.format(IMPOSSIBLE_CHANGE_MESSAGE, "Status", getStatus()));
         }
-
         addChangeToHistory(String.format(CHANGE_MESSAGE, "Status", this.status, status));
         this.status = status;
     }
@@ -97,11 +95,9 @@ public class BugImpl extends AssignableTaskImpl implements Bug {
             this.severity = severity;
             return;
         }
-
         if (this.severity.equals(severity)) {
             throw new IllegalArgumentException(String.format(IMPOSSIBLE_CHANGE_MESSAGE, "Severity", severity));
         }
-
         addChangeToHistory(String.format(CHANGE_MESSAGE, "Severity", this.severity, severity));
         this.severity = severity;
     }

@@ -58,16 +58,13 @@ public abstract class TaskBase implements Task {
 
     public void setTitle(String title) {
         ValidationHelpers.validateIntRange(title.length(), NAME_MIN_LENGTH, NAME_MAX_LENGTH, INVALID_NAME_MESSAGE);
-
         if (this.title == null) {
             this.title = title;
             return;
         }
-
         if (this.title.equals(title)) {
             throw new IllegalArgumentException(String.format(IMPOSSIBLE_CHANGE_MESSAGE, "Title", this.title));
         }
-
         historyOfChanges.addChange(String.format(CHANGE_MESSAGE, "Title", this.title, title));
         this.title = title;
     }
@@ -82,16 +79,13 @@ public abstract class TaskBase implements Task {
                 DESCRIPTION_MIN_LENGTH,
                 DESCRIPTION_MAX_LENGTH,
                 INVALID_DESCRIPTION_MESSAGE);
-
         if (this.description == null) {
             this.description = description;
             return;
         }
-
         if (this.description.equals(description)) {
             throw new IllegalArgumentException(String.format(IMPOSSIBLE_CHANGE_MESSAGE, "Description", this.description));
         }
-
         historyOfChanges.addChange(String.format(CHANGE_MESSAGE, "Description", this.description, description));
         this.description = description;
     }
