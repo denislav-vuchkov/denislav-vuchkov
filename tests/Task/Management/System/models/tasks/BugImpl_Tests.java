@@ -1,6 +1,7 @@
 package Task.Management.System.models.tasks;
 
 import Task.Management.System.models.tasks.contracts.Bug;
+import Task.Management.System.models.tasks.enums.BugStatus;
 import Task.Management.System.models.tasks.enums.Priority;
 import Task.Management.System.models.tasks.enums.Severity;
 import org.junit.Assert;
@@ -27,8 +28,51 @@ public class BugImpl_Tests {
                 "User10");
     }
 
+    @Test
+    public void constructor_initiatesObjectCorrectly_withValidParameters() {
 
-        @Test
+        Assertions.assertEquals(3, myBug.getID());
+        Assertions.assertEquals("Not Too Short", myBug.getTitle());
+        Assertions.assertEquals("Just Right Length", myBug.getDescription());
+        Assertions.assertEquals(Priority.MEDIUM, myBug.getPriority());
+        Assertions.assertEquals(Severity.MAJOR, myBug.getSeverity());
+        Assertions.assertEquals("User10", myBug.getAssignee());
+        Assertions.assertEquals(BugStatus.ACTIVE.toString(), myBug.getStatus());
+
+        String stepsOutput = "--STEPS TO REPRODUCE--\n" +
+                "Nothing\n" +
+                "Works\n" +
+                "Help\n" +
+                "--STEPS TO REPRODUCE--\n";
+
+        Assertions.assertEquals(stepsOutput, myBug.getStepsToReproduce());
+
+        myBug = new BugImpl(
+                99,
+                "Not Too Short",
+                "Just Right Length",
+                List.of("A", "B", "C"),
+                Priority.HIGH,
+                Severity.CRITICAL);
+
+        Assertions.assertEquals(99, myBug.getID());
+        Assertions.assertEquals("Not Too Short", myBug.getTitle());
+        Assertions.assertEquals("Just Right Length", myBug.getDescription());
+        Assertions.assertEquals(Priority.HIGH, myBug.getPriority());
+        Assertions.assertEquals(Severity.CRITICAL, myBug.getSeverity());
+        Assertions.assertEquals("Unassigned", myBug.getAssignee());
+        Assertions.assertEquals(BugStatus.ACTIVE.toString(), myBug.getStatus());
+
+        stepsOutput = "--STEPS TO REPRODUCE--\n" +
+                "A\n" +
+                "B\n" +
+                "C\n" +
+                "--STEPS TO REPRODUCE--\n";
+
+        Assertions.assertEquals(stepsOutput, myBug.getStepsToReproduce());
+    }
+
+    @Test
     public void constructor_throwsException_whenTitleIsInvalid() {
 
         Assert.assertThrows(IllegalArgumentException.class, () -> new BugImpl(
@@ -83,6 +127,16 @@ public class BugImpl_Tests {
     }
 
     @Test
+    public void setSeverity_throwsException_whenNewOneIsTheSameAsOld() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> myBug.setSeverity(Severity.MAJOR));
+    }
+
+    @Test
+    public void setStatus_throwsException_whenNewOneIsTheSameAsOld() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> myBug.setStatus(BugStatus.ACTIVE));
+    }
+
+    @Test
     public void increaseSeverity_changesSeverityIfInRange_orElseThrowsException() {
         myBug.setSeverity(Severity.MINOR);
         Assertions.assertEquals(Severity.MINOR, myBug.getSeverity());
@@ -102,5 +156,20 @@ public class BugImpl_Tests {
         myBug.decreaseSeverity();
         Assertions.assertEquals(Severity.MINOR, myBug.getSeverity());
         Assertions.assertThrows(IllegalArgumentException.class, () -> myBug.decreaseSeverity());
+    }
+
+    @Test
+    public void advanceStatus_changesStatusIfInRange_orElseThrowsException() {
+        myBug.advanceStatus();
+        Assertions.assertEquals(BugStatus.FIXED.toString(), myBug.getStatus());
+        Assertions.assertThrows(IllegalArgumentException.class, () -> myBug.advanceStatus());
+    }
+
+    @Test
+    public void retractStatus_changesStatusIfInRange_orElseThrowsException() {
+        myBug.setStatus(BugStatus.FIXED);
+        myBug.retractStatus();
+        Assertions.assertEquals(BugStatus.ACTIVE.toString(), myBug.getStatus());
+        Assertions.assertThrows(IllegalArgumentException.class, () -> myBug.retractStatus());
     }
 }
