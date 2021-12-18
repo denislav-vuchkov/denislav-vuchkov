@@ -10,7 +10,11 @@ public interface Task extends Changeable {
 
     String getTitle();
 
+    void setTitle(String title);
+
     String getDescription();
+
+    void setDescription(String description);
 
     String getStatus();
 

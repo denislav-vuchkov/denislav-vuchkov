@@ -7,10 +7,10 @@ import Task.Management.System.models.tasks.contracts.Task;
 import Task.Management.System.models.tasks.enums.Tasks;
 import Task.Management.System.utils.ValidationHelpers;
 
-import static Task.Management.System.models.contracts.ChangesLogger.*;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import static Task.Management.System.models.contracts.ChangesLogger.*;
 
 public abstract class TaskBase implements Task {
 
@@ -23,16 +23,16 @@ public abstract class TaskBase implements Task {
     public static final int DESCRIPTION_MAX_LENGTH = 500;
     public static final String INVALID_DESCRIPTION_MESSAGE =
             String.format("Description must be between %d and %d symbols.",
-            DESCRIPTION_MIN_LENGTH, DESCRIPTION_MAX_LENGTH);
+                    DESCRIPTION_MIN_LENGTH, DESCRIPTION_MAX_LENGTH);
 
     public static final String COMMENTS_HEADER = "--COMMENTS--";
     public static final String HISTORY_HEADER = "--HISTORY--";
 
     private final int id;
-    private String title;
-    private String description;
     private final List<Comment> comments;
     private final ChangesLogger historyOfChanges;
+    private String title;
+    private String description;
 
     public TaskBase(int id, Tasks tasksType, String title, String description) {
         this.id = id;
@@ -46,33 +46,6 @@ public abstract class TaskBase implements Task {
                 tasksType.toString()));
     }
 
-    public void setTitle(String title) {
-        ValidationHelpers.validateIntRange(title.length(), NAME_MIN_LENGTH, NAME_MAX_LENGTH, INVALID_NAME_MESSAGE);
-
-        if (!this.title.equals(title)) {
-            historyOfChanges.addChange(String.format(CHANGE_MESSAGE, "Title", this.title, title));
-            this.title = title;
-        } else {
-            throw new IllegalArgumentException(String.format(IMPOSSIBLE_CHANGE_MESSAGE, "Title", this.title));
-
-        }
-    }
-
-    public void setDescription(String description) {
-        ValidationHelpers.validateIntRange(description.length(),
-                DESCRIPTION_MIN_LENGTH,
-                DESCRIPTION_MAX_LENGTH,
-                INVALID_DESCRIPTION_MESSAGE);
-
-        if (!this.description.equals(description)) {
-            historyOfChanges.addChange(String.format(CHANGE_MESSAGE, "Description", this.description, description));
-            this.description = description;
-        } else {
-            throw new IllegalArgumentException(String.format(IMPOSSIBLE_CHANGE_MESSAGE, "Description", this.description));
-        }
-
-    }
-
     @Override
     public int getID() {
         return id;
@@ -83,9 +56,44 @@ public abstract class TaskBase implements Task {
         return title;
     }
 
+    public void setTitle(String title) {
+        ValidationHelpers.validateIntRange(title.length(), NAME_MIN_LENGTH, NAME_MAX_LENGTH, INVALID_NAME_MESSAGE);
+
+        if (this.title == null) {
+            this.title = title;
+            return;
+        }
+
+        if (this.title.equals(title)) {
+            throw new IllegalArgumentException(String.format(IMPOSSIBLE_CHANGE_MESSAGE, "Title", this.title));
+        }
+
+        historyOfChanges.addChange(String.format(CHANGE_MESSAGE, "Title", this.title, title));
+        this.title = title;
+    }
+
     @Override
     public String getDescription() {
         return description;
+    }
+
+    public void setDescription(String description) {
+        ValidationHelpers.validateIntRange(description.length(),
+                DESCRIPTION_MIN_LENGTH,
+                DESCRIPTION_MAX_LENGTH,
+                INVALID_DESCRIPTION_MESSAGE);
+
+        if (this.description == null) {
+            this.description = description;
+            return;
+        }
+
+        if (this.description.equals(description)) {
+            throw new IllegalArgumentException(String.format(IMPOSSIBLE_CHANGE_MESSAGE, "Description", this.description));
+        }
+
+        historyOfChanges.addChange(String.format(CHANGE_MESSAGE, "Description", this.description, description));
+        this.description = description;
     }
 
     @Override
@@ -128,8 +136,8 @@ public abstract class TaskBase implements Task {
     @Override
     public String displayDetails() {
         return String.format("ID: %d%n" +
-                "Title: %s%n" +
-                "Description: %s%n",
+                        "Title: %s%n" +
+                        "Description: %s%n",
                 getID(), getTitle(), getDescription());
     }
 }
