@@ -6,23 +6,23 @@ import Task.Management.System.models.tasks.enums.Priority;
 import Task.Management.System.models.tasks.enums.Severity;
 import Task.Management.System.models.tasks.enums.Tasks;
 
-import java.util.List;
+import static Task.Management.System.models.contracts.ChangesLogger.*;
 
-import static Task.Management.System.models.contracts.ChangesLogger.CHANGE_MESSAGE;
-import static Task.Management.System.models.contracts.ChangesLogger.IMPOSSIBLE_CHANGE_MESSAGE;
+import java.util.List;
 
 public class BugImpl extends AssignableTaskImpl implements Bug {
 
     public static final String STEPS_HEADER = "--STEPS TO REPRODUCE--";
-    private final List<String> stepsToReproduce;
     private BugStatus status;
+    private final List<String> stepsToReproduce;
     private Severity severity;
 
     public BugImpl(int id, String title, String description, List<String> stepsToReproduce,
                    Priority priority, Severity severity, String assignee) {
         super(id, Tasks.BUG, title, description, priority, assignee);
+        this.status = BugStatus.ACTIVE;
+
         this.stepsToReproduce = stepsToReproduce;
-        setStatus(BugStatus.ACTIVE);
         setSeverity(severity);
     }
 
@@ -31,24 +31,20 @@ public class BugImpl extends AssignableTaskImpl implements Bug {
         this(id, title, description, stepsToReproduce, priority, severity, "Unassigned");
     }
 
-    @Override
-    public String getStatus() {
-        return status.toString();
-    }
 
     @Override
     public void setStatus(BugStatus status) {
         if (this.status == null) {
             this.status = status;
-            return;
+        } else if (!this.status.equals(status)) {
+            addChangeToHistory(String.format(CHANGE_MESSAGE, "Status", this.status, status));
+            this.status = status;
         }
+    }
 
-        if (this.status.equals(status)) {
-            throw new IllegalArgumentException(String.format(IMPOSSIBLE_CHANGE_MESSAGE, "Status", getStatus()));
-        }
-
-        addChangeToHistory(String.format(CHANGE_MESSAGE, "Status", this.status, status));
-        this.status = status;
+    @Override
+    public String getStatus() {
+        return status.toString();
     }
 
     @Override
@@ -79,31 +75,19 @@ public class BugImpl extends AssignableTaskImpl implements Bug {
     public String getStepsToReproduce() {
         StringBuilder steps = new StringBuilder();
         steps.append(STEPS_HEADER).append("\n");
-        for (String s : stepsToReproduce) {
-            steps.append(s).append("\n");
+
+        for (int i = 1; i <= stepsToReproduce.size(); i++) {
+            steps.append(stepsToReproduce.get(i)).append("\n");
         }
+
         steps.append(STEPS_HEADER).append("\n");
+
         return steps.toString();
     }
 
     @Override
     public Severity getSeverity() {
         return severity;
-    }
-
-    @Override
-    public void setSeverity(Severity severity) {
-        if (this.severity == null) {
-            this.severity = severity;
-            return;
-        }
-
-        if (this.severity.equals(severity)) {
-            throw new IllegalArgumentException(String.format(IMPOSSIBLE_CHANGE_MESSAGE, "Severity", severity));
-        }
-
-        addChangeToHistory(String.format(CHANGE_MESSAGE, "Severity", this.severity, severity));
-        this.severity = severity;
     }
 
     @Override
@@ -139,16 +123,28 @@ public class BugImpl extends AssignableTaskImpl implements Bug {
     }
 
     @Override
+    public void setSeverity(Severity severity) {
+        if (this.severity == null) {
+            this.severity = severity;
+        } else if (!this.severity.equals(severity)) {
+            addChangeToHistory(String.format(CHANGE_MESSAGE, "Severity", this.severity, severity));
+            this.severity = severity;
+        } else {
+            throw new IllegalArgumentException(String.format(IMPOSSIBLE_CHANGE_MESSAGE, "Severity", severity));
+        }
+    }
+
+    @Override
     public String displayDetails() {
         return String.format("Task type: %s%n" +
-                        "%s" +
-                        "Priority: %s%n" +
-                        "Severity: %s%n" +
-                        "Status: %s%n" +
-                        "Assignee: %s%n" +
-                        "%s" +
-                        "%s" +
-                        "%s",
+                "%s" +
+                "Priority: %s%n" +
+                "Severity: %s%n" +
+                "Status: %s%n" +
+                "Assignee: %s%n" +
+                "%s" +
+                "%s" +
+                "%s",
                 this.getClass().getSimpleName().replace("Impl", ""),
                 super.displayDetails(),
                 getPriority(), getSeverity(), getStatus(), getAssignee(),

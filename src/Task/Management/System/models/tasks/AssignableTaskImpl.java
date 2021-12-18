@@ -24,16 +24,6 @@ public abstract class AssignableTaskImpl extends TaskBase implements AssignableT
     }
 
     @Override
-    public void setPriority(Priority priority) {
-        if (this.priority == null) {
-            this.priority = priority;
-        } else if (!this.priority.equals(priority)) {
-            addChangeToHistory(String.format(CHANGE_MESSAGE, "Priority", this.priority, priority));
-            this.priority = priority;
-        }
-    }
-
-    @Override
     public void increasePriority() {
         switch (priority) {
             case LOW:
@@ -66,6 +56,18 @@ public abstract class AssignableTaskImpl extends TaskBase implements AssignableT
     }
 
     @Override
+    public void setPriority(Priority priority) {
+        if (this.priority == null) {
+            this.priority = priority;
+        } else if (!this.priority.equals(priority)) {
+            addChangeToHistory(String.format(CHANGE_MESSAGE, "Priority", this.priority, priority));
+            this.priority = priority;
+        } else {
+            throw new IllegalArgumentException(String.format(IMPOSSIBLE_CHANGE_MESSAGE, "Priority", this.priority));
+        }
+    }
+
+    @Override
     public String getAssignee() {
         return assignee;
     }
@@ -74,15 +76,12 @@ public abstract class AssignableTaskImpl extends TaskBase implements AssignableT
     public void setAssignee(String assignee) {
         if (this.assignee == null) {
             this.assignee = assignee;
-            return;
-        }
-
-        if (this.assignee.equals(assignee)) {
+        } else if (!this.assignee.equals(assignee)) {
+            addChangeToHistory(String.format(CHANGE_MESSAGE, "Assignee", this.assignee, assignee));
+            this.assignee = assignee;
+        } else {
             throw new IllegalArgumentException(String.format(IMPOSSIBLE_CHANGE_MESSAGE, "Assignee", this.assignee));
         }
-
-        addChangeToHistory(String.format(CHANGE_MESSAGE, "Assignee", this.assignee, assignee));
-        this.assignee = assignee;
     }
 
     @Override

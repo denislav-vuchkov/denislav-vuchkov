@@ -11,9 +11,7 @@ import static Task.Management.System.models.contracts.ChangesLogger.*;
 public class StoryImpl extends AssignableTaskImpl implements Story {
 
     private StoryStatus status;
-    private Priority priority;
     private Size size;
-    private String assignee;
 
     public StoryImpl(int id, String title, String description, Priority priority, Size size, String assignee) {
         super(id, Tasks.STORY, title, description, priority, assignee);
@@ -76,7 +74,7 @@ public class StoryImpl extends AssignableTaskImpl implements Story {
 
     @Override
     public Size getSize() {
-        return null;
+        return size;
     }
 
     @Override
