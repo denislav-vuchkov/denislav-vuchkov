@@ -4,7 +4,6 @@ import Task.Management.System.models.tasks.contracts.Bug;
 import Task.Management.System.models.tasks.enums.BugStatus;
 import Task.Management.System.models.tasks.enums.Priority;
 import Task.Management.System.models.tasks.enums.Severity;
-import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -77,7 +76,7 @@ public class BugImpl_Tests {
     @Test
     public void constructor_throwsException_whenTitleIsInvalid() {
 
-        Assert.assertThrows(IllegalArgumentException.class, () -> new BugImpl(
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new BugImpl(
                 1,
                 "Too Short",
                 "Long Enough Description",
@@ -86,7 +85,7 @@ public class BugImpl_Tests {
                 Severity.MINOR,
                 "User10"));
 
-        Assert.assertThrows(IllegalArgumentException.class, () -> new BugImpl(
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new BugImpl(
                 1,
                 "!".repeat(100),
                 "Long Enough Description",
@@ -98,7 +97,7 @@ public class BugImpl_Tests {
     @Test
     public void constructor_throwsException_whenDescriptionIsInvalid() {
 
-        Assert.assertThrows(IllegalArgumentException.class, () -> new BugImpl(
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new BugImpl(
                 2,
                 "Not Too Short",
                 "Too Short",
@@ -107,7 +106,7 @@ public class BugImpl_Tests {
                 Severity.MINOR,
                 "User10"));
 
-        Assert.assertThrows(IllegalArgumentException.class, () -> new BugImpl(
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new BugImpl(
                 2,
                 "Not Too Short",
                 "!".repeat(1000),

@@ -2,7 +2,6 @@ package Task.Management.System.models.tasks;
 
 import Task.Management.System.models.tasks.contracts.Feedback;
 import Task.Management.System.models.tasks.enums.FeedbackStatus;
-import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,13 +36,13 @@ public class Feedback_Tests {
     @Test
     public void constructor_throwsException_whenTitleIsInvalid() {
 
-        Assert.assertThrows(IllegalArgumentException.class, () -> new FeedbackImpl(
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new FeedbackImpl(
                 10,
                 "Too Short",
                 "Long Enough Description",
                 0));
 
-        Assert.assertThrows(IllegalArgumentException.class, () -> new FeedbackImpl(
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new FeedbackImpl(
                 20,
                 "!".repeat(100),
                 "Long Enough Description",
@@ -53,13 +52,13 @@ public class Feedback_Tests {
     @Test
     public void constructor_throwsException_whenDescriptionIsInvalid() {
 
-        Assert.assertThrows(IllegalArgumentException.class, () -> new FeedbackImpl(
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new FeedbackImpl(
                 1000,
                 "Not Too Short",
                 "Too Short",
                 1));
 
-        Assert.assertThrows(IllegalArgumentException.class, () -> new FeedbackImpl(
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new FeedbackImpl(
                 2000,
                 "Not Too Short",
                 "!".repeat(1000),
@@ -69,13 +68,13 @@ public class Feedback_Tests {
     @Test
     public void constructor_throwsException_whenRatingIsInvalid() {
 
-        Assert.assertThrows(IllegalArgumentException.class, () -> new FeedbackImpl(
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new FeedbackImpl(
                 111,
                 "Not Too Short",
                 "Just Right Length",
                 -5));
 
-        Assert.assertThrows(IllegalArgumentException.class, () -> new FeedbackImpl(
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new FeedbackImpl(
                 222,
                 "Not Too Short",
                 "Just Right Length",
