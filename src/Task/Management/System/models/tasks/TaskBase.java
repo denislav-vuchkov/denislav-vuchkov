@@ -34,6 +34,7 @@ public abstract class TaskBase implements Task {
     private String title;
     private String description;
 
+
     public TaskBase(int id, Tasks tasksType, String title, String description) {
         this.id = id;
         setTitle(title);

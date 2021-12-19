@@ -4,7 +4,6 @@ import Task.Management.System.models.tasks.contracts.Story;
 import Task.Management.System.models.tasks.enums.Priority;
 import Task.Management.System.models.tasks.enums.Size;
 import Task.Management.System.models.tasks.enums.StoryStatus;
-import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -58,7 +57,7 @@ public class StoryImpl_Tests {
     @Test
     public void constructor_throwsException_whenTitleIsInvalid() {
 
-        Assert.assertThrows(IllegalArgumentException.class, () -> new StoryImpl(
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new StoryImpl(
                 10,
                 "Too Short",
                 "Long Enough Description",
@@ -66,7 +65,7 @@ public class StoryImpl_Tests {
                 Size.SMALL,
                 "User10"));
 
-        Assert.assertThrows(IllegalArgumentException.class, () -> new StoryImpl(
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new StoryImpl(
                 20,
                 "!".repeat(100),
                 "Long Enough Description",
@@ -77,7 +76,7 @@ public class StoryImpl_Tests {
     @Test
     public void constructor_throwsException_whenDescriptionIsInvalid() {
 
-        Assert.assertThrows(IllegalArgumentException.class, () -> new StoryImpl(
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new StoryImpl(
                 30,
                 "Not Too Short",
                 "Too Short",
@@ -85,7 +84,7 @@ public class StoryImpl_Tests {
                 Size.MEDIUM,
                 "User10"));
 
-        Assert.assertThrows(IllegalArgumentException.class, () -> new StoryImpl(
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new StoryImpl(
                 40,
                 "Not Too Short",
                 "!".repeat(1000),
