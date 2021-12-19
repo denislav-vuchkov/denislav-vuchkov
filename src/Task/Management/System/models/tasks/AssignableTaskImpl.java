@@ -9,6 +9,7 @@ import static Task.Management.System.models.contracts.ChangesLogger.IMPOSSIBLE_C
 
 public abstract class AssignableTaskImpl extends TaskBase implements AssignableTask {
 
+    public static final String UNASSIGNED = "Unassigned";
     private Priority priority;
     private String assignee;
 
@@ -88,6 +89,6 @@ public abstract class AssignableTaskImpl extends TaskBase implements AssignableT
 
     @Override
     public void unAssign() {
-        setAssignee("Unassigned");
+        setAssignee(UNASSIGNED);
     }
 }

@@ -16,8 +16,8 @@ public class StoryImpl extends AssignableTaskImpl implements Story {
 
     public StoryImpl(int id, String title, String description, Priority priority, Size size, String assignee) {
         super(id, Tasks.STORY, title, description, priority, assignee);
-        setStatus(StoryStatus.NOT_DONE);
         setSize(size);
+        setStatus(StoryStatus.NOT_DONE);
     }
 
     public StoryImpl(int id, String title, String description, Priority priority, Size size) {

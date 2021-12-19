@@ -10,18 +10,19 @@ import static Task.Management.System.models.contracts.ChangesLogger.IMPOSSIBLE_C
 
 public class FeedbackImpl extends TaskBase implements Feedback {
 
+    public static final int RATING_UNINITIALIZED = -1;
     public static final int RATING_MIN = 0;
     public static final int RATING_MAX = 10;
     public static final String INVALID_RATING_MESSAGE = String.format("Rating cannot be less than %d or more than %d",
             RATING_MIN, RATING_MAX);
 
     private FeedbackStatus status;
-    private int rating = -1;
+    private int rating = RATING_UNINITIALIZED;
 
     public FeedbackImpl(int id, String title, String description, int rating) {
         super(id, Tasks.FEEDBACK, title, description);
-        setStatus(FeedbackStatus.NEW);
         setRating(rating);
+        setStatus(FeedbackStatus.NEW);
     }
 
     @Override
