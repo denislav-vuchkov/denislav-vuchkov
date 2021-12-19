@@ -96,8 +96,8 @@ public abstract class TaskBase implements Task {
     }
 
     @Override
-    public void addComment(String description, String author) {
-        comments.add(new CommentImpl(description, author));
+    public void addComment(Comment comment) {
+        comments.add(comment);
     }
 
     @Override

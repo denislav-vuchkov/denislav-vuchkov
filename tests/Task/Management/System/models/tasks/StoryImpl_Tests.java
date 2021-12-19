@@ -167,4 +167,14 @@ public class StoryImpl_Tests {
         Assertions.assertEquals(Priority.LOW, myStory.getPriority());
         Assertions.assertThrows(IllegalArgumentException.class, () -> myStory.decreasePriority());
     }
+
+    @Test
+    public void addComment_shouldIncreaseSize_whenGivenValidObject() {
+        Assertions.assertTrue(myStory.getComments().isEmpty());
+        myStory.addComment(new CommentImpl("Test1", "Test1"));
+        myStory.addComment(new CommentImpl("Test2", "Test2"));
+        myStory.getComments().add(new CommentImpl("Test3", "Test3"));
+        myStory.getComments().add(new CommentImpl("Test4", "Test4"));
+        Assertions.assertEquals(2, myStory.getComments().size());
+    }
 }

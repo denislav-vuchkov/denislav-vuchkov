@@ -22,7 +22,7 @@ public interface Task extends Changeable {
 
     void retractStatus();
 
-    void addComment(String description, String author);
+    void addComment(Comment comment);
 
     List<Comment> getComments();
 
