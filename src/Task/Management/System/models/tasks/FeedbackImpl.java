@@ -5,7 +5,8 @@ import Task.Management.System.models.tasks.enums.FeedbackStatus;
 import Task.Management.System.models.tasks.enums.Tasks;
 import Task.Management.System.utils.ValidationHelpers;
 
-import static Task.Management.System.models.contracts.ChangesLogger.*;
+import static Task.Management.System.models.contracts.ChangesLogger.CHANGE_MESSAGE;
+import static Task.Management.System.models.contracts.ChangesLogger.IMPOSSIBLE_CHANGE_MESSAGE;
 
 public class FeedbackImpl extends TaskBase implements Feedback {
 
@@ -15,11 +16,11 @@ public class FeedbackImpl extends TaskBase implements Feedback {
             RATING_MIN, RATING_MAX);
 
     private FeedbackStatus status;
-    private int rating;
+    private int rating = -1;
 
     public FeedbackImpl(int id, String title, String description, int rating) {
         super(id, Tasks.FEEDBACK, title, description);
-        this.status = FeedbackStatus.NEW;
+        setStatus(FeedbackStatus.NEW);
         setRating(rating);
     }
 
@@ -30,12 +31,15 @@ public class FeedbackImpl extends TaskBase implements Feedback {
 
     @Override
     public void setStatus(FeedbackStatus status) {
-        if (!this.status.equals(status)) {
-            addChangeToHistory(String.format(CHANGE_MESSAGE, "Status", this.status, status));
+        if (this.status == null) {
             this.status = status;
-        } else {
+            return;
+        }
+        if (this.status.equals(status)) {
             throw new IllegalArgumentException(String.format(IMPOSSIBLE_CHANGE_MESSAGE, "Status", this.status));
         }
+        addChangeToHistory(String.format(CHANGE_MESSAGE, "Status", this.status, status));
+        this.status = status;
     }
 
     @Override
@@ -86,13 +90,15 @@ public class FeedbackImpl extends TaskBase implements Feedback {
     @Override
     public void setRating(int rating) {
         ValidationHelpers.validateIntRange(rating, RATING_MIN, RATING_MAX, INVALID_RATING_MESSAGE);
-
-        if (this.rating != rating) {
-            addChangeToHistory(String.format(CHANGE_MESSAGE, "Rating", this.rating, rating));
+        if (this.rating == -1) {
             this.rating = rating;
-        } else {
+            return;
+        }
+        if (this.rating == rating) {
             throw new IllegalArgumentException(String.format(IMPOSSIBLE_CHANGE_MESSAGE, "Rating", this.rating));
         }
+        addChangeToHistory(String.format(CHANGE_MESSAGE, "Rating", this.rating, rating));
+        this.rating = rating;
     }
 
     @Override

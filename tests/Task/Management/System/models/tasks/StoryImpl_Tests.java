@@ -105,6 +105,8 @@ public class StoryImpl_Tests {
 
     @Test
     public void setSize_changesSize_whenUsedCorrectly() {
+        myStory.setSize(Size.SMALL);
+        Assertions.assertEquals(Size.SMALL, myStory.getSize());
         myStory.setSize(Size.LARGE);
         Assertions.assertEquals(Size.LARGE, myStory.getSize());
     }
