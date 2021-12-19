@@ -22,8 +22,8 @@ public class BugImpl extends AssignableTaskImpl implements Bug {
                    Priority priority, Severity severity, String assignee) {
         super(id, Tasks.BUG, title, description, priority, assignee);
         this.stepsToReproduce = stepsToReproduce;
-        setStatus(BugStatus.ACTIVE);
         setSeverity(severity);
+        setStatus(BugStatus.ACTIVE);
     }
 
     public BugImpl(int id, String title, String description, List<String> stepsToReproduce,
