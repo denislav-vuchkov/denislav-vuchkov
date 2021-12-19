@@ -6,11 +6,11 @@ public interface AssignableTask extends Task {
 
     Priority getPriority();
 
+    void setPriority(Priority priority);
+
     void increasePriority();
 
     void decreasePriority();
-
-    void setPriority(Priority priority);
 
     String getAssignee();
 

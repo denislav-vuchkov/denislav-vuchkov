@@ -185,4 +185,12 @@ public class BugImpl_Tests {
         Assertions.assertEquals("Unassigned", myBug.getAssignee());
         Assertions.assertThrows(IllegalArgumentException.class, () -> myBug.unAssign());
     }
+
+    @Test
+    public void getComments_shouldReturnList_withoutBreakingEncapsulation() {
+        Assertions.assertTrue(myBug.getComments().isEmpty());
+        myBug.getComments().add(new CommentImpl("Test1", "Test1"));
+        myBug.getComments().add(new CommentImpl("Test2", "Test2"));
+        Assertions.assertTrue(myBug.getComments().isEmpty());
+    }
 }

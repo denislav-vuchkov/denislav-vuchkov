@@ -7,15 +7,14 @@ public interface Bug extends AssignableTask {
 
     String getStepsToReproduce();
 
-    void setStatus(BugStatus status);
-
     Severity getSeverity();
+
+    void setSeverity(Severity severity);
 
     void increaseSeverity();
 
     void decreaseSeverity();
 
-    void setSeverity(Severity severity);
-
+    void setStatus(BugStatus status);
 
 }
