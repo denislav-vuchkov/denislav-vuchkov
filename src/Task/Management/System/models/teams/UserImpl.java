@@ -70,4 +70,11 @@ public class UserImpl implements User {
     public String getHistory() {
         return historyOfChanges.getCompleteHistory();
     }
+
+    @Override
+    public String toString() {
+        return String.format("Username: %s - Tasks assigned : %d%n",
+                getName(),
+                getAssignedTasks().size());
+    }
 }

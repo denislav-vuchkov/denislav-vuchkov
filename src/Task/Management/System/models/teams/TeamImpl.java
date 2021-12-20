@@ -1,9 +1,9 @@
 package Task.Management.System.models.teams;
 
-import Task.Management.System.models.teams.contracts.Board;
 import Task.Management.System.models.contracts.Changeable;
-import Task.Management.System.models.teams.contracts.User;
+import Task.Management.System.models.teams.contracts.Board;
 import Task.Management.System.models.teams.contracts.Team;
+import Task.Management.System.models.teams.contracts.User;
 import Task.Management.System.utils.ValidationHelpers;
 
 import java.util.ArrayList;
@@ -74,5 +74,14 @@ public class TeamImpl implements Team {
                     .collect(Collectors.joining(System.lineSeparator())));
         }
         return history.toString().trim();
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Team: %s - Users: %d - Boards: %d - Tasks assigned : %d%n",
+                getName(),
+                getUsers().size(),
+                getBoards().size(),
+                getBoards().stream().mapToInt(board -> board.getTasks().size()).sum());
     }
 }
