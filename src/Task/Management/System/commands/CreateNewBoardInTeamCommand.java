@@ -21,16 +21,11 @@ public class CreateNewBoardInTeamCommand extends BaseCommand {
     @Override
     protected String executeCommand(List<String> parameters) {
         ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
-
-        Team team = getRepository()
-                .getTeams()
-                .stream()
-                .filter(t -> t.getName().equals(parameters.get(1)))
-                .findAny()
-                .orElseThrow(() -> new NullPointerException(TEAM_DOES_NOT_EXIST));
+        Team team = getRepository().findTeam(parameters.get(1));
 
         if (team.getBoards().stream().anyMatch(b -> b.getName().equals(parameters.get(0)))) {
-            throw new IllegalArgumentException(String.format(BOARD_ALREADY_EXISTS, parameters.get(0), team.getName()));
+            throw new IllegalArgumentException(
+                    String.format(BOARD_ALREADY_EXISTS, parameters.get(0), team.getName()));
         }
 
         Board board = new BoardImpl(parameters.get(0));

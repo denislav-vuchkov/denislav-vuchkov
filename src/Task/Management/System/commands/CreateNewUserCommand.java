@@ -19,9 +19,7 @@ public class CreateNewUserCommand extends BaseCommand {
     @Override
     protected String executeCommand(List<String> parameters) {
         ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
-        if (getRepository().getUsers().stream().anyMatch(user -> user.getName().equals(parameters.get(0)))) {
-            throw new IllegalArgumentException(USER_ALREADY_EXISTS);
-        }
+        getRepository().validateUniqueUserName(parameters.get(0));
         User user = new UserImpl(parameters.get(0));
         getRepository().addUser(user);
         return String.format(USER_ADDED_SUCCESSFULLY, user.getName());

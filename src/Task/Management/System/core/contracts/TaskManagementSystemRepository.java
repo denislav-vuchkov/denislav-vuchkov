@@ -17,6 +17,14 @@ public interface TaskManagementSystemRepository {
 
     void addUser(User user);
 
+    User findUser(String userName);
+
+    void validateUniqueUserName(String userName);
+
     void addTeam(Team team);
+
+    Team findTeam(String teamName);
+
+    void validateUniqueTeamName(String teamName);
 
 }

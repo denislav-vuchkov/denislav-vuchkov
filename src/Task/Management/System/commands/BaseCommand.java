@@ -7,14 +7,6 @@ import java.util.List;
 
 public abstract class BaseCommand implements Command {
 
-    private static final String NOT_EXIST = "The %s does not exist! Create a %s with this name first.";
-    public static final String TEAM_DOES_NOT_EXIST = String.format(NOT_EXIST, "team", "team");
-    public static final String USER_DOES_NOT_EXIST = String.format(NOT_EXIST, "user", "user");
-
-    private static final String ALREADY_EXISTS = "This %s name already exists! Please choose a unique %s name.";
-    public static final String TEAM_ALREADY_EXISTS = String.format(ALREADY_EXISTS, "team", "team");
-    public static final String USER_ALREADY_EXISTS = String.format(ALREADY_EXISTS, "user", "user");
-
     private final TaskManagementSystemRepository repository;
 
     protected BaseCommand(TaskManagementSystemRepository repository) {

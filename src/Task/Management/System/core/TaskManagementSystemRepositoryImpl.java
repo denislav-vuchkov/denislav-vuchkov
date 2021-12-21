@@ -10,6 +10,15 @@ import java.util.List;
 
 public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemRepository {
 
+    private static final String NOT_EXIST = "The %s does not exist! Create a %s with this name first.";
+    public static final String TEAM_DOES_NOT_EXIST = String.format(NOT_EXIST, "team", "team");
+    public static final String USER_DOES_NOT_EXIST = String.format(NOT_EXIST, "user", "user");
+
+    private static final String ALREADY_EXISTS = "This %s name already exists! Please choose a unique %s name.";
+    public static final String TEAM_ALREADY_EXISTS = String.format(ALREADY_EXISTS, "team", "team");
+    public static final String USER_ALREADY_EXISTS = String.format(ALREADY_EXISTS, "user", "user");
+
+
     private final List<Team> teams;
     private final List<User> users;
     private final List<Task> tasks;
@@ -41,7 +50,38 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
     }
 
     @Override
+    public User findUser(String userName) {
+        return getUsers()
+                .stream()
+                .filter(user -> user.getName().equals(userName))
+                .findAny()
+                .orElseThrow(() -> new NullPointerException(USER_DOES_NOT_EXIST));
+    }
+
+    public void validateUniqueUserName(String userName) {
+        if (getUsers().stream().anyMatch(user -> user.getName().equals(userName))) {
+            throw new IllegalArgumentException(USER_ALREADY_EXISTS);
+        }
+    }
+
+    @Override
     public void addTeam(Team team) {
         teams.add(team);
+    }
+
+    @Override
+    public Team findTeam(String teamName) {
+        return getTeams()
+                .stream()
+                .filter(t -> t.getName().equals(teamName))
+                .findAny()
+                .orElseThrow(() -> new NullPointerException(TEAM_DOES_NOT_EXIST));
+    }
+
+    @Override
+    public void validateUniqueTeamName(String teamName) {
+        if (getTeams().stream().anyMatch(team -> team.getName().equals(teamName))) {
+            throw new IllegalArgumentException(TEAM_ALREADY_EXISTS);
+        }
     }
 }

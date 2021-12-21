@@ -20,23 +20,12 @@ public class AddUserToTeamCommand extends BaseCommand {
     @Override
     protected String executeCommand(List<String> parameters) {
         ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
-
-        User user = getRepository()
-                .getUsers()
-                .stream()
-                .filter(u -> u.getName().equals(parameters.get(0)))
-                .findAny()
-                .orElseThrow(() -> new NullPointerException(USER_DOES_NOT_EXIST));
-
-        Team team = getRepository()
-                .getTeams()
-                .stream()
-                .filter(t -> t.getName().equals(parameters.get(1)))
-                .findAny()
-                .orElseThrow(() -> new NullPointerException(TEAM_DOES_NOT_EXIST));
+        User user = getRepository().findUser(parameters.get(0));
+        Team team = getRepository().findTeam(parameters.get(1));
 
         if (team.getUsers().contains(user)) {
-            throw new IllegalArgumentException(String.format(USER_ALREADY_ON_TEAM, user.getName(), team.getName()));
+            throw new IllegalArgumentException(
+                    String.format(USER_ALREADY_ON_TEAM, user.getName(), team.getName()));
         }
 
         team.addUser(user);
