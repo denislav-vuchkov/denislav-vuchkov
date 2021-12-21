@@ -1,16 +1,13 @@
 package Task.Management.System.core;
 
-
 import Task.Management.System.core.contracts.TaskManagementSystemRepository;
 import Task.Management.System.models.tasks.contracts.Task;
 import Task.Management.System.models.teams.contracts.Board;
-import Task.Management.System.models.teams.contracts.Nameable;
 import Task.Management.System.models.teams.contracts.Team;
 import Task.Management.System.models.teams.contracts.User;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemRepository {
 
@@ -47,36 +44,12 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
     }
 
     @Override
-    public void addNewUser(User user) {
-        if (containsEntry(getUsers(), user.getName())) {
-            throw new IllegalArgumentException(USER_ALREADY_EXIST);
-        }
+    public void addUser(User user) {
         users.add(user);
     }
 
     @Override
-    public void addNewTeam(Team team) {
-        if (containsEntry(getTeams(), team.getName())) {
-            throw new IllegalArgumentException(TEAM_ALREADY_EXIST);
-        }
+    public void addTeam(Team team) {
         teams.add(team);
     }
-
-    @Override
-    public <E extends Nameable> E findByName(List<E> list, String name) {
-        return list
-                .stream()
-                .filter(entry -> entry.getName().equals(name))
-                .findAny()
-                .orElseThrow(IllegalArgumentException::new);
-    }
-
-    @Override
-    public <E extends Nameable> boolean containsEntry(List<E> list, String name) {
-        return list
-                .stream()
-                .anyMatch(element -> element.getName().equals(name));
-    }
-
-
 }

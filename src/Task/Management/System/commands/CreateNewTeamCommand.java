@@ -19,10 +19,11 @@ public class CreateNewTeamCommand extends BaseCommand {
     @Override
     protected String executeCommand(List<String> parameters) {
         ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
-        String name = parameters.get(0);
-        Team team = new TeamImpl(name);
-        getRepository().addNewTeam(team);
+        if (getRepository().getTeams().stream().anyMatch(t -> t.getName().equals(parameters.get(0)))) {
+            throw new IllegalArgumentException(TEAM_ALREADY_EXISTS);
+        }
+        Team team = new TeamImpl(parameters.get(0));
+        getRepository().addTeam(team);
         return String.format(TEAM_ADDED_SUCCESSFULLY, team.getName());
     }
-
 }

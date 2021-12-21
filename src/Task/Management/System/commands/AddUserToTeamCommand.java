@@ -10,8 +10,6 @@ import java.util.List;
 public class AddUserToTeamCommand extends BaseCommand {
 
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 2;
-    public static final String USER_DOES_NOT_EXIST = "User does not exist.";
-    public static final String TEAM_DOES_NOT_EXIST = "Team does not exist.";
     public static final String USER_ADDED_TO_TEAM = "User %s successfully added to team %s.";
 
     public AddUserToTeamCommand(TaskManagementSystemRepository repository) {
