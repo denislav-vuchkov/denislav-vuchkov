@@ -26,7 +26,7 @@ public interface TaskManagementSystemRepository {
 
     void addNewUser(User user);
 
-    User findByName(String name);
+    <E extends Nameable> E findByName(List<E> list, String name);
 
     <E extends Nameable> boolean containsEntry(List<E> list, String name);
 

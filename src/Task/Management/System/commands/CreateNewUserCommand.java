@@ -21,7 +21,7 @@ public class CreateNewUserCommand extends BaseCommand {
         ValidationHelpers.validateArgumentsCount(parameters,EXPECTED_NUMBER_OF_ARGUMENTS);
         String name = parameters.get(0);
         User user = new UserImpl(name);
-        getTaskManagementSystemRepository().addNewUser(user);
+        getRepository().addNewUser(user);
         return String.format(USER_ADDED_SUCCESSFULLY, user.getName());
     }
 }

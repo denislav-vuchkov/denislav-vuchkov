@@ -7,14 +7,14 @@ import java.util.List;
 
 public abstract class BaseCommand implements Command {
 
-    private final TaskManagementSystemRepository taskManagementSystemRepository;
+    private final TaskManagementSystemRepository repository;
 
-    protected BaseCommand(TaskManagementSystemRepository taskManagementSystemRepository) {
-        this.taskManagementSystemRepository = taskManagementSystemRepository;
+    protected BaseCommand(TaskManagementSystemRepository repository) {
+        this.repository = repository;
     }
 
-    protected TaskManagementSystemRepository getTaskManagementSystemRepository() {
-        return taskManagementSystemRepository;
+    protected TaskManagementSystemRepository getRepository() {
+        return repository;
     }
 
     @Override

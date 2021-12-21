@@ -21,7 +21,7 @@ public class CreateNewTeamCommand extends BaseCommand {
         ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
         String name = parameters.get(0);
         Team team = new TeamImpl(name);
-        getTaskManagementSystemRepository().addNewTeam(team);
+        getRepository().addNewTeam(team);
         return String.format(TEAM_ADDED_SUCCESSFULLY, team.getName());
     }
 

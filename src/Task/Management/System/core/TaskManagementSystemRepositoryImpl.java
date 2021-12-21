@@ -63,13 +63,19 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
     }
 
     @Override
-    public User findByName(String name) {
-        return null;
+    public <E extends Nameable> E findByName(List<E> list, String name) {
+        return list
+                .stream()
+                .filter(entry -> entry.getName().equals(name))
+                .findAny()
+                .orElseThrow(IllegalArgumentException::new);
     }
 
     @Override
     public <E extends Nameable> boolean containsEntry(List<E> list, String name) {
-        return list.stream().anyMatch(element -> element.getName().equals(name));
+        return list
+                .stream()
+                .anyMatch(element -> element.getName().equals(name));
     }
 
 
