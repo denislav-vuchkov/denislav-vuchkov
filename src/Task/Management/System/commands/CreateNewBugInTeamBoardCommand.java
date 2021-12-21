@@ -12,7 +12,7 @@ import Task.Management.System.utils.ValidationHelpers;
 import java.util.List;
 
 public class CreateNewBugInTeamBoardCommand extends BaseCommand {
-    public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 666;
+    public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 2;
     public static final String BUG_ADDED_TO_BOARD =
             "Bug with ID %d successfully added to board %s in team %s.";
 

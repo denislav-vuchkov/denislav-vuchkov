@@ -32,7 +32,7 @@ public class CreateNewFeedbackInTeamBoardCommand extends BaseCommand {
         //TODO
         Feedback feedback = new FeedbackImpl(
                 1,
-                "title",
+                "longertitle",
                 "description",
                 5);
 

@@ -12,7 +12,7 @@ import Task.Management.System.utils.ValidationHelpers;
 import java.util.List;
 
 public class CreateNewStoryInTeamBoardCommand extends BaseCommand {
-    public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 666;
+    public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 2;
     public static final String STORY_ADDED_TO_BOARD =
             "Story with ID %d successfully added to board %s in team %s.";
 

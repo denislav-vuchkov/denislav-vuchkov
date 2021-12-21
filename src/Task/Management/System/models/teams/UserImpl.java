@@ -73,7 +73,7 @@ public class UserImpl implements User {
 
     @Override
     public String toString() {
-        return String.format("Username: %s - Tasks assigned : %d%n",
+        return String.format("Username: %s - Tasks: %d%n",
                 getName(),
                 getAssignedTasks().size());
     }
