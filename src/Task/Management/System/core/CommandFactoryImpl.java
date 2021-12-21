@@ -15,14 +15,14 @@ public class CommandFactoryImpl implements CommandFactory {
         CommandType commandType = ParsingHelpers.tryParseEnum(commandTypeAsString, CommandType.class);
 
         switch (commandType) {
-            case CREATE_NEW_USER:
-                return new CreateNewUserCommand(taskManagementSystemRepository);
+            case CREATE_USER:
+                return new CreateUserCommand(taskManagementSystemRepository);
             case SHOW_ALL_USERS:
                 return new ShowAllUsersCommand(taskManagementSystemRepository);
             case SHOW_USER_ACTIVITY:
                 return new ShowUserActivityCommand(taskManagementSystemRepository);
-            case CREATE_NEW_TEAM:
-                return new CreateNewTeamCommand(taskManagementSystemRepository);
+            case CREATE_TEAM:
+                return new CreateTeamCommand(taskManagementSystemRepository);
             case SHOW_ALL_TEAMS:
                 return new ShowAllTeamsCommand(taskManagementSystemRepository);
             case SHOW_TEAM_ACTIVITY:
@@ -31,18 +31,18 @@ public class CommandFactoryImpl implements CommandFactory {
                 return new AddUserToTeamCommand(taskManagementSystemRepository);
             case SHOW_ALL_USERS_IN_TEAM:
                 return new ShowAllUsersInTeamCommand(taskManagementSystemRepository);
-            case CREATE_NEW_BOARD_IN_TEAM:
-                return new CreateNewBoardInTeamCommand(taskManagementSystemRepository);
+            case CREATE_BOARD:
+                return new CreateBoardCommand(taskManagementSystemRepository);
             case SHOW_ALL_TEAM_BOARDS:
                 return new ShowAllTeamBoardsCommand(taskManagementSystemRepository);
             case SHOW_BOARD_ACTIVITY:
                 return new ShowBoardActivityCommand(taskManagementSystemRepository);
-            case CREATE_NEW_BUG_IN_TEAM_BOARD:
-                return new CreateNewBugInTeamBoardCommand(taskManagementSystemRepository);
-            case CREATE_NEW_STORY_IN_TEAM_BOARD:
-                return new CreateNewStoryInTeamBoardCommand(taskManagementSystemRepository);
-            case CREATE_NEW_FEEDBACK_IN_TEAM_BOARD:
-                return new CreateNewFeedbackInTeamBoardCommand(taskManagementSystemRepository);
+            case CREATE_BUG:
+                return new CreateBugCommand(taskManagementSystemRepository);
+            case CREATE_STORY:
+                return new CreateStoryCommand(taskManagementSystemRepository);
+            case CREATE_FEEDBACK:
+                return new CreateFeedbackCommand(taskManagementSystemRepository);
             case CHANGE_BUG:
                 return new ChangeBugCommand(taskManagementSystemRepository);
             case CHANGE_STORY:

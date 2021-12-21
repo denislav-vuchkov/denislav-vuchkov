@@ -8,13 +8,13 @@ import Task.Management.System.utils.ValidationHelpers;
 
 import java.util.List;
 
-public class CreateNewBoardInTeamCommand extends BaseCommand {
+public class CreateBoardCommand extends BaseCommand {
 
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 2;
     public static final String BOARD_CREATED_IN_TEAM = "Board %s successfully created in team %s.";
     public static final String BOARD_ALREADY_EXISTS = "Board %s already exists in team %s!";
 
-    public CreateNewBoardInTeamCommand(TaskManagementSystemRepository repository) {
+    public CreateBoardCommand(TaskManagementSystemRepository repository) {
         super(repository);
     }
 

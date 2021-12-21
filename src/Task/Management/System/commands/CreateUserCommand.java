@@ -7,12 +7,12 @@ import Task.Management.System.utils.ValidationHelpers;
 
 import java.util.List;
 
-public class CreateNewUserCommand extends BaseCommand {
+public class CreateUserCommand extends BaseCommand {
 
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 1;
     public static final String USER_ADDED_SUCCESSFULLY = "User %s created successfully.";
 
-    public CreateNewUserCommand(TaskManagementSystemRepository repository) {
+    public CreateUserCommand(TaskManagementSystemRepository repository) {
         super(repository);
     }
 

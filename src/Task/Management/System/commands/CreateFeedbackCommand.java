@@ -9,12 +9,12 @@ import Task.Management.System.utils.ValidationHelpers;
 
 import java.util.List;
 
-public class CreateNewFeedbackInTeamBoardCommand extends BaseCommand {
+public class CreateFeedbackCommand extends BaseCommand {
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 2;
     public static final String FEEDBACK_ADDED_TO_BOARD =
             "Feedback with ID %d successfully added to board %s in team %s.";
 
-    public CreateNewFeedbackInTeamBoardCommand(TaskManagementSystemRepository repository) {
+    public CreateFeedbackCommand(TaskManagementSystemRepository repository) {
         super(repository);
     }
 

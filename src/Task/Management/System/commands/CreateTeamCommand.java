@@ -7,12 +7,12 @@ import Task.Management.System.utils.ValidationHelpers;
 
 import java.util.List;
 
-public class CreateNewTeamCommand extends BaseCommand {
+public class CreateTeamCommand extends BaseCommand {
 
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 1;
     public static final String TEAM_ADDED_SUCCESSFULLY = "Team %s created successfully.";
 
-    public CreateNewTeamCommand(TaskManagementSystemRepository repository) {
+    public CreateTeamCommand(TaskManagementSystemRepository repository) {
         super(repository);
     }
 
