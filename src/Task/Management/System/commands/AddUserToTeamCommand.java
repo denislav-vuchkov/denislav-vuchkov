@@ -12,6 +12,7 @@ public class AddUserToTeamCommand extends BaseCommand {
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 2;
     public static final String USER_DOES_NOT_EXIST = "User does not exist.";
     public static final String TEAM_DOES_NOT_EXIST = "Team does not exist.";
+    public static final String USER_ADDED_TO_TEAM = "User %s successfully added to team %s.";
 
     public AddUserToTeamCommand(TaskManagementSystemRepository repository) {
         super(repository);
@@ -20,19 +21,22 @@ public class AddUserToTeamCommand extends BaseCommand {
     @Override
     protected String executeCommand(List<String> parameters) {
         ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
-        User user;
-        Team team;
-        try {
-            user = getRepository().findByName(getRepository().getUsers(), parameters.get(0));
-        } catch (IllegalArgumentException userEx) {
-            throw new NullPointerException(USER_DOES_NOT_EXIST);
-        }
-        try {
-            team = getRepository().findByName(getRepository().getTeams(), parameters.get(1));
-        } catch (IllegalArgumentException teamEx) {
-            throw new NullPointerException(TEAM_DOES_NOT_EXIST);
-        }
+
+        User user = getRepository()
+                .getUsers()
+                .stream()
+                .filter(u -> u.getName().equals(parameters.get(0)))
+                .findAny()
+                .orElseThrow(() -> new NullPointerException(USER_DOES_NOT_EXIST));
+
+        Team team = getRepository()
+                .getTeams()
+                .stream()
+                .filter(t -> t.getName().equals(parameters.get(1)))
+                .findAny()
+                .orElseThrow(() -> new NullPointerException(TEAM_DOES_NOT_EXIST));
+
         team.addUser(user);
-        return "Success";
+        return String.format(USER_ADDED_TO_TEAM, user.getName(), team.getName());
     }
 }
