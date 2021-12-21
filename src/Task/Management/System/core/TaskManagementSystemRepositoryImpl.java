@@ -2,7 +2,6 @@ package Task.Management.System.core;
 
 import Task.Management.System.core.contracts.TaskManagementSystemRepository;
 import Task.Management.System.models.tasks.contracts.Task;
-import Task.Management.System.models.teams.contracts.Board;
 import Task.Management.System.models.teams.contracts.Team;
 import Task.Management.System.models.teams.contracts.User;
 
@@ -12,13 +11,11 @@ import java.util.List;
 public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemRepository {
 
     private final List<Team> teams;
-    private final List<Board> boards;
     private final List<User> users;
     private final List<Task> tasks;
 
     public TaskManagementSystemRepositoryImpl() {
         teams = new ArrayList<>();
-        boards = new ArrayList<>();
         users = new ArrayList<>();
         tasks = new ArrayList<>();
     }
@@ -26,11 +23,6 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
     @Override
     public List<Team> getTeams() {
         return new ArrayList<>(teams);
-    }
-
-    @Override
-    public List<Board> getBoards() {
-        return new ArrayList<>(boards);
     }
 
     @Override

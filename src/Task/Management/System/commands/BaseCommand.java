@@ -13,9 +13,11 @@ public abstract class BaseCommand implements Command {
     public static final String USER_DOES_NOT_EXIST = String.format(NOT_EXIST, "user", "user");
 
     private static final String ALREADY_EXISTS = "This %s name already exists! Please choose a unique %s name.";
-    public static final String TEAM_ALREADY_EXISTS = String.format(NOT_EXIST, "team", "team");
-    public static final String BOARD_ALREADY_EXISTS = String.format(NOT_EXIST, "board", "board");
-    public static final String USER_ALREADY_EXISTS = String.format(NOT_EXIST, "user", "user");
+    public static final String TEAM_ALREADY_EXISTS = String.format(ALREADY_EXISTS, "team", "team");
+    public static final String BOARD_ALREADY_EXISTS = String.format(ALREADY_EXISTS, "board", "board");
+    public static final String USER_ALREADY_EXISTS = String.format(ALREADY_EXISTS, "user", "user");
+
+    public static final String USER_ALREADY_ON_TEAM = "User %s is already part of team %s!";
 
     private final TaskManagementSystemRepository repository;
 

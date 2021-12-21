@@ -8,8 +8,8 @@ public class AssignTaskToUserCommand extends BaseCommand {
 
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 666;
 
-    public AssignTaskToUserCommand(TaskManagementSystemRepository taskManagementSystemRepository) {
-        super(taskManagementSystemRepository);
+    public AssignTaskToUserCommand(TaskManagementSystemRepository repository) {
+        super(repository);
     }
 
     @Override

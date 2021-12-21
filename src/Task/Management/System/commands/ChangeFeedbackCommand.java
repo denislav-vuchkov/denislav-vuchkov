@@ -8,8 +8,8 @@ public class ChangeFeedbackCommand extends BaseCommand {
 
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 666;
 
-    public ChangeFeedbackCommand(TaskManagementSystemRepository taskManagementSystemRepository) {
-        super(taskManagementSystemRepository);
+    public ChangeFeedbackCommand(TaskManagementSystemRepository repository) {
+        super(repository);
     }
 
     @Override

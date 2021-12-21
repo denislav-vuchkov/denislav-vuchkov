@@ -6,10 +6,10 @@ import java.util.List;
 
 public class CreateNewBoardInTeamCommand extends BaseCommand {
 
-    public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 666;
+    public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 2;
 
-    public CreateNewBoardInTeamCommand(TaskManagementSystemRepository taskManagementSystemRepository) {
-        super(taskManagementSystemRepository);
+    public CreateNewBoardInTeamCommand(TaskManagementSystemRepository repository) {
+        super(repository);
     }
 
     @Override

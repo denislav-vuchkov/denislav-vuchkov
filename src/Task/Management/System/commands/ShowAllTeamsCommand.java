@@ -12,8 +12,8 @@ public class ShowAllTeamsCommand extends BaseCommand {
     public static final String TEAMS_HEADER = "TEAMS:";
     public static final String TEAMS_EMPTY = "No teams to display.";
 
-    public ShowAllTeamsCommand(TaskManagementSystemRepository taskManagementSystemRepository) {
-        super(taskManagementSystemRepository);
+    public ShowAllTeamsCommand(TaskManagementSystemRepository repository) {
+        super(repository);
     }
 
     @Override

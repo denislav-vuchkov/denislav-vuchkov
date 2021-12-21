@@ -2,7 +2,6 @@ package Task.Management.System.core.contracts;
 
 
 import Task.Management.System.models.tasks.contracts.Task;
-import Task.Management.System.models.teams.contracts.Board;
 import Task.Management.System.models.teams.contracts.Team;
 import Task.Management.System.models.teams.contracts.User;
 
@@ -12,8 +11,6 @@ public interface TaskManagementSystemRepository {
 
     List<Team> getTeams();
 
-    List<Board> getBoards();
-
     List<User> getUsers();
 
     List<Task> getTasks();
@@ -21,5 +18,5 @@ public interface TaskManagementSystemRepository {
     void addUser(User user);
 
     void addTeam(Team team);
-    
+
 }

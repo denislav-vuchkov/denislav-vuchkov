@@ -8,8 +8,8 @@ public class AddCommentToTaskCommand extends BaseCommand {
 
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 666;
 
-    public AddCommentToTaskCommand(TaskManagementSystemRepository taskManagementSystemRepository) {
-        super(taskManagementSystemRepository);
+    public AddCommentToTaskCommand(TaskManagementSystemRepository repository) {
+        super(repository);
     }
 
     @Override

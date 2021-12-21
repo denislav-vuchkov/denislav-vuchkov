@@ -12,8 +12,8 @@ public class CreateNewTeamCommand extends BaseCommand {
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 1;
     public static final String TEAM_ADDED_SUCCESSFULLY = "Team %s created successfully.";
 
-    public CreateNewTeamCommand(TaskManagementSystemRepository taskManagementSystemRepository) {
-        super(taskManagementSystemRepository);
+    public CreateNewTeamCommand(TaskManagementSystemRepository repository) {
+        super(repository);
     }
 
     @Override

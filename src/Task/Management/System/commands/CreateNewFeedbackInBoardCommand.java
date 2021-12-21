@@ -7,8 +7,8 @@ import java.util.List;
 public class CreateNewFeedbackInBoardCommand extends BaseCommand {
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 666;
 
-    public CreateNewFeedbackInBoardCommand(TaskManagementSystemRepository taskManagementSystemRepository) {
-        super(taskManagementSystemRepository);
+    public CreateNewFeedbackInBoardCommand(TaskManagementSystemRepository repository) {
+        super(repository);
     }
 
     @Override

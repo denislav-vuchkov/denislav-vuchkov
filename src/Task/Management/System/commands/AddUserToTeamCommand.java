@@ -34,6 +34,10 @@ public class AddUserToTeamCommand extends BaseCommand {
                 .findAny()
                 .orElseThrow(() -> new NullPointerException(TEAM_DOES_NOT_EXIST));
 
+        if (team.getUsers().contains(user)) {
+            throw new IllegalArgumentException(String.format(USER_ALREADY_ON_TEAM, user.getName(), team.getName()));
+        }
+
         team.addUser(user);
         return String.format(USER_ADDED_TO_TEAM, user.getName(), team.getName());
     }

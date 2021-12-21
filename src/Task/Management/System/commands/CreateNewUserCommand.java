@@ -12,8 +12,8 @@ public class CreateNewUserCommand extends BaseCommand {
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 1;
     public static final String USER_ADDED_SUCCESSFULLY = "User %s created successfully.";
 
-    public CreateNewUserCommand(TaskManagementSystemRepository taskManagementSystemRepository) {
-        super(taskManagementSystemRepository);
+    public CreateNewUserCommand(TaskManagementSystemRepository repository) {
+        super(repository);
     }
 
     @Override

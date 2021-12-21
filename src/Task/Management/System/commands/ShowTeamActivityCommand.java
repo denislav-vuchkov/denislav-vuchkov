@@ -8,8 +8,8 @@ public class ShowTeamActivityCommand extends BaseCommand {
 
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 666;
 
-    public ShowTeamActivityCommand(TaskManagementSystemRepository taskManagementSystemRepository) {
-        super(taskManagementSystemRepository);
+    public ShowTeamActivityCommand(TaskManagementSystemRepository repository) {
+        super(repository);
     }
 
     @Override

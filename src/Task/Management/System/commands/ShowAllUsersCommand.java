@@ -12,8 +12,8 @@ public class ShowAllUsersCommand extends BaseCommand {
     public static final String USERS_HEADER = "USERS:";
     public static final String USERS_EMPTY = "No users to display.";
 
-    public ShowAllUsersCommand(TaskManagementSystemRepository taskManagementSystemRepository) {
-        super(taskManagementSystemRepository);
+    public ShowAllUsersCommand(TaskManagementSystemRepository repository) {
+        super(repository);
     }
 
     @Override

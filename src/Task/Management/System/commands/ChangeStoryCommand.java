@@ -8,8 +8,8 @@ public class ChangeStoryCommand extends BaseCommand {
 
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 666;
 
-    public ChangeStoryCommand(TaskManagementSystemRepository taskManagementSystemRepository) {
-        super(taskManagementSystemRepository);
+    public ChangeStoryCommand(TaskManagementSystemRepository repository) {
+        super(repository);
     }
 
     @Override

@@ -8,8 +8,8 @@ public class ShowBoardActivityCommand extends BaseCommand {
 
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 666;
 
-    public ShowBoardActivityCommand(TaskManagementSystemRepository taskManagementSystemRepository) {
-        super(taskManagementSystemRepository);
+    public ShowBoardActivityCommand(TaskManagementSystemRepository repository) {
+        super(repository);
     }
 
     @Override

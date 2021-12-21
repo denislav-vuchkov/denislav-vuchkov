@@ -9,8 +9,8 @@ public class ShowUserActivityCommand extends BaseCommand {
 
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 1;
 
-    public ShowUserActivityCommand(TaskManagementSystemRepository taskManagementSystemRepository) {
-        super(taskManagementSystemRepository);
+    public ShowUserActivityCommand(TaskManagementSystemRepository repository) {
+        super(repository);
     }
 
     @Override

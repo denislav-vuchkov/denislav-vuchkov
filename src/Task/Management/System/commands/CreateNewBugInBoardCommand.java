@@ -7,8 +7,8 @@ import java.util.List;
 public class CreateNewBugInBoardCommand extends BaseCommand {
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 666;
 
-    public CreateNewBugInBoardCommand(TaskManagementSystemRepository taskManagementSystemRepository) {
-        super(taskManagementSystemRepository);
+    public CreateNewBugInBoardCommand(TaskManagementSystemRepository repository) {
+        super(repository);
     }
 
     @Override
