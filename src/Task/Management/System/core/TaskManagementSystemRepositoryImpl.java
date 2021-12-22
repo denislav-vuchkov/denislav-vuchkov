@@ -82,15 +82,6 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
     }
 
     @Override
-    public Team findTeam(String teamName) {
-        return getTeams()
-                .stream()
-                .filter(t -> t.getName().equals(teamName))
-                .findAny()
-                .orElseThrow(() -> new InvalidUserInput(TEAM_DOES_NOT_EXIST));
-    }
-
-    @Override
     public void validateUniqueTeamName(String teamName) {
         if (getTeams().stream().anyMatch(team -> team.getName().equals(teamName))) {
             throw new InvalidUserInput(TEAM_ALREADY_EXISTS);
@@ -130,13 +121,23 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
     }
 
     private Board findBoard(String boardName, String teamName) {
-        for (Team team : teams) {
-            if (team.getName().equals(teamName)) {
-                for (Board board : team.getBoards()) {
+        Team team = findTeam(teamName);
 
-                }
-            }
-        }
-        throw new InvalidUserInput("Not implemented yet");
+        Board board = team.getBoards()
+                .stream()
+                .filter(e -> e.getName().equals(boardName))
+                .findFirst()
+                .orElseThrow(() -> new InvalidUserInput("The board you are trying to"));
+
+        return board;
+    }
+
+    @Override
+    public Team findTeam(String teamName) {
+        return getTeams()
+                .stream()
+                .filter(t -> t.getName().equals(teamName))
+                .findAny()
+                .orElseThrow(() -> new InvalidUserInput(TEAM_DOES_NOT_EXIST));
     }
 }

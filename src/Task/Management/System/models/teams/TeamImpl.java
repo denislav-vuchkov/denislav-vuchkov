@@ -59,7 +59,7 @@ public class TeamImpl implements Team {
 
     @Override
     public void removeUser(User user) {
-        users.add(user);
+        users.remove(user);
     }
 
     @Override
