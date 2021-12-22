@@ -2,7 +2,16 @@ package Task.Management.System.core;
 
 import Task.Management.System.core.contracts.TaskManagementSystemRepository;
 import Task.Management.System.models.exceptions.InvalidUserInput;
+import Task.Management.System.models.tasks.BugImpl;
+import Task.Management.System.models.tasks.FeedbackImpl;
+import Task.Management.System.models.tasks.StoryImpl;
+import Task.Management.System.models.tasks.contracts.Bug;
+import Task.Management.System.models.tasks.contracts.Feedback;
+import Task.Management.System.models.tasks.contracts.Story;
 import Task.Management.System.models.tasks.contracts.Task;
+import Task.Management.System.models.tasks.enums.Priority;
+import Task.Management.System.models.tasks.enums.Severity;
+import Task.Management.System.models.tasks.enums.Size;
 import Task.Management.System.models.teams.contracts.Nameable;
 import Task.Management.System.models.teams.contracts.Team;
 import Task.Management.System.models.teams.contracts.User;
@@ -20,7 +29,7 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
     public static final String TEAM_ALREADY_EXISTS = String.format(ALREADY_EXISTS, "team", "team");
     public static final String USER_ALREADY_EXISTS = String.format(ALREADY_EXISTS, "user", "user");
 
-
+    private static int nextTaskID = 0;
     private final List<Team> teams;
     private final List<User> users;
     private final List<Task> tasks;
@@ -87,4 +96,22 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
         }
     }
 
+    @Override
+    public void addBug(String title, String description, List<String> stepsToReproduce,
+                       Priority priority, Severity severity, String assignee) {
+        Task bug = new BugImpl(++nextTaskID, title, description, stepsToReproduce, priority, severity, assignee);
+        tasks.add(bug);
+    }
+
+    @Override
+    public void addStory(String title, String description, Priority priority, Size size, String assignee) {
+        Task story = new StoryImpl(++nextTaskID, title, description, priority, size, assignee);
+        tasks.add(story);
+    }
+
+    @Override
+    public void addFeedback(String title, String description, int rating) {
+        Task feedback = new FeedbackImpl(++nextTaskID, title, description, rating);
+        tasks.add(feedback);
+    }
 }
