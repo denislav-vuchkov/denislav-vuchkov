@@ -5,15 +5,11 @@ import Task.Management.System.models.exceptions.InvalidUserInput;
 import Task.Management.System.models.tasks.BugImpl;
 import Task.Management.System.models.tasks.FeedbackImpl;
 import Task.Management.System.models.tasks.StoryImpl;
-import Task.Management.System.models.tasks.contracts.Bug;
-import Task.Management.System.models.tasks.contracts.Feedback;
-import Task.Management.System.models.tasks.contracts.Story;
 import Task.Management.System.models.tasks.contracts.Task;
 import Task.Management.System.models.tasks.enums.Priority;
 import Task.Management.System.models.tasks.enums.Severity;
 import Task.Management.System.models.tasks.enums.Size;
 import Task.Management.System.models.teams.contracts.Board;
-import Task.Management.System.models.teams.contracts.Nameable;
 import Task.Management.System.models.teams.contracts.Team;
 import Task.Management.System.models.teams.contracts.User;
 
@@ -22,9 +18,12 @@ import java.util.List;
 
 public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemRepository {
 
+    public static final String TASK_ADDED_TO_BOARD =
+            "%s with ID %d successfully added to board %s in team %s.";
     private static final String NOT_EXIST = "The %s does not exist! Create a %s with this name first.";
     public static final String TEAM_DOES_NOT_EXIST = String.format(NOT_EXIST, "team", "team");
     public static final String USER_DOES_NOT_EXIST = String.format(NOT_EXIST, "user", "user");
+    public static final String BOARD_DOES_NOT_EXIST = String.format(NOT_EXIST, "board", "board");
 
     private static final String ALREADY_EXISTS = "This %s name already exists! Please choose a unique %s name.";
     public static final String TEAM_ALREADY_EXISTS = String.format(ALREADY_EXISTS, "team", "team");
@@ -89,30 +88,35 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
     }
 
     @Override
-    public void addBug(String title, String description, List<String> stepsToReproduce,
-                       Priority priority, Severity severity, String assignee,
-                       String boardName, String teamName) {
+    public String addBug(String teamName, String boardName, String title, String description, List<String> stepsToReproduce,
+                       Priority priority, Severity severity, String assignee) {
         Task bug = new BugImpl(++nextTaskID, title, description, stepsToReproduce, priority, severity, assignee);
         tasks.add(bug);
 
         addTaskToBoard(bug, boardName, teamName);
+
+        return String.format(TASK_ADDED_TO_BOARD, "Bug", nextTaskID, boardName, teamName);
     }
 
     @Override
-    public void addStory(String title, String description, Priority priority, Size size, String assignee,
-                         String boardName, String teamName) {
+    public String addStory(String teamName, String boardName, String title, String description,
+                         Priority priority, Size size, String assignee) {
         Task story = new StoryImpl(++nextTaskID, title, description, priority, size, assignee);
         tasks.add(story);
 
         addTaskToBoard(story, boardName, teamName);
+
+        return String.format(TASK_ADDED_TO_BOARD, "Story", nextTaskID, boardName, teamName);
     }
 
     @Override
-    public void addFeedback(String title, String description, int rating, String boardName, String teamName) {
+    public String addFeedback(String teamName, String boardName, String title, String description, int rating) {
         Task feedback = new FeedbackImpl(++nextTaskID, title, description, rating);
         tasks.add(feedback);
 
         addTaskToBoard(feedback, boardName, teamName);
+
+        return String.format(TASK_ADDED_TO_BOARD, "Feedback", nextTaskID, boardName, teamName);
     }
 
     private void addTaskToBoard(Task task, String boardName, String teamName) {
@@ -127,7 +131,7 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
                 .stream()
                 .filter(e -> e.getName().equals(boardName))
                 .findFirst()
-                .orElseThrow(() -> new InvalidUserInput("The board you are trying to"));
+                .orElseThrow(() -> new InvalidUserInput(BOARD_DOES_NOT_EXIST));
 
         return board;
     }

@@ -64,7 +64,10 @@ public class TeamImpl implements Team {
 
     @Override
     public String getHistory() {
-        StringBuilder history = new StringBuilder(TEAM_HISTORY_HEADER).append(System.lineSeparator());
+        StringBuilder history = new StringBuilder(String.format(TEAM_HISTORY_HEADER,
+                this.getClass().getSimpleName().replace("Impl", ""), getName()))
+                .append(System.lineSeparator());
+
         if (getUsers().isEmpty()) {
             history.append(TEAM_HISTORY_EMPTY).append(System.lineSeparator());
         } else {

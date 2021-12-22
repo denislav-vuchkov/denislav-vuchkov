@@ -6,17 +6,16 @@ import Task.Management.System.core.contracts.TaskManagementSystemEngine;
 import Task.Management.System.core.contracts.TaskManagementSystemRepository;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class TaskManagementSystemEngineImpl implements TaskManagementSystemEngine {
 
     private static final String TERMINATION_COMMAND = "Exit";
     private static final String EMPTY_COMMAND_ERROR = "Command cannot be empty.";
     private static final String MAIN_SPLIT_SYMBOL = " ";
-    private static final String COMMENT_OPEN_SYMBOL = "{{";
-    private static final String COMMENT_CLOSE_SYMBOL = "}}";
     private static final String REPORT_SEPARATOR = "####################";
 
     private final CommandFactory commandFactory;
@@ -52,7 +51,7 @@ public class TaskManagementSystemEngineImpl implements TaskManagementSystemEngin
 
     private void processCommand(String inputLine) {
         String commandName = extractCommandName(inputLine);
-        List<String> parameters = extractCommandParameters(inputLine);
+        List<String> parameters = extractParameters(inputLine);
         Command command = commandFactory.createCommandFromCommandName(commandName, taskManagementSystemRepository);
         String executionResult = command.execute(parameters);
         print(executionResult);
@@ -71,39 +70,29 @@ public class TaskManagementSystemEngineImpl implements TaskManagementSystemEngin
 
     /**
      * Receives a full line and extracts the parameters that are needed for the command to execute.
-     * For example, if the input line is "FilterBy Assignee John",
-     * the method will return a list of ["Assignee", "John"].
+     * For example, if the input line is "AddUserToTeam John BestTeam",
+     * the method will return a list of ["John", "BestTeam"].
      *
      * @param inputLine A complete input line
      * @return A list of the parameters needed to execute the command
      */
-    private List<String> extractCommandParameters(String inputLine) {
-        if (inputLine.contains(COMMENT_OPEN_SYMBOL)) {
-            return extractCommentParameters(inputLine);
+    private List<String> extractParameters(String inputLine) {
+        if (!inputLine.contains(MAIN_SPLIT_SYMBOL)) {
+            return new ArrayList<>();
         }
 
-        String[] commandParts = inputLine.split(" ");
-        List<String> parameters = new ArrayList<>();
-        for (int i = 1; i < commandParts.length; i++) {
-            parameters.add(commandParts[i]);
-        }
-        return parameters;
-    }
+        String regex = "\\{[^}]*}";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(inputLine.substring(inputLine.indexOf(MAIN_SPLIT_SYMBOL)));
 
-    public List<String> extractCommentParameters(String fullCommand) {
-        int indexOfFirstSeparator = fullCommand.indexOf(MAIN_SPLIT_SYMBOL);
-        int indexOfOpenComment = fullCommand.indexOf(COMMENT_OPEN_SYMBOL);
-        int indexOfCloseComment = fullCommand.indexOf(COMMENT_CLOSE_SYMBOL);
-        List<String> parameters = new ArrayList<>();
-        if (indexOfOpenComment >= 0) {
-            parameters.add(fullCommand.substring(indexOfOpenComment + COMMENT_OPEN_SYMBOL.length(), indexOfCloseComment));
-            fullCommand = fullCommand.replaceAll("\\{\\{.+(?=}})}}", "");
+        List<String> commandParameters = new ArrayList<>();
+        while (matcher.find()) {
+            String parameter = matcher.group();
+            commandParameters.add(parameter.substring(1, parameter.length()-1));
         }
 
-        List<String> result = new ArrayList<>(Arrays.asList(fullCommand.substring(indexOfFirstSeparator + 1).split(MAIN_SPLIT_SYMBOL)));
-        result.removeAll(Arrays.asList(" ", "", null));
-        parameters.addAll(result);
-        return parameters;
+
+        return commandParameters;
     }
 
     private void print(String result) {

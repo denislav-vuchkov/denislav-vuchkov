@@ -33,12 +33,12 @@ public interface TaskManagementSystemRepository {
 
     void validateUniqueTeamName(String teamName);
 
-    void addBug(String title, String description, List<String> stepsToReproduce, Priority priority,
-                Severity severity, String assignee, String boardName, String teamName);
+    String addBug(String teamName, String boardName, String title, String description, List<String> stepsToReproduce,
+                Priority priority, Severity severity, String assignee);
 
-    void addStory(String title, String description, Priority priority, Size size, String assignee,
-                  String boardName, String teamName);
+    String addStory(String teamName, String boardName, String title, String description,
+                  Priority priority, Size size, String assignee);
 
-    void addFeedback(String title, String description, int rating, String boardName, String teamName);
+    String addFeedback(String teamName, String boardName, String title, String description, int rating);
 
 }

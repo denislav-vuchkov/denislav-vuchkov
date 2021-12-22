@@ -38,7 +38,10 @@ public class BoardImpl_Tests {
         Assertions.assertTrue(board.getTasks().isEmpty() && board.getHistory() != null);
     }
 
-    @ParameterizedTest(name = "with length {0}")
+    @ParameterizedTest(name = "with length {0" +
+            "" +
+            "" +
+            "}")
     @ValueSource(ints = {NAME_MIN_LENGTH-1, NAME_MAX_LENGTH+1})
     public void constructor_Should_ThrowException_When_InvalidName(int nameLength) {
         Assertions.assertThrows(RuntimeException.class, () -> new BoardImpl("x".repeat(nameLength)));

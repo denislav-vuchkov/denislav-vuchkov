@@ -27,11 +27,6 @@ public class BugImpl extends AssignableTaskImpl implements Bug {
         setStatus(BugStatus.ACTIVE);
     }
 
-    public BugImpl(int id, String title, String description, List<String> stepsToReproduce,
-                   Priority priority, Severity severity) {
-        this(id, title, description, stepsToReproduce, priority, severity, UNASSIGNED);
-    }
-
     @Override
     public String getStatus() {
         return status.toString();

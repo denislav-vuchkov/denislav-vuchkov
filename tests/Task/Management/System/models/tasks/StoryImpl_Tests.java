@@ -44,7 +44,7 @@ public class StoryImpl_Tests {
                 "Not Too Short",
                 "Just Right Length",
                 Priority.HIGH,
-                Size.LARGE);
+                Size.LARGE, "");
 
         Assertions.assertEquals(1111, myStory.getID());
         Assertions.assertEquals("Not Too Short", myStory.getTitle());
@@ -71,7 +71,7 @@ public class StoryImpl_Tests {
                 "!".repeat(100),
                 "Long Enough Description",
                 Priority.HIGH,
-                Size.LARGE));
+                Size.LARGE, ""));
     }
 
     @Test
@@ -90,7 +90,7 @@ public class StoryImpl_Tests {
                 "Not Too Short",
                 "!".repeat(1000),
                 Priority.LOW,
-                Size.LARGE));
+                Size.LARGE, ""));
     }
 
     @Test

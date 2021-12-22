@@ -19,7 +19,7 @@ public class ParsingHelpers {
         }
     }
 
-    public static <E extends Enum<E>> E tryParseEnum(String valueToParse, Class<E> type) {
+    public static <E extends Enum<E>> E tryParseCommand(String valueToParse, Class<E> type) {
         try {
             StringBuilder command = new StringBuilder();
             for (Character ch : valueToParse.toCharArray()) {
@@ -31,6 +31,14 @@ public class ParsingHelpers {
             return Enum.valueOf(type, command.substring(1).toUpperCase());
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException(String.format(NO_SUCH_ENUM, valueToParse, type.getSimpleName()));
+        }
+    }
+
+    public static <E extends Enum<E>> E tryParseEnum(String value, Class<E> type) {
+        try {
+            return Enum.valueOf(type, value.replace(" ", "_").toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException(String.format(NO_SUCH_ENUM, value, type.getSimpleName()));
         }
     }
 }

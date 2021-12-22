@@ -21,10 +21,6 @@ public class StoryImpl extends AssignableTaskImpl implements Story {
         setStatus(StoryStatus.NOT_DONE);
     }
 
-    public StoryImpl(int id, String title, String description, Priority priority, Size size) {
-        this(id, title, description, priority, size, UNASSIGNED);
-    }
-
     @Override
     public String getStatus() {
         return status.toString();

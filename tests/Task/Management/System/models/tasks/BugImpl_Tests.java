@@ -55,7 +55,7 @@ public class BugImpl_Tests {
                 "Just Right Length",
                 List.of("A", "B", "C"),
                 Priority.HIGH,
-                Severity.CRITICAL);
+                Severity.CRITICAL, "");
 
         Assertions.assertEquals(99, myBug.getID());
         Assertions.assertEquals("Not Too Short", myBug.getTitle());
@@ -92,7 +92,7 @@ public class BugImpl_Tests {
                 "Long Enough Description",
                 List.of("Nothing", "Works", "Help"),
                 Priority.LOW,
-                Severity.MINOR));
+                Severity.MINOR, ""));
     }
 
     @Test
@@ -113,7 +113,7 @@ public class BugImpl_Tests {
                 "!".repeat(1000),
                 List.of("Nothing", "Works", "Help"),
                 Priority.LOW,
-                Severity.MINOR));
+                Severity.MINOR, ""));
     }
 
     @Test
