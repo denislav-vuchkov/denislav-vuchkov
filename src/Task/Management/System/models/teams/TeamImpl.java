@@ -1,6 +1,7 @@
 package Task.Management.System.models.teams;
 
 import Task.Management.System.models.contracts.Changeable;
+import Task.Management.System.models.exceptions.InvalidUserInput;
 import Task.Management.System.models.teams.contracts.Board;
 import Task.Management.System.models.teams.contracts.Team;
 import Task.Management.System.models.teams.contracts.User;
@@ -11,6 +12,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class TeamImpl implements Team {
+
+    public static final String NOT_IN_TEAM = "%s %s is not in team %s";
+    public static final String ALREADY_IN_TEAM = "%s %s is already in team %s";
 
     private final List<Board> boards;
     private final List<User> users;
@@ -39,11 +43,27 @@ public class TeamImpl implements Team {
 
     @Override
     public void addBoard(Board board) {
+        if (getBoards().contains(board)) {
+            throw new InvalidUserInput(
+                    String.format(ALREADY_IN_TEAM,
+                            board.getClass().getSimpleName().replace("Impl", " "),
+                            board.getName(),
+                            getName()));
+        }
+
         boards.add(board);
     }
 
     @Override
     public void removeBoard(Board board) {
+        if (!getBoards().contains(board)) {
+            throw new InvalidUserInput(
+                    String.format(NOT_IN_TEAM,
+                            board.getClass().getSimpleName().replace("Impl", " "),
+                            board.getName(),
+                            getName()));
+        }
+
         boards.remove(board);
     }
 
@@ -54,11 +74,27 @@ public class TeamImpl implements Team {
 
     @Override
     public void addUser(User user) {
+        if (getUsers().contains(user)) {
+            throw new InvalidUserInput(
+                    String.format(ALREADY_IN_TEAM,
+                            user.getClass().getSimpleName().replace("Impl", " "),
+                            user.getName(),
+                            getName()));
+        }
+
         users.add(user);
     }
 
     @Override
     public void removeUser(User user) {
+        if (!getUsers().contains(user)) {
+            throw new InvalidUserInput(
+                    String.format(NOT_IN_TEAM,
+                            user.getClass().getSimpleName().replace("Impl", " "),
+                            user.getName(),
+                            getName()));
+        }
+
         users.remove(user);
     }
 

@@ -38,21 +38,6 @@ public class StoryImpl_Tests {
 
         myStory.setTitle("New Valid Title");
         Assertions.assertEquals("New Valid Title", myStory.getTitle());
-
-        myStory = new StoryImpl(
-                1111,
-                "Not Too Short",
-                "Just Right Length",
-                Priority.HIGH,
-                Size.LARGE, "");
-
-        Assertions.assertEquals(1111, myStory.getID());
-        Assertions.assertEquals("Not Too Short", myStory.getTitle());
-        Assertions.assertEquals("Just Right Length", myStory.getDescription());
-        Assertions.assertEquals(Priority.HIGH, myStory.getPriority());
-        Assertions.assertEquals(Size.LARGE, myStory.getSize());
-        Assertions.assertEquals("Unassigned", myStory.getAssignee());
-        Assertions.assertEquals(StoryStatus.NOT_DONE.toString(), myStory.getStatus());
     }
 
     @Test
@@ -66,12 +51,6 @@ public class StoryImpl_Tests {
                 Size.SMALL,
                 "User10"));
 
-        Assertions.assertThrows(InvalidUserInput.class, () -> new StoryImpl(
-                20,
-                "!".repeat(100),
-                "Long Enough Description",
-                Priority.HIGH,
-                Size.LARGE, ""));
     }
 
     @Test
@@ -85,12 +64,6 @@ public class StoryImpl_Tests {
                 Size.MEDIUM,
                 "User10"));
 
-        Assertions.assertThrows(InvalidUserInput.class, () -> new StoryImpl(
-                40,
-                "Not Too Short",
-                "!".repeat(1000),
-                Priority.LOW,
-                Size.LARGE, ""));
     }
 
     @Test

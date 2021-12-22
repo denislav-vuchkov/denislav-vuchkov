@@ -49,29 +49,6 @@ public class BugImpl_Tests {
         myBug.setDescription("This Is The New Valid Description");
         Assertions.assertEquals("This Is The New Valid Description", myBug.getDescription());
 
-        myBug = new BugImpl(
-                99,
-                "Not Too Short",
-                "Just Right Length",
-                List.of("A", "B", "C"),
-                Priority.HIGH,
-                Severity.CRITICAL, "");
-
-        Assertions.assertEquals(99, myBug.getID());
-        Assertions.assertEquals("Not Too Short", myBug.getTitle());
-        Assertions.assertEquals("Just Right Length", myBug.getDescription());
-        Assertions.assertEquals(Priority.HIGH, myBug.getPriority());
-        Assertions.assertEquals(Severity.CRITICAL, myBug.getSeverity());
-        Assertions.assertEquals("Unassigned", myBug.getAssignee());
-        Assertions.assertEquals(BugStatus.ACTIVE.toString(), myBug.getStatus());
-
-        stepsOutput = "--STEPS TO REPRODUCE--\n" +
-                "1. A\n" +
-                "2. B\n" +
-                "3. C\n" +
-                "--STEPS TO REPRODUCE--";
-
-        Assertions.assertEquals(stepsOutput, myBug.getStepsToReproduce());
     }
 
     @Test
@@ -86,13 +63,6 @@ public class BugImpl_Tests {
                 Severity.MINOR,
                 "User10"));
 
-        Assertions.assertThrows(InvalidUserInput.class, () -> new BugImpl(
-                1,
-                "!".repeat(100),
-                "Long Enough Description",
-                List.of("Nothing", "Works", "Help"),
-                Priority.LOW,
-                Severity.MINOR, ""));
     }
 
     @Test
@@ -107,13 +77,6 @@ public class BugImpl_Tests {
                 Severity.MINOR,
                 "User10"));
 
-        Assertions.assertThrows(InvalidUserInput.class, () -> new BugImpl(
-                2,
-                "Not Too Short",
-                "!".repeat(1000),
-                List.of("Nothing", "Works", "Help"),
-                Priority.LOW,
-                Severity.MINOR, ""));
     }
 
     @Test
