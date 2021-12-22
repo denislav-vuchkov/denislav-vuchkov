@@ -25,9 +25,9 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
     public static final String USER_ADDED_SUCCESSFULLY = "User %s created successfully.";
     public static final String TEAM_ADDED_SUCCESSFULLY = "Team %s created successfully.";
 
-
     public static final String TASK_ADDED_TO_BOARD =
             "%s with ID %d successfully added to board %s in team %s.";
+
     public static final String USER_NOT_IN_TEAM = "User %s does not exist in team %s.";
     private static final String NOT_EXIST = "The %s does not exist! Create a %s with this name first.";
     public static final String TEAM_DOES_NOT_EXIST = String.format(NOT_EXIST, "team", "team");
@@ -64,19 +64,17 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
     @Override
     public List<Task> getTasks() {
         List<Task> tasks = new ArrayList<>();
-        bugs.forEach(e -> tasks.add(e));
-        stories.forEach(e -> tasks.add(e));
-        feedbacks.forEach(e -> feedbacks.add(e));
-
+        tasks.addAll(bugs);
+        tasks.addAll(stories);
+        tasks.addAll(feedbacks);
         return new ArrayList<>(tasks);
     }
 
     @Override
     public List<AssignableTask> getAssignableTasks() {
         List<AssignableTask> assignableTasks = new ArrayList<>();
-        bugs.forEach(e -> assignableTasks.add(e));
-        stories.forEach(e -> assignableTasks.add(e));
-
+        assignableTasks.addAll(bugs);
+        assignableTasks.addAll(stories);
         return new ArrayList<>(assignableTasks);
     }
 
@@ -157,6 +155,16 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
     }
 
     @Override
+    public String addFeedback(String teamName, String boardName, String title, String description, int rating) {
+        Feedback feedback = new FeedbackImpl(++nextTaskID, title, description, rating);
+        feedbacks.add(feedback);
+
+        addTaskToBoard(feedback, boardName, teamName);
+
+        return String.format(TASK_ADDED_TO_BOARD, "Feedback", nextTaskID, boardName, teamName);
+    }
+
+    @Override
     public String addStory(String teamName, String boardName, String title, String description,
                            Priority priority, Size size, String assignee) {
         checkIfAssigneeIsValid(teamName, assignee);
@@ -180,16 +188,6 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
         user.assignTask(bug);
     }
 
-    @Override
-    public String addFeedback(String teamName, String boardName, String title, String description, int rating) {
-        Feedback feedback = new FeedbackImpl(++nextTaskID, title, description, rating);
-        feedbacks.add(feedback);
-
-        addTaskToBoard(feedback, boardName, teamName);
-
-        return String.format(TASK_ADDED_TO_BOARD, "Feedback", nextTaskID, boardName, teamName);
-    }
-
     private void checkIfAssigneeIsValid(String teamName, String assignee) {
         if (!assignee.equals(UNASSIGNED)) {
             findTeam(teamName).getUsers()
@@ -207,14 +205,10 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
 
     private Board findBoard(String boardName, String teamName) {
         Team team = findTeam(teamName);
-
-        Board board = team.getBoards()
+        return team.getBoards()
                 .stream()
                 .filter(e -> e.getName().equals(boardName))
                 .findFirst()
                 .orElseThrow(() -> new InvalidUserInput(BOARD_DOES_NOT_EXIST));
-
-        return board;
     }
-
 }

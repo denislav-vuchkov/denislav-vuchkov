@@ -1,21 +1,15 @@
 package Task.Management.System.utils;
 
+import Task.Management.System.models.exceptions.InvalidUserInput;
+
 public class ParsingHelpers {
     public static final String NO_SUCH_ENUM = "There is no %s in %ss.";
-
-    public static double tryParseDouble(String valueToParse, String errorMessage) {
-        try {
-            return Double.parseDouble(valueToParse);
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException(errorMessage);
-        }
-    }
 
     public static int tryParseInt(String valueToParse, String errorMessage) {
         try {
             return Integer.parseInt(valueToParse);
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException(errorMessage);
+            throw new InvalidUserInput(errorMessage);
         }
     }
 
@@ -30,7 +24,7 @@ public class ParsingHelpers {
             }
             return Enum.valueOf(type, command.substring(1).toUpperCase());
         } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException(String.format(NO_SUCH_ENUM, valueToParse, type.getSimpleName()));
+            throw new InvalidUserInput(String.format(NO_SUCH_ENUM, valueToParse, type.getSimpleName()));
         }
     }
 
@@ -38,7 +32,7 @@ public class ParsingHelpers {
         try {
             return Enum.valueOf(type, value.replace(" ", "_").toUpperCase());
         } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException(String.format(NO_SUCH_ENUM, value, type.getSimpleName()));
+            throw new InvalidUserInput(String.format(NO_SUCH_ENUM, value, type.getSimpleName()));
         }
     }
 }

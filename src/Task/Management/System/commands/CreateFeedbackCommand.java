@@ -2,17 +2,14 @@ package Task.Management.System.commands;
 
 import Task.Management.System.core.contracts.TaskManagementSystemRepository;
 import Task.Management.System.models.tasks.FeedbackImpl;
-import Task.Management.System.models.tasks.contracts.Feedback;
-import Task.Management.System.models.teams.contracts.Board;
-import Task.Management.System.models.teams.contracts.Team;
+import Task.Management.System.utils.ParsingHelpers;
 import Task.Management.System.utils.ValidationHelpers;
 
 import java.util.List;
 
 public class CreateFeedbackCommand extends BaseCommand {
-    public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 2;
-    public static final String FEEDBACK_ADDED_TO_BOARD =
-            "Feedback with ID %d successfully added to board %s in team %s.";
+    public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 7;
+    public static final String FEEDBACK_RATING_ERROR = "Feedback rating should be a numeric value between 0 and 10";
 
     public CreateFeedbackCommand(TaskManagementSystemRepository repository) {
         super(repository);
@@ -21,22 +18,14 @@ public class CreateFeedbackCommand extends BaseCommand {
     @Override
     protected String executeCommand(List<String> parameters) {
         ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
-        Team team = getRepository().findTeam(parameters.get(0));
 
-        Board board = team
-                .getBoards()
-                .stream()
-                .filter(b -> b.getName().equals(parameters.get(1)))
-                .findAny().orElseThrow();
+        String teamName = parameters.get(0);
+        String boardName = parameters.get(1);
+        String title = parameters.get(2);
+        String description = parameters.get(3);
+        int rating = ParsingHelpers.tryParseInt(parameters.get(4), FEEDBACK_RATING_ERROR);
+        ValidationHelpers.validateIntRange(rating, FeedbackImpl.RATING_MIN, FeedbackImpl.RATING_MAX, FEEDBACK_RATING_ERROR);
 
-        //TODO
-        Feedback feedback = new FeedbackImpl(
-                1,
-                "longertitle",
-                "description",
-                5);
-
-        board.addTask(feedback);
-        return String.format(FEEDBACK_ADDED_TO_BOARD, feedback.getID(), board.getName(), team.getName());
+        return getRepository().addFeedback(teamName, boardName, title, description, rating);
     }
 }
