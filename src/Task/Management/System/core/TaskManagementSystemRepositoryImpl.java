@@ -16,6 +16,8 @@ import Task.Management.System.models.teams.contracts.User;
 import java.util.ArrayList;
 import java.util.List;
 
+import static Task.Management.System.commands.CreateStoryCommand.UNASSIGNED;
+
 public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemRepository {
 
     public static final String TASK_ADDED_TO_BOARD =
@@ -28,6 +30,7 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
     private static final String ALREADY_EXISTS = "This %s name already exists! Please choose a unique %s name.";
     public static final String TEAM_ALREADY_EXISTS = String.format(ALREADY_EXISTS, "team", "team");
     public static final String USER_ALREADY_EXISTS = String.format(ALREADY_EXISTS, "user", "user");
+    public static final String USER_NOT_IN_TEAM = "User %s does not exist in team %s.";
 
     private static int nextTaskID = 0;
     private final List<Team> teams;
@@ -90,6 +93,7 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
     @Override
     public String addBug(String teamName, String boardName, String title, String description, List<String> stepsToReproduce,
                        Priority priority, Severity severity, String assignee) {
+        checkIfAssigneeIsValid(teamName, assignee);
         Task bug = new BugImpl(++nextTaskID, title, description, stepsToReproduce, priority, severity, assignee);
         tasks.add(bug);
 
@@ -101,6 +105,7 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
     @Override
     public String addStory(String teamName, String boardName, String title, String description,
                          Priority priority, Size size, String assignee) {
+        checkIfAssigneeIsValid(teamName, assignee);
         Task story = new StoryImpl(++nextTaskID, title, description, priority, size, assignee);
         tasks.add(story);
 
@@ -117,6 +122,16 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
         addTaskToBoard(feedback, boardName, teamName);
 
         return String.format(TASK_ADDED_TO_BOARD, "Feedback", nextTaskID, boardName, teamName);
+    }
+
+    private void checkIfAssigneeIsValid(String teamName, String assignee) {
+        if (!assignee.equals(UNASSIGNED)) {
+            findTeam(teamName).getUsers()
+                    .stream()
+                    .filter(e -> e.getName().equals(assignee))
+                    .findFirst()
+                    .orElseThrow(() -> new InvalidUserInput(String.format(USER_NOT_IN_TEAM, assignee, teamName)));
+        }
     }
 
     private void addTaskToBoard(Task task, String boardName, String teamName) {
