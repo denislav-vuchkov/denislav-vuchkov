@@ -15,10 +15,10 @@ import static Task.Management.System.models.contracts.ChangesLogger.*;
 
 public abstract class TaskBase implements Task {
 
-    public static final int NAME_MIN_LENGTH = 10;
-    public static final int NAME_MAX_LENGTH = 50;
+    public static final int TITLE_MIN_LENGTH = 10;
+    public static final int TITLE_MAX_LENGTH = 50;
     public static final String INVALID_NAME_MESSAGE = String.format("Title must be between %d and %d symbols.",
-            NAME_MIN_LENGTH, NAME_MAX_LENGTH);
+            TITLE_MIN_LENGTH, TITLE_MAX_LENGTH);
 
     public static final int DESCRIPTION_MIN_LENGTH = 10;
     public static final int DESCRIPTION_MAX_LENGTH = 500;
@@ -60,7 +60,7 @@ public abstract class TaskBase implements Task {
     }
 
     public void setTitle(String title) {
-        ValidationHelpers.validateIntRange(title.length(), NAME_MIN_LENGTH, NAME_MAX_LENGTH, INVALID_NAME_MESSAGE);
+        ValidationHelpers.validateIntRange(title.length(), TITLE_MIN_LENGTH, TITLE_MAX_LENGTH, INVALID_NAME_MESSAGE);
         if (this.title == null) {
             this.title = title;
             return;

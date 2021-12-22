@@ -78,7 +78,7 @@ public class TeamImpl implements Team {
 
     @Override
     public String toString() {
-        return String.format("Team: %s - Users: %d - Boards: %d - Tasks: %d%n",
+        return String.format("Team: %s - Users: %d - Boards: %d - Tasks: %d",
                 getName(),
                 getUsers().size(),
                 getBoards().size(),
