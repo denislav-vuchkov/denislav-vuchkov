@@ -1,8 +1,7 @@
 package Task.Management.System.core.contracts;
 
 
-import Task.Management.System.models.tasks.contracts.AssignableTask;
-import Task.Management.System.models.tasks.contracts.Task;
+import Task.Management.System.models.tasks.contracts.*;
 import Task.Management.System.models.tasks.enums.Priority;
 import Task.Management.System.models.tasks.enums.Severity;
 import Task.Management.System.models.tasks.enums.Size;
@@ -18,6 +17,12 @@ public interface TaskManagementSystemRepository {
     List<User> getUsers();
 
     List<Task> getTasks();
+
+    List<Bug> getBugs();
+
+    List<Story> getStories();
+
+    List<Feedback> getFeedbacks();
 
     List<AssignableTask> getAssignableTasks();
 

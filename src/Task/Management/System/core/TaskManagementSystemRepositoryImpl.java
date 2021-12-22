@@ -5,8 +5,7 @@ import Task.Management.System.models.exceptions.InvalidUserInput;
 import Task.Management.System.models.tasks.BugImpl;
 import Task.Management.System.models.tasks.FeedbackImpl;
 import Task.Management.System.models.tasks.StoryImpl;
-import Task.Management.System.models.tasks.contracts.AssignableTask;
-import Task.Management.System.models.tasks.contracts.Task;
+import Task.Management.System.models.tasks.contracts.*;
 import Task.Management.System.models.tasks.enums.Priority;
 import Task.Management.System.models.tasks.enums.Severity;
 import Task.Management.System.models.tasks.enums.Size;
@@ -40,14 +39,16 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
     private static int nextTaskID = 0;
     private final List<Team> teams;
     private final List<User> users;
-    private final List<Task> tasks;
-    private final List<AssignableTask> assignableTasks;
+    private final List<Bug> bugs;
+    private final List<Story> stories;
+    private final List<Feedback> feedbacks;
 
     public TaskManagementSystemRepositoryImpl() {
         teams = new ArrayList<>();
         users = new ArrayList<>();
-        tasks = new ArrayList<>();
-        assignableTasks = new ArrayList<>();
+        bugs = new ArrayList<>();
+        stories = new ArrayList<>();
+        feedbacks = new ArrayList<>();
     }
 
     @Override
@@ -62,12 +63,36 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
 
     @Override
     public List<Task> getTasks() {
+        List<Task> tasks = new ArrayList<>();
+        bugs.forEach(e -> tasks.add(e));
+        stories.forEach(e -> tasks.add(e));
+        feedbacks.forEach(e -> feedbacks.add(e));
+
         return new ArrayList<>(tasks);
     }
 
     @Override
     public List<AssignableTask> getAssignableTasks() {
+        List<AssignableTask> assignableTasks = new ArrayList<>();
+        bugs.forEach(e -> assignableTasks.add(e));
+        stories.forEach(e -> assignableTasks.add(e));
+
         return new ArrayList<>(assignableTasks);
+    }
+
+    @Override
+    public List<Bug> getBugs() {
+        return new ArrayList<>(bugs);
+    }
+
+    @Override
+    public List<Story> getStories() {
+        return new ArrayList<>(stories);
+    }
+
+    @Override
+    public List<Feedback> getFeedbacks() {
+        return new ArrayList<>(feedbacks);
     }
 
     @Override
@@ -120,9 +145,8 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
     public String addBug(String teamName, String boardName, String title, String description, List<String> stepsToReproduce,
                          Priority priority, Severity severity, String assignee) {
         checkIfAssigneeIsValid(teamName, assignee);
-        AssignableTask bug = new BugImpl(++nextTaskID, title, description, stepsToReproduce, priority, severity, assignee);
-        tasks.add(bug);
-        assignableTasks.add(bug);
+        Bug bug = new BugImpl(++nextTaskID, title, description, stepsToReproduce, priority, severity, assignee);
+        bugs.add(bug);
 
         addTaskToBoard(bug, boardName, teamName);
         if (!assignee.equals(UNASSIGNED)) {
@@ -136,9 +160,8 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
     public String addStory(String teamName, String boardName, String title, String description,
                            Priority priority, Size size, String assignee) {
         checkIfAssigneeIsValid(teamName, assignee);
-        AssignableTask story = new StoryImpl(++nextTaskID, title, description, priority, size, assignee);
-        tasks.add(story);
-        assignableTasks.add(story);
+        Story story = new StoryImpl(++nextTaskID, title, description, priority, size, assignee);
+        stories.add(story);
 
         addTaskToBoard(story, boardName, teamName);
         if (!assignee.equals(UNASSIGNED)) {
@@ -159,8 +182,8 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
 
     @Override
     public String addFeedback(String teamName, String boardName, String title, String description, int rating) {
-        Task feedback = new FeedbackImpl(++nextTaskID, title, description, rating);
-        tasks.add(feedback);
+        Feedback feedback = new FeedbackImpl(++nextTaskID, title, description, rating);
+        feedbacks.add(feedback);
 
         addTaskToBoard(feedback, boardName, teamName);
 
