@@ -82,6 +82,7 @@ public class TaskManagementSystemEngineImpl implements TaskManagementSystemEngin
         if (inputLine.contains(COMMENT_OPEN_SYMBOL)) {
             return extractCommentParameters(inputLine);
         }
+
         String[] commandParts = inputLine.split(" ");
         List<String> parameters = new ArrayList<>();
         for (int i = 1; i < commandParts.length; i++) {

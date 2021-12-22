@@ -1,6 +1,7 @@
 package Task.Management.System.models.teams;
 
 import Task.Management.System.models.ChangesLoggerImpl;
+import Task.Management.System.models.contracts.Changeable;
 import Task.Management.System.models.contracts.ChangesLogger;
 import Task.Management.System.models.tasks.contracts.AssignableTask;
 import Task.Management.System.models.teams.contracts.User;
@@ -8,10 +9,13 @@ import Task.Management.System.utils.ValidationHelpers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static Task.Management.System.models.contracts.ChangesLogger.CREATION_MESSAGE;
 
 public class UserImpl implements User {
+
+    public static final String HISTORY_HEADER = "--HISTORY--";
 
     private final List<AssignableTask> assignedTasks;
     private final ChangesLogger historyOfChanges;
@@ -68,7 +72,10 @@ public class UserImpl implements User {
 
     @Override
     public String getHistory() {
-        return historyOfChanges.getCompleteHistory();
+        return String.format("%s%n%s%s",
+                HISTORY_HEADER,
+                historyOfChanges.getCompleteHistory(),
+                HISTORY_HEADER);
     }
 
     @Override

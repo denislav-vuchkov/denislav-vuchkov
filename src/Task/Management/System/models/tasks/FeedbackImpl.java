@@ -1,5 +1,6 @@
 package Task.Management.System.models.tasks;
 
+import Task.Management.System.models.exceptions.InvalidUserInput;
 import Task.Management.System.models.tasks.contracts.Feedback;
 import Task.Management.System.models.tasks.enums.FeedbackStatus;
 import Task.Management.System.models.tasks.enums.Tasks;
@@ -37,7 +38,7 @@ public class FeedbackImpl extends TaskBase implements Feedback {
             return;
         }
         if (this.status.equals(status)) {
-            throw new IllegalArgumentException(String.format(IMPOSSIBLE_CHANGE_MESSAGE, "Status", this.status));
+            throw new InvalidUserInput(String.format(IMPOSSIBLE_CHANGE_MESSAGE, "Status", this.status));
         }
         addChangeToHistory(String.format(CHANGE_MESSAGE, "Status", this.status, status));
         this.status = status;
@@ -59,7 +60,7 @@ public class FeedbackImpl extends TaskBase implements Feedback {
                 this.status = FeedbackStatus.DONE;
                 break;
             case DONE:
-                throw new IllegalArgumentException("Cannot advance status from fixed.");
+                throw new InvalidUserInput("Cannot advance status from Fixed.");
         }
     }
 
@@ -67,7 +68,7 @@ public class FeedbackImpl extends TaskBase implements Feedback {
     public void retractStatus() {
         switch (status) {
             case NEW:
-                throw new IllegalArgumentException("Cannot retract status from New.");
+                throw new InvalidUserInput("Cannot retract status from New.");
             case UNSCHEDULED:
                 addChangeToHistory(String.format(CHANGE_MESSAGE, "Status", status, FeedbackStatus.NEW));
                 this.status = FeedbackStatus.NEW;
@@ -96,7 +97,7 @@ public class FeedbackImpl extends TaskBase implements Feedback {
             return;
         }
         if (this.rating == rating) {
-            throw new IllegalArgumentException(String.format(IMPOSSIBLE_CHANGE_MESSAGE, "Rating", this.rating));
+            throw new InvalidUserInput(String.format(IMPOSSIBLE_CHANGE_MESSAGE, "Rating", this.rating));
         }
         addChangeToHistory(String.format(CHANGE_MESSAGE, "Rating", this.rating, rating));
         this.rating = rating;

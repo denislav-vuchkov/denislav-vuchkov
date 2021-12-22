@@ -1,5 +1,6 @@
 package Task.Management.System.models.tasks;
 
+import Task.Management.System.models.exceptions.InvalidUserInput;
 import Task.Management.System.models.tasks.contracts.Story;
 import Task.Management.System.models.tasks.enums.Priority;
 import Task.Management.System.models.tasks.enums.Size;
@@ -21,7 +22,7 @@ public class StoryImpl extends AssignableTaskImpl implements Story {
     }
 
     public StoryImpl(int id, String title, String description, Priority priority, Size size) {
-        this(id, title, description, priority, size, "Unassigned");
+        this(id, title, description, priority, size, UNASSIGNED);
     }
 
     @Override
@@ -36,7 +37,7 @@ public class StoryImpl extends AssignableTaskImpl implements Story {
             return;
         }
         if (this.status.equals(status)) {
-            throw new IllegalArgumentException(String.format(IMPOSSIBLE_CHANGE_MESSAGE, "Status", this.status));
+            throw new InvalidUserInput(String.format(IMPOSSIBLE_CHANGE_MESSAGE, "Status", this.status));
         }
         addChangeToHistory(String.format(CHANGE_MESSAGE, "Status", this.status, status));
         this.status = status;
@@ -54,7 +55,7 @@ public class StoryImpl extends AssignableTaskImpl implements Story {
                 this.status = StoryStatus.DONE;
                 break;
             case DONE:
-                throw new IllegalArgumentException("Cannot advance status from fixed.");
+                throw new InvalidUserInput("Cannot advance status from fixed.");
         }
     }
 
@@ -62,7 +63,7 @@ public class StoryImpl extends AssignableTaskImpl implements Story {
     public void retractStatus() {
         switch (this.status) {
             case NOT_DONE:
-                throw new IllegalArgumentException("Cannot revert further than not done.");
+                throw new InvalidUserInput("Cannot revert further than not done.");
             case IN_PROGRESS:
                 addChangeToHistory(String.format(CHANGE_MESSAGE, "Status", this.status, StoryStatus.NOT_DONE));
                 this.status = StoryStatus.NOT_DONE;
@@ -86,7 +87,7 @@ public class StoryImpl extends AssignableTaskImpl implements Story {
             return;
         }
         if (this.size.equals(size)) {
-            throw new IllegalArgumentException(String.format(IMPOSSIBLE_CHANGE_MESSAGE, "Size", this.size));
+            throw new InvalidUserInput(String.format(IMPOSSIBLE_CHANGE_MESSAGE, "Size", this.size));
         }
         addChangeToHistory(String.format(CHANGE_MESSAGE, "Size", this.size, size));
         this.size = size;

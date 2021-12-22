@@ -2,6 +2,7 @@ package Task.Management.System.models.tasks;
 
 import Task.Management.System.models.ChangesLoggerImpl;
 import Task.Management.System.models.contracts.ChangesLogger;
+import Task.Management.System.models.exceptions.InvalidUserInput;
 import Task.Management.System.models.tasks.contracts.Comment;
 import Task.Management.System.models.tasks.contracts.Task;
 import Task.Management.System.models.tasks.enums.Tasks;
@@ -27,6 +28,7 @@ public abstract class TaskBase implements Task {
 
     public static final String COMMENTS_HEADER = "--COMMENTS--";
     public static final String HISTORY_HEADER = "--HISTORY--";
+    public static final String NO_COMMENTS_HEADER = "--NO COMMENTS--";
 
     private final int id;
     private final List<Comment> comments;
@@ -64,7 +66,7 @@ public abstract class TaskBase implements Task {
             return;
         }
         if (this.title.equals(title)) {
-            throw new IllegalArgumentException(String.format(IMPOSSIBLE_CHANGE_MESSAGE, "Title", this.title));
+            throw new InvalidUserInput(String.format(IMPOSSIBLE_CHANGE_MESSAGE, "Title", this.title));
         }
         historyOfChanges.addChange(String.format(CHANGE_MESSAGE, "Title", this.title, title));
         this.title = title;
@@ -85,7 +87,7 @@ public abstract class TaskBase implements Task {
             return;
         }
         if (this.description.equals(description)) {
-            throw new IllegalArgumentException(String.format(IMPOSSIBLE_CHANGE_MESSAGE, "Description", this.description));
+            throw new InvalidUserInput(String.format(IMPOSSIBLE_CHANGE_MESSAGE, "Description", this.description));
         }
         historyOfChanges.addChange(String.format(CHANGE_MESSAGE, "Description", this.description, description));
         this.description = description;
@@ -104,10 +106,15 @@ public abstract class TaskBase implements Task {
     @Override
     public String displayComments() {
         StringBuilder output = new StringBuilder();
-        output.append(COMMENTS_HEADER);
-        output.append("\n");
-        comments.forEach(output::append);
-        output.append(COMMENTS_HEADER);
+
+        if (comments.isEmpty()) {
+            output.append(NO_COMMENTS_HEADER);
+        } else {
+            output.append(COMMENTS_HEADER);
+            output.append("\n");
+            comments.forEach(output::append);
+            output.append(COMMENTS_HEADER);
+        }
         return output.toString();
     }
 

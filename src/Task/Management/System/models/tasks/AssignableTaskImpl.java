@@ -1,5 +1,6 @@
 package Task.Management.System.models.tasks;
 
+import Task.Management.System.models.exceptions.InvalidUserInput;
 import Task.Management.System.models.tasks.contracts.AssignableTask;
 import Task.Management.System.models.tasks.enums.Priority;
 import Task.Management.System.models.tasks.enums.Tasks;
@@ -31,7 +32,7 @@ public abstract class AssignableTaskImpl extends TaskBase implements AssignableT
             return;
         }
         if (this.priority.equals(priority)) {
-            throw new IllegalArgumentException(String.format(IMPOSSIBLE_CHANGE_MESSAGE, "Priority", this.priority));
+            throw new InvalidUserInput(String.format(IMPOSSIBLE_CHANGE_MESSAGE, "Priority", this.priority));
         }
         addChangeToHistory(String.format(CHANGE_MESSAGE, "Priority", this.priority, priority));
         this.priority = priority;
@@ -49,7 +50,7 @@ public abstract class AssignableTaskImpl extends TaskBase implements AssignableT
                 priority = Priority.HIGH;
                 break;
             case HIGH:
-                throw new IllegalArgumentException("Cannot increase priority beyond High.");
+                throw new InvalidUserInput("Cannot increase priority beyond High.");
         }
     }
 
@@ -57,7 +58,7 @@ public abstract class AssignableTaskImpl extends TaskBase implements AssignableT
     public void decreasePriority() {
         switch (priority) {
             case LOW:
-                throw new IllegalArgumentException("Cannot decrease priority further than Low.");
+                throw new InvalidUserInput("Cannot decrease priority further than Low.");
             case MEDIUM:
                 addChangeToHistory(String.format(CHANGE_MESSAGE, "Priority", priority, Priority.LOW));
                 priority = Priority.LOW;
@@ -81,7 +82,7 @@ public abstract class AssignableTaskImpl extends TaskBase implements AssignableT
             return;
         }
         if (this.assignee.equals(assignee)) {
-            throw new IllegalArgumentException(String.format(IMPOSSIBLE_CHANGE_MESSAGE, "Assignee", this.assignee));
+            throw new InvalidUserInput(String.format(IMPOSSIBLE_CHANGE_MESSAGE, "Assignee", this.assignee));
         }
         addChangeToHistory(String.format(CHANGE_MESSAGE, "Assignee", this.assignee, assignee));
         this.assignee = assignee;

@@ -1,5 +1,6 @@
 package Task.Management.System.models.tasks;
 
+import Task.Management.System.models.exceptions.InvalidUserInput;
 import Task.Management.System.models.tasks.contracts.Bug;
 import Task.Management.System.models.tasks.enums.BugStatus;
 import Task.Management.System.models.tasks.enums.Priority;
@@ -39,9 +40,9 @@ public class BugImpl_Tests {
         Assertions.assertEquals(BugStatus.ACTIVE.toString(), myBug.getStatus());
 
         String stepsOutput = "--STEPS TO REPRODUCE--\n" +
-                "Nothing\n" +
-                "Works\n" +
-                "Help\n" +
+                "1. Nothing\n" +
+                "2. Works\n" +
+                "3. Help\n" +
                 "--STEPS TO REPRODUCE--\n";
         Assertions.assertEquals(stepsOutput, myBug.getStepsToReproduce());
 
@@ -65,9 +66,9 @@ public class BugImpl_Tests {
         Assertions.assertEquals(BugStatus.ACTIVE.toString(), myBug.getStatus());
 
         stepsOutput = "--STEPS TO REPRODUCE--\n" +
-                "A\n" +
-                "B\n" +
-                "C\n" +
+                "1. A\n" +
+                "2. B\n" +
+                "3. C\n" +
                 "--STEPS TO REPRODUCE--\n";
 
         Assertions.assertEquals(stepsOutput, myBug.getStepsToReproduce());
@@ -76,7 +77,7 @@ public class BugImpl_Tests {
     @Test
     public void constructor_throwsException_whenTitleIsInvalid() {
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new BugImpl(
+        Assertions.assertThrows(InvalidUserInput.class, () -> new BugImpl(
                 1,
                 "Too Short",
                 "Long Enough Description",
@@ -85,7 +86,7 @@ public class BugImpl_Tests {
                 Severity.MINOR,
                 "User10"));
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new BugImpl(
+        Assertions.assertThrows(InvalidUserInput.class, () -> new BugImpl(
                 1,
                 "!".repeat(100),
                 "Long Enough Description",
@@ -97,7 +98,7 @@ public class BugImpl_Tests {
     @Test
     public void constructor_throwsException_whenDescriptionIsInvalid() {
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new BugImpl(
+        Assertions.assertThrows(InvalidUserInput.class, () -> new BugImpl(
                 2,
                 "Not Too Short",
                 "Too Short",
@@ -106,7 +107,7 @@ public class BugImpl_Tests {
                 Severity.MINOR,
                 "User10"));
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new BugImpl(
+        Assertions.assertThrows(InvalidUserInput.class, () -> new BugImpl(
                 2,
                 "Not Too Short",
                 "!".repeat(1000),
@@ -117,17 +118,17 @@ public class BugImpl_Tests {
 
     @Test
     public void setName_throwsException_whenNewOneIsTheSameAsOld() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> myBug.setTitle("Not Too Short"));
+        Assertions.assertThrows(InvalidUserInput.class, () -> myBug.setTitle("Not Too Short"));
     }
 
     @Test
     public void setDescription_throwsException_whenNewOneIsTheSameAsOld() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> myBug.setDescription("Just Right Length"));
+        Assertions.assertThrows(InvalidUserInput.class, () -> myBug.setDescription("Just Right Length"));
     }
 
     @Test
     public void setSeverity_throwsException_whenNewOneIsTheSameAsOld() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> myBug.setSeverity(Severity.MAJOR));
+        Assertions.assertThrows(InvalidUserInput.class, () -> myBug.setSeverity(Severity.MAJOR));
     }
 
     @Test
@@ -138,7 +139,7 @@ public class BugImpl_Tests {
         Assertions.assertEquals(Severity.MAJOR, myBug.getSeverity());
         myBug.increaseSeverity();
         Assertions.assertEquals(Severity.CRITICAL, myBug.getSeverity());
-        Assertions.assertThrows(IllegalArgumentException.class, () -> myBug.increaseSeverity());
+        Assertions.assertThrows(InvalidUserInput.class, () -> myBug.increaseSeverity());
     }
 
     @Test
@@ -149,19 +150,19 @@ public class BugImpl_Tests {
         Assertions.assertEquals(Severity.MAJOR, myBug.getSeverity());
         myBug.decreaseSeverity();
         Assertions.assertEquals(Severity.MINOR, myBug.getSeverity());
-        Assertions.assertThrows(IllegalArgumentException.class, () -> myBug.decreaseSeverity());
+        Assertions.assertThrows(InvalidUserInput.class, () -> myBug.decreaseSeverity());
     }
 
     @Test
     public void setStatus_throwsException_whenNewOneIsTheSameAsOld() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> myBug.setStatus(BugStatus.ACTIVE));
+        Assertions.assertThrows(InvalidUserInput.class, () -> myBug.setStatus(BugStatus.ACTIVE));
     }
 
     @Test
     public void advanceStatus_changesStatusIfInRange_orElseThrowsException() {
         myBug.advanceStatus();
         Assertions.assertEquals(BugStatus.FIXED.toString(), myBug.getStatus());
-        Assertions.assertThrows(IllegalArgumentException.class, () -> myBug.advanceStatus());
+        Assertions.assertThrows(InvalidUserInput.class, () -> myBug.advanceStatus());
     }
 
     @Test
@@ -169,12 +170,12 @@ public class BugImpl_Tests {
         myBug.setStatus(BugStatus.FIXED);
         myBug.retractStatus();
         Assertions.assertEquals(BugStatus.ACTIVE.toString(), myBug.getStatus());
-        Assertions.assertThrows(IllegalArgumentException.class, () -> myBug.retractStatus());
+        Assertions.assertThrows(InvalidUserInput.class, () -> myBug.retractStatus());
     }
 
     @Test
     public void setAssignee_throwsException_whenNewOneIsTheSameAsOld() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> myBug.setAssignee("User10"));
+        Assertions.assertThrows(InvalidUserInput.class, () -> myBug.setAssignee("User10"));
     }
 
     @Test
@@ -182,7 +183,7 @@ public class BugImpl_Tests {
         Assertions.assertEquals("User10", myBug.getAssignee());
         myBug.unAssign();
         Assertions.assertEquals("Unassigned", myBug.getAssignee());
-        Assertions.assertThrows(IllegalArgumentException.class, () -> myBug.unAssign());
+        Assertions.assertThrows(InvalidUserInput.class, () -> myBug.unAssign());
     }
 
     @Test

@@ -1,5 +1,6 @@
 package Task.Management.System.models.tasks;
 
+import Task.Management.System.models.exceptions.InvalidUserInput;
 import Task.Management.System.models.tasks.contracts.Story;
 import Task.Management.System.models.tasks.enums.Priority;
 import Task.Management.System.models.tasks.enums.Size;
@@ -57,7 +58,7 @@ public class StoryImpl_Tests {
     @Test
     public void constructor_throwsException_whenTitleIsInvalid() {
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new StoryImpl(
+        Assertions.assertThrows(InvalidUserInput.class, () -> new StoryImpl(
                 10,
                 "Too Short",
                 "Long Enough Description",
@@ -65,7 +66,7 @@ public class StoryImpl_Tests {
                 Size.SMALL,
                 "User10"));
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new StoryImpl(
+        Assertions.assertThrows(InvalidUserInput.class, () -> new StoryImpl(
                 20,
                 "!".repeat(100),
                 "Long Enough Description",
@@ -76,7 +77,7 @@ public class StoryImpl_Tests {
     @Test
     public void constructor_throwsException_whenDescriptionIsInvalid() {
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new StoryImpl(
+        Assertions.assertThrows(InvalidUserInput.class, () -> new StoryImpl(
                 30,
                 "Not Too Short",
                 "Too Short",
@@ -84,7 +85,7 @@ public class StoryImpl_Tests {
                 Size.MEDIUM,
                 "User10"));
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new StoryImpl(
+        Assertions.assertThrows(InvalidUserInput.class, () -> new StoryImpl(
                 40,
                 "Not Too Short",
                 "!".repeat(1000),
@@ -94,12 +95,12 @@ public class StoryImpl_Tests {
 
     @Test
     public void setName_throwsException_whenNewOneIsTheSameAsOld() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> myStory.setTitle("Not Too Short"));
+        Assertions.assertThrows(InvalidUserInput.class, () -> myStory.setTitle("Not Too Short"));
     }
 
     @Test
     public void setDescription_throwsException_whenNewOneIsTheSameAsOld() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> myStory.setDescription("Just Right Length"));
+        Assertions.assertThrows(InvalidUserInput.class, () -> myStory.setDescription("Just Right Length"));
     }
 
     @Test
@@ -112,12 +113,12 @@ public class StoryImpl_Tests {
 
     @Test
     public void setSize_throwsException_whenNewOneIsTheSameAsOld() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> myStory.setSize(Size.MEDIUM));
+        Assertions.assertThrows(InvalidUserInput.class, () -> myStory.setSize(Size.MEDIUM));
     }
 
     @Test
     public void setStatus_throwsException_whenNewOneIsTheSameAsOld() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> myStory.setStatus(StoryStatus.NOT_DONE));
+        Assertions.assertThrows(InvalidUserInput.class, () -> myStory.setStatus(StoryStatus.NOT_DONE));
     }
 
     @Test
@@ -127,7 +128,7 @@ public class StoryImpl_Tests {
         Assertions.assertEquals(StoryStatus.IN_PROGRESS.toString(), myStory.getStatus());
         myStory.advanceStatus();
         Assertions.assertEquals(StoryStatus.DONE.toString(), myStory.getStatus());
-        Assertions.assertThrows(IllegalArgumentException.class, () -> myStory.advanceStatus());
+        Assertions.assertThrows(InvalidUserInput.class, () -> myStory.advanceStatus());
     }
 
     @Test
@@ -137,12 +138,12 @@ public class StoryImpl_Tests {
         Assertions.assertEquals(StoryStatus.IN_PROGRESS.toString(), myStory.getStatus());
         myStory.retractStatus();
         Assertions.assertEquals(StoryStatus.NOT_DONE.toString(), myStory.getStatus());
-        Assertions.assertThrows(IllegalArgumentException.class, () -> myStory.retractStatus());
+        Assertions.assertThrows(InvalidUserInput.class, () -> myStory.retractStatus());
     }
 
     @Test
     public void setPriority_throwsException_whenNewOneIsTheSameAsOld() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> myStory.setPriority(Priority.MEDIUM));
+        Assertions.assertThrows(InvalidUserInput.class, () -> myStory.setPriority(Priority.MEDIUM));
     }
 
     @Test
@@ -153,7 +154,7 @@ public class StoryImpl_Tests {
         Assertions.assertEquals(Priority.MEDIUM, myStory.getPriority());
         myStory.increasePriority();
         Assertions.assertEquals(Priority.HIGH, myStory.getPriority());
-        Assertions.assertThrows(IllegalArgumentException.class, () -> myStory.increasePriority());
+        Assertions.assertThrows(InvalidUserInput.class, () -> myStory.increasePriority());
     }
 
     @Test
@@ -164,7 +165,7 @@ public class StoryImpl_Tests {
         Assertions.assertEquals(Priority.MEDIUM, myStory.getPriority());
         myStory.decreasePriority();
         Assertions.assertEquals(Priority.LOW, myStory.getPriority());
-        Assertions.assertThrows(IllegalArgumentException.class, () -> myStory.decreasePriority());
+        Assertions.assertThrows(InvalidUserInput.class, () -> myStory.decreasePriority());
     }
 
     @Test

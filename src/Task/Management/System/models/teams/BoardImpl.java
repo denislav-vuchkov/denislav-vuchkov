@@ -18,7 +18,7 @@ public class BoardImpl implements Board {
     private String name;
 
     public BoardImpl(String name) {
-        this.name = name;
+        setName(name);
         tasks = new ArrayList<>();
         historyOfChanges = new ChangesLoggerImpl();
         historyOfChanges.addChange(String.format(

@@ -1,5 +1,6 @@
 package Task.Management.System.models.tasks;
 
+import Task.Management.System.models.exceptions.InvalidUserInput;
 import Task.Management.System.models.tasks.contracts.Feedback;
 import Task.Management.System.models.tasks.enums.FeedbackStatus;
 import org.junit.jupiter.api.Assertions;
@@ -36,13 +37,13 @@ public class Feedback_Tests {
     @Test
     public void constructor_throwsException_whenTitleIsInvalid() {
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new FeedbackImpl(
+        Assertions.assertThrows(InvalidUserInput.class, () -> new FeedbackImpl(
                 10,
                 "Too Short",
                 "Long Enough Description",
                 0));
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new FeedbackImpl(
+        Assertions.assertThrows(InvalidUserInput.class, () -> new FeedbackImpl(
                 20,
                 "!".repeat(100),
                 "Long Enough Description",
@@ -52,13 +53,13 @@ public class Feedback_Tests {
     @Test
     public void constructor_throwsException_whenDescriptionIsInvalid() {
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new FeedbackImpl(
+        Assertions.assertThrows(InvalidUserInput.class, () -> new FeedbackImpl(
                 1000,
                 "Not Too Short",
                 "Too Short",
                 1));
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new FeedbackImpl(
+        Assertions.assertThrows(InvalidUserInput.class, () -> new FeedbackImpl(
                 2000,
                 "Not Too Short",
                 "!".repeat(1000),
@@ -68,13 +69,13 @@ public class Feedback_Tests {
     @Test
     public void constructor_throwsException_whenRatingIsInvalid() {
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new FeedbackImpl(
+        Assertions.assertThrows(InvalidUserInput.class, () -> new FeedbackImpl(
                 111,
                 "Not Too Short",
                 "Just Right Length",
                 -5));
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new FeedbackImpl(
+        Assertions.assertThrows(InvalidUserInput.class, () -> new FeedbackImpl(
                 222,
                 "Not Too Short",
                 "Just Right Length",
@@ -83,23 +84,23 @@ public class Feedback_Tests {
 
     @Test
     public void setName_throwsException_whenNewOneIsTheSameAsOld() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> myFeedback.setTitle("Not Too Short"));
+        Assertions.assertThrows(InvalidUserInput.class, () -> myFeedback.setTitle("Not Too Short"));
     }
 
     @Test
     public void setDescription_throwsException_whenNewOneIsTheSameAsOld() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> myFeedback.setDescription("Just Right Length"));
+        Assertions.assertThrows(InvalidUserInput.class, () -> myFeedback.setDescription("Just Right Length"));
     }
 
     @Test
     public void setRating_throwsException_whenNewOneIsTheSameAsOld() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> myFeedback.setRating(5));
+        Assertions.assertThrows(InvalidUserInput.class, () -> myFeedback.setRating(5));
     }
 
     @Test
     public void setStatus_throwsException_whenNewOneIsTheSameAsOld() {
         myFeedback.setStatus(FeedbackStatus.SCHEDULED);
-        Assertions.assertThrows(IllegalArgumentException.class, () -> myFeedback.setStatus(FeedbackStatus.SCHEDULED));
+        Assertions.assertThrows(InvalidUserInput.class, () -> myFeedback.setStatus(FeedbackStatus.SCHEDULED));
     }
 
     @Test
@@ -111,7 +112,7 @@ public class Feedback_Tests {
         Assertions.assertEquals(FeedbackStatus.SCHEDULED.toString(), myFeedback.getStatus());
         myFeedback.advanceStatus();
         Assertions.assertEquals(FeedbackStatus.DONE.toString(), myFeedback.getStatus());
-        Assertions.assertThrows(IllegalArgumentException.class, () -> myFeedback.advanceStatus());
+        Assertions.assertThrows(InvalidUserInput.class, () -> myFeedback.advanceStatus());
     }
 
     @Test
@@ -123,6 +124,6 @@ public class Feedback_Tests {
         Assertions.assertEquals(FeedbackStatus.UNSCHEDULED.toString(), myFeedback.getStatus());
         myFeedback.retractStatus();
         Assertions.assertEquals(FeedbackStatus.NEW.toString(), myFeedback.getStatus());
-        Assertions.assertThrows(IllegalArgumentException.class, () -> myFeedback.retractStatus());
+        Assertions.assertThrows(InvalidUserInput.class, () -> myFeedback.retractStatus());
     }
 }

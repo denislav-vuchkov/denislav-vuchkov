@@ -1,5 +1,6 @@
 package Task.Management.System.models.tasks;
 
+import Task.Management.System.models.exceptions.InvalidUserInput;
 import Task.Management.System.models.tasks.contracts.Comment;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,11 +29,11 @@ public class CommentImpl_Tests {
     @Test
     public void constructor_throwsException_whenContentIsInvalid() {
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new CommentImpl(
+        Assertions.assertThrows(InvalidUserInput.class, () -> new CommentImpl(
                 "No",
                 "Rick"));
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new CommentImpl(
+        Assertions.assertThrows(InvalidUserInput.class, () -> new CommentImpl(
                 "Jeez".repeat(100),
                 "Morty"));
     }

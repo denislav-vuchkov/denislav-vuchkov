@@ -1,5 +1,6 @@
 package Task.Management.System.models.tasks;
 
+import Task.Management.System.models.exceptions.InvalidUserInput;
 import Task.Management.System.models.tasks.contracts.Bug;
 import Task.Management.System.models.tasks.enums.BugStatus;
 import Task.Management.System.models.tasks.enums.Priority;
@@ -28,7 +29,7 @@ public class BugImpl extends AssignableTaskImpl implements Bug {
 
     public BugImpl(int id, String title, String description, List<String> stepsToReproduce,
                    Priority priority, Severity severity) {
-        this(id, title, description, stepsToReproduce, priority, severity, "Unassigned");
+        this(id, title, description, stepsToReproduce, priority, severity, UNASSIGNED);
     }
 
     @Override
@@ -43,7 +44,7 @@ public class BugImpl extends AssignableTaskImpl implements Bug {
             return;
         }
         if (this.status.equals(status)) {
-            throw new IllegalArgumentException(String.format(IMPOSSIBLE_CHANGE_MESSAGE, "Status", getStatus()));
+            throw new InvalidUserInput(String.format(IMPOSSIBLE_CHANGE_MESSAGE, "Status", getStatus()));
         }
         addChangeToHistory(String.format(CHANGE_MESSAGE, "Status", this.status, status));
         this.status = status;
@@ -57,7 +58,7 @@ public class BugImpl extends AssignableTaskImpl implements Bug {
                 status = BugStatus.FIXED;
                 break;
             case FIXED:
-                throw new IllegalArgumentException("Cannot advance status from fixed.");
+                throw new InvalidUserInput("Cannot advance status from fixed.");
         }
     }
 
@@ -65,7 +66,7 @@ public class BugImpl extends AssignableTaskImpl implements Bug {
     public void retractStatus() {
         switch (status) {
             case ACTIVE:
-                throw new IllegalArgumentException("Cannot advance status from fixed.");
+                throw new InvalidUserInput("Cannot retract status from fixed.");
             case FIXED:
                 addChangeToHistory(String.format(CHANGE_MESSAGE, "Status", status, BugStatus.ACTIVE));
                 status = BugStatus.ACTIVE;
@@ -76,11 +77,12 @@ public class BugImpl extends AssignableTaskImpl implements Bug {
     @Override
     public String getStepsToReproduce() {
         StringBuilder steps = new StringBuilder();
+        int[] index = new int[1];
+
         steps.append(STEPS_HEADER).append("\n");
-        for (String s : stepsToReproduce) {
-            steps.append(s).append("\n");
-        }
+        stepsToReproduce.forEach(step -> steps.append(String.format("%d. %s%n", ++index[0], step)));
         steps.append(STEPS_HEADER).append("\n");
+
         return steps.toString();
     }
 
@@ -96,7 +98,7 @@ public class BugImpl extends AssignableTaskImpl implements Bug {
             return;
         }
         if (this.severity.equals(severity)) {
-            throw new IllegalArgumentException(String.format(IMPOSSIBLE_CHANGE_MESSAGE, "Severity", severity));
+            throw new InvalidUserInput(String.format(IMPOSSIBLE_CHANGE_MESSAGE, "Severity", severity));
         }
         addChangeToHistory(String.format(CHANGE_MESSAGE, "Severity", this.severity, severity));
         this.severity = severity;
@@ -114,7 +116,7 @@ public class BugImpl extends AssignableTaskImpl implements Bug {
                 severity = Severity.CRITICAL;
                 break;
             case CRITICAL:
-                throw new IllegalArgumentException("Cannot increase severity beyond Critical.");
+                throw new InvalidUserInput("Cannot increase severity beyond Critical.");
         }
     }
 
@@ -122,7 +124,7 @@ public class BugImpl extends AssignableTaskImpl implements Bug {
     public void decreaseSeverity() {
         switch (severity) {
             case MINOR:
-                throw new IllegalArgumentException("Cannot decrease severity further than Minor.");
+                throw new InvalidUserInput("Cannot decrease severity further than Minor.");
             case MAJOR:
                 addChangeToHistory(String.format(CHANGE_MESSAGE, "Severity", severity, Severity.MINOR));
                 severity = Severity.MINOR;
