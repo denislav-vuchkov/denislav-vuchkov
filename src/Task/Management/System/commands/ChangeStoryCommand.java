@@ -14,11 +14,10 @@ import java.util.List;
 
 public class ChangeStoryCommand extends BaseCommand {
 
-    public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 3;
+    public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 4;
     public static final String INVALID_ID = "Invalid ID provided.";
     public static final String PROPERTY_UPDATED = "%s of story with ID %d has been changed to %s.";
     public static final String RECORD_ACTIVITY = "User %s changed the %s of story with ID %d to %s.";
-    public static final String NOT_STORY_ID = "ID provided does not match a story task.";
 
     public ChangeStoryCommand(TaskManagementSystemRepository repository) {
         super(repository);
