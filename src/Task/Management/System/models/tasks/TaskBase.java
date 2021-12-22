@@ -136,7 +136,7 @@ public abstract class TaskBase implements Task {
     }
 
     @Override
-    public String displayDetails() {
+    public String displayAllDetails() {
         return String.format("ID: %d%n" +
                         "Title: %s%n" +
                         "Description: %s%n",

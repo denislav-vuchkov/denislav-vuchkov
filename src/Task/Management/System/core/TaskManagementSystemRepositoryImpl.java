@@ -36,6 +36,7 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
     private static final String ALREADY_EXISTS = "This %s name already exists! Please choose a unique %s name.";
     public static final String TEAM_ALREADY_EXISTS = String.format(ALREADY_EXISTS, "team", "team");
     public static final String USER_ALREADY_EXISTS = String.format(ALREADY_EXISTS, "user", "user");
+    
     private static int nextTaskID = 0;
     private final List<Team> teams;
     private final List<User> users;
@@ -140,8 +141,8 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
     }
 
     @Override
-    public String addBug(String teamName, String boardName, String title, String description, List<String> stepsToReproduce,
-                         Priority priority, Severity severity, String assignee) {
+    public String addBug(String teamName, String boardName, String title, String description,
+                         List<String> stepsToReproduce, Priority priority, Severity severity, String assignee) {
         checkIfAssigneeIsValid(teamName, assignee);
         Bug bug = new BugImpl(++nextTaskID, title, description, stepsToReproduce, priority, severity, assignee);
         bugs.add(bug);

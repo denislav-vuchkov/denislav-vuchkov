@@ -11,6 +11,8 @@ import static Task.Management.System.models.contracts.ChangesLogger.IMPOSSIBLE_C
 public abstract class AssignableTaskImpl extends TaskBase implements AssignableTask {
 
     public static final String UNASSIGNED = "Unassigned";
+    public static final String LOWER_BOUNDARY = "Cannot decrease %s further than %s.";
+    public static final String UPPER_BOUNDARY = "Cannot increase %s beyond %s.";
     private Priority priority;
     private String assignee;
 
@@ -50,7 +52,7 @@ public abstract class AssignableTaskImpl extends TaskBase implements AssignableT
                 priority = Priority.HIGH;
                 break;
             case HIGH:
-                throw new InvalidUserInput("Cannot increase priority beyond High.");
+                throw new InvalidUserInput(String.format(UPPER_BOUNDARY, "priority", Priority.HIGH));
         }
     }
 
@@ -58,7 +60,7 @@ public abstract class AssignableTaskImpl extends TaskBase implements AssignableT
     public void decreasePriority() {
         switch (priority) {
             case LOW:
-                throw new InvalidUserInput("Cannot decrease priority further than Low.");
+                throw new InvalidUserInput(String.format(LOWER_BOUNDARY, "priority", Priority.LOW));
             case MEDIUM:
                 addChangeToHistory(String.format(CHANGE_MESSAGE, "Priority", priority, Priority.LOW));
                 priority = Priority.LOW;

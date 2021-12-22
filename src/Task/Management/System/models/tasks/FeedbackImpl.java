@@ -17,6 +17,9 @@ public class FeedbackImpl extends TaskBase implements Feedback {
     public static final String INVALID_RATING_MESSAGE = String.format("Rating cannot be less than %d or more than %d",
             RATING_MIN, RATING_MAX);
 
+    public static final String LOWER_BOUNDARY = "Cannot decrease %s further than %s.";
+    public static final String UPPER_BOUNDARY = "Cannot increase %s beyond %s.";
+
     private FeedbackStatus status;
     private int rating = RATING_UNINITIALIZED;
 
@@ -60,7 +63,7 @@ public class FeedbackImpl extends TaskBase implements Feedback {
                 this.status = FeedbackStatus.DONE;
                 break;
             case DONE:
-                throw new InvalidUserInput("Cannot advance status from Fixed.");
+                throw new InvalidUserInput(String.format(UPPER_BOUNDARY, "status", FeedbackStatus.DONE));
         }
     }
 
@@ -68,7 +71,7 @@ public class FeedbackImpl extends TaskBase implements Feedback {
     public void retractStatus() {
         switch (status) {
             case NEW:
-                throw new InvalidUserInput("Cannot retract status from New.");
+                throw new InvalidUserInput(String.format(LOWER_BOUNDARY, "status", FeedbackStatus.NEW));
             case UNSCHEDULED:
                 addChangeToHistory(String.format(CHANGE_MESSAGE, "Status", status, FeedbackStatus.NEW));
                 this.status = FeedbackStatus.NEW;
@@ -104,7 +107,7 @@ public class FeedbackImpl extends TaskBase implements Feedback {
     }
 
     @Override
-    public String displayDetails() {
+    public String displayAllDetails() {
         return String.format("Task type: %s%n" +
                         "%s" +
                         "Rating: %d%n" +
@@ -112,10 +115,17 @@ public class FeedbackImpl extends TaskBase implements Feedback {
                         "%s" +
                         "%s",
                 this.getClass().getSimpleName().replace("Impl", ""),
-                super.displayDetails(),
+                super.displayAllDetails(),
                 getRating(),
                 getStatus(),
                 displayComments(),
                 getHistory());
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Task type: %s - Title: %s - Rating: %s - Status: %s",
+                this.getClass().getSimpleName().replace("Impl", ""),
+                getTitle(), getRating(), getStatus());
     }
 }

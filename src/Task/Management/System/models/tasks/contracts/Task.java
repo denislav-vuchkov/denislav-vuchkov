@@ -30,6 +30,6 @@ public interface Task extends Changeable {
 
     String getChangeAt(int index);
 
-    String displayDetails();
+    String displayAllDetails();
 
 }

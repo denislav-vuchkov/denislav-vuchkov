@@ -19,5 +19,5 @@ public enum CommandType {
     CHANGE_STORY,
     CHANGE_FEEDBACK,
     ASSIGN_TASK_TO_USER,
-    ADD_COMMENT_TO_TASK
+    ADD_COMMENT_TO_TASK,
 }

@@ -15,6 +15,8 @@ import static Task.Management.System.models.contracts.ChangesLogger.IMPOSSIBLE_C
 public class BugImpl extends AssignableTaskImpl implements Bug {
 
     public static final String STEPS_HEADER = "--STEPS TO REPRODUCE--";
+    public static final String LOWER_BOUNDARY = "Cannot decrease %s further than %s.";
+    public static final String UPPER_BOUNDARY = "Cannot increase %s beyond %s.";
     private final List<String> stepsToReproduce;
     private BugStatus status;
     private Severity severity;
@@ -53,7 +55,7 @@ public class BugImpl extends AssignableTaskImpl implements Bug {
                 status = BugStatus.FIXED;
                 break;
             case FIXED:
-                throw new InvalidUserInput("Cannot advance status from fixed.");
+                throw new InvalidUserInput(String.format(UPPER_BOUNDARY, "status", BugStatus.FIXED));
         }
     }
 
@@ -61,7 +63,7 @@ public class BugImpl extends AssignableTaskImpl implements Bug {
     public void retractStatus() {
         switch (status) {
             case ACTIVE:
-                throw new InvalidUserInput("Cannot retract status from fixed.");
+                throw new InvalidUserInput(String.format(LOWER_BOUNDARY, "status", BugStatus.ACTIVE));
             case FIXED:
                 addChangeToHistory(String.format(CHANGE_MESSAGE, "Status", status, BugStatus.ACTIVE));
                 status = BugStatus.ACTIVE;
@@ -111,7 +113,7 @@ public class BugImpl extends AssignableTaskImpl implements Bug {
                 severity = Severity.CRITICAL;
                 break;
             case CRITICAL:
-                throw new InvalidUserInput("Cannot increase severity beyond Critical.");
+                throw new InvalidUserInput(String.format(UPPER_BOUNDARY, "severity", Severity.CRITICAL));
         }
     }
 
@@ -119,7 +121,7 @@ public class BugImpl extends AssignableTaskImpl implements Bug {
     public void decreaseSeverity() {
         switch (severity) {
             case MINOR:
-                throw new InvalidUserInput("Cannot decrease severity further than Minor.");
+                throw new InvalidUserInput(String.format(LOWER_BOUNDARY, "severity", Severity.MINOR));
             case MAJOR:
                 addChangeToHistory(String.format(CHANGE_MESSAGE, "Severity", severity, Severity.MINOR));
                 severity = Severity.MINOR;
@@ -132,7 +134,7 @@ public class BugImpl extends AssignableTaskImpl implements Bug {
     }
 
     @Override
-    public String displayDetails() {
+    public String displayAllDetails() {
         return String.format("Task type: %s%n" +
                         "%s" +
                         "Priority: %s%n" +
@@ -143,10 +145,17 @@ public class BugImpl extends AssignableTaskImpl implements Bug {
                         "%s" +
                         "%s",
                 this.getClass().getSimpleName().replace("Impl", ""),
-                super.displayDetails(),
+                super.displayAllDetails(),
                 getPriority(), getSeverity(), getStatus(), getAssignee(),
                 getStepsToReproduce(),
                 displayComments(),
                 getHistory());
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Task type: %s - Title: %s - Priority: %s - Severity: %s - Status - %s - Assignee - %s",
+                this.getClass().getSimpleName().replace("Impl", ""),
+                getTitle(), getPriority(), getSeverity(), getStatus(), getAssignee());
     }
 }

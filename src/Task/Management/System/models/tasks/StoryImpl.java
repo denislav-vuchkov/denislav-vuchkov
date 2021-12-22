@@ -12,6 +12,9 @@ import static Task.Management.System.models.contracts.ChangesLogger.IMPOSSIBLE_C
 
 public class StoryImpl extends AssignableTaskImpl implements Story {
 
+    public static final String LOWER_BOUNDARY = "Cannot decrease %s further than %s.";
+    public static final String UPPER_BOUNDARY = "Cannot increase %s beyond %s.";
+
     private StoryStatus status;
     private Size size;
 
@@ -51,7 +54,7 @@ public class StoryImpl extends AssignableTaskImpl implements Story {
                 this.status = StoryStatus.DONE;
                 break;
             case DONE:
-                throw new InvalidUserInput("Cannot advance status from fixed.");
+                throw new InvalidUserInput(String.format(UPPER_BOUNDARY, "status", StoryStatus.DONE));
         }
     }
 
@@ -59,7 +62,7 @@ public class StoryImpl extends AssignableTaskImpl implements Story {
     public void retractStatus() {
         switch (this.status) {
             case NOT_DONE:
-                throw new InvalidUserInput("Cannot revert further than not done.");
+                throw new InvalidUserInput(String.format(LOWER_BOUNDARY, "status", StoryStatus.NOT_DONE));
             case IN_PROGRESS:
                 addChangeToHistory(String.format(CHANGE_MESSAGE, "Status", this.status, StoryStatus.NOT_DONE));
                 this.status = StoryStatus.NOT_DONE;
@@ -90,7 +93,7 @@ public class StoryImpl extends AssignableTaskImpl implements Story {
     }
 
     @Override
-    public String displayDetails() {
+    public String displayAllDetails() {
         return String.format("Task type: %s%n" +
                         "%s" +
                         "Priority: %s%n" +
@@ -100,9 +103,16 @@ public class StoryImpl extends AssignableTaskImpl implements Story {
                         "%s" +
                         "%s",
                 this.getClass().getSimpleName().replace("Impl", ""),
-                super.displayDetails(),
+                super.displayAllDetails(),
                 getPriority(), getSize(), getStatus(), getAssignee(),
                 displayComments(),
                 getHistory());
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Task type: %s - Title: %s - Priority: %s - Size: %s - Status - %s - Assignee - %s",
+                this.getClass().getSimpleName().replace("Impl", ""),
+                getTitle(), getPriority(), getSize(), getStatus(), getAssignee());
     }
 }
