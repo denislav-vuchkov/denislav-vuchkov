@@ -1,9 +1,6 @@
 package Task.Management.System.core.contracts;
 
 
-import Task.Management.System.models.tasks.contracts.Bug;
-import Task.Management.System.models.tasks.contracts.Feedback;
-import Task.Management.System.models.tasks.contracts.Story;
 import Task.Management.System.models.tasks.contracts.Task;
 import Task.Management.System.models.tasks.enums.Priority;
 import Task.Management.System.models.tasks.enums.Severity;
@@ -21,24 +18,23 @@ public interface TaskManagementSystemRepository {
 
     List<Task> getTasks();
 
-    void addUser(User user);
+    String addUser(String userName);
 
     User findUser(String userName);
 
-    void validateUniqueUserName(String userName);
-
-    void addTeam(Team team);
+    String addTeam(String teamName);
 
     Team findTeam(String teamName);
 
-    void validateUniqueTeamName(String teamName);
+    String addBug(String teamName, String boardName,
+                  String title, String description, List<String> stepsToReproduce,
+                  Priority priority, Severity severity, String assignee);
 
-    String addBug(String teamName, String boardName, String title, String description, List<String> stepsToReproduce,
-                Priority priority, Severity severity, String assignee);
+    String addStory(String teamName, String boardName,
+                    String title, String description,
+                    Priority priority, Size size, String assignee);
 
-    String addStory(String teamName, String boardName, String title, String description,
-                  Priority priority, Size size, String assignee);
-
-    String addFeedback(String teamName, String boardName, String title, String description, int rating);
+    String addFeedback(String teamName, String boardName,
+                       String title, String description, int rating);
 
 }
