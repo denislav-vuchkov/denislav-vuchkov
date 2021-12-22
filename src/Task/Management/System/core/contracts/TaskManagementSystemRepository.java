@@ -1,6 +1,7 @@
 package Task.Management.System.core.contracts;
 
 
+import Task.Management.System.models.tasks.contracts.AssignableTask;
 import Task.Management.System.models.tasks.contracts.Task;
 import Task.Management.System.models.tasks.enums.Priority;
 import Task.Management.System.models.tasks.enums.Severity;
@@ -17,6 +18,8 @@ public interface TaskManagementSystemRepository {
     List<User> getUsers();
 
     List<Task> getTasks();
+
+    List<AssignableTask> getAssignableTasks();
 
     String addUser(String userName);
 

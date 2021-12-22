@@ -41,11 +41,13 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
     private final List<Team> teams;
     private final List<User> users;
     private final List<Task> tasks;
+    private final List<AssignableTask> assignableTasks;
 
     public TaskManagementSystemRepositoryImpl() {
         teams = new ArrayList<>();
         users = new ArrayList<>();
         tasks = new ArrayList<>();
+        assignableTasks = new ArrayList<>();
     }
 
     @Override
@@ -61,6 +63,11 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
     @Override
     public List<Task> getTasks() {
         return new ArrayList<>(tasks);
+    }
+
+    @Override
+    public List<AssignableTask> getAssignableTasks() {
+        return new ArrayList<>(assignableTasks);
     }
 
     @Override
@@ -115,6 +122,7 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
         checkIfAssigneeIsValid(teamName, assignee);
         AssignableTask bug = new BugImpl(++nextTaskID, title, description, stepsToReproduce, priority, severity, assignee);
         tasks.add(bug);
+        assignableTasks.add(bug);
 
         addTaskToBoard(bug, boardName, teamName);
         if (!assignee.equals(UNASSIGNED)) {
@@ -130,6 +138,7 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
         checkIfAssigneeIsValid(teamName, assignee);
         AssignableTask story = new StoryImpl(++nextTaskID, title, description, priority, size, assignee);
         tasks.add(story);
+        assignableTasks.add(story);
 
         addTaskToBoard(story, boardName, teamName);
         if (!assignee.equals(UNASSIGNED)) {

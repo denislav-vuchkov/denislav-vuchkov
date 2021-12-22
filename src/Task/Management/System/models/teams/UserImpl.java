@@ -46,7 +46,8 @@ public class UserImpl implements User {
         return new ArrayList<>(assignedTasks);
     }
 
-    public void addActivity(String description) {
+    @Override
+    public void recordActivity(String description) {
         historyOfChanges.addChange(description);
     }
 

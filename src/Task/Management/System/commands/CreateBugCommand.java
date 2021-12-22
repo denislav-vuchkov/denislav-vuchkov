@@ -5,16 +5,20 @@ import Task.Management.System.models.tasks.BugImpl;
 import Task.Management.System.models.tasks.contracts.Bug;
 import Task.Management.System.models.tasks.enums.Priority;
 import Task.Management.System.models.tasks.enums.Severity;
+import Task.Management.System.models.tasks.enums.Size;
 import Task.Management.System.models.teams.contracts.Board;
 import Task.Management.System.models.teams.contracts.Team;
+import Task.Management.System.utils.ParsingHelpers;
 import Task.Management.System.utils.ValidationHelpers;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static Task.Management.System.commands.CreateStoryCommand.UNASSIGNED;
 
 public class CreateBugCommand extends BaseCommand {
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 8;
-    public static final String BUG_ADDED_TO_BOARD =
-            "Bug with ID %d successfully added to board %s in team %s.";
 
     public CreateBugCommand(TaskManagementSystemRepository repository) {
         super(repository);
@@ -22,26 +26,20 @@ public class CreateBugCommand extends BaseCommand {
 
     @Override
     protected String executeCommand(List<String> parameters) {
+        //String teamName, String boardName, String title, String description, List<String> steps, Priority priority, Severity severity, String assignee
         ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
-        Team team = getRepository().findTeam(parameters.get(0));
 
-        Board board = team
-                .getBoards()
-                .stream()
-                .filter(b -> b.getName().equals(parameters.get(1)))
-                .findAny().orElseThrow();
+        String teamName = parameters.get(0);
+        String boardName = parameters.get(1);
+        String title = parameters.get(2);
+        String description = parameters.get(3);
+        List<String> stepsToReproduce = Arrays.stream(parameters.get(4).split("[!?;\\.] "))
+                .collect(Collectors.toList());
+        Priority priority = ParsingHelpers.tryParseEnum(parameters.get(5), Priority.class);
+        Severity severity = ParsingHelpers.tryParseEnum(parameters.get(6), Severity.class);
+        String assignee = parameters.get(7).isEmpty() ? UNASSIGNED : parameters.get(7);
 
-        //TODO
-        Bug bug = new BugImpl(
-                3,
-                "Not Too Short",
-                "Just Right Length",
-                List.of("Nothing", "Works", "Help"),
-                Priority.MEDIUM,
-                Severity.MAJOR,
-                "User10");
-
-        board.addTask(bug);
-        return String.format(BUG_ADDED_TO_BOARD, bug.getID(), board.getName(), team.getName());
+        return getRepository().addBug(teamName, boardName, title,
+                description, stepsToReproduce, priority, severity, assignee);
     }
 }
