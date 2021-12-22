@@ -43,7 +43,7 @@ public class BugImpl_Tests {
                 "1. Nothing\n" +
                 "2. Works\n" +
                 "3. Help\n" +
-                "--STEPS TO REPRODUCE--\n";
+                "--STEPS TO REPRODUCE--";
         Assertions.assertEquals(stepsOutput, myBug.getStepsToReproduce());
 
         myBug.setDescription("This Is The New Valid Description");
@@ -69,7 +69,7 @@ public class BugImpl_Tests {
                 "1. A\n" +
                 "2. B\n" +
                 "3. C\n" +
-                "--STEPS TO REPRODUCE--\n";
+                "--STEPS TO REPRODUCE--";
 
         Assertions.assertEquals(stepsOutput, myBug.getStepsToReproduce());
     }

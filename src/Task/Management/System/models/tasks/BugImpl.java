@@ -81,7 +81,7 @@ public class BugImpl extends AssignableTaskImpl implements Bug {
 
         steps.append(STEPS_HEADER).append("\n");
         stepsToReproduce.forEach(step -> steps.append(String.format("%d. %s%n", ++index[0], step)));
-        steps.append(STEPS_HEADER).append("\n");
+        steps.append(STEPS_HEADER);
 
         return steps.toString();
     }

@@ -1,7 +1,9 @@
 package Task.Management.System.core;
 
 import Task.Management.System.core.contracts.TaskManagementSystemRepository;
+import Task.Management.System.models.exceptions.InvalidUserInput;
 import Task.Management.System.models.tasks.contracts.Task;
+import Task.Management.System.models.teams.contracts.Nameable;
 import Task.Management.System.models.teams.contracts.Team;
 import Task.Management.System.models.teams.contracts.User;
 
@@ -55,12 +57,12 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
                 .stream()
                 .filter(user -> user.getName().equals(userName))
                 .findAny()
-                .orElseThrow(() -> new NullPointerException(USER_DOES_NOT_EXIST));
+                .orElseThrow(() -> new InvalidUserInput(USER_DOES_NOT_EXIST));
     }
 
     public void validateUniqueUserName(String userName) {
         if (getUsers().stream().anyMatch(user -> user.getName().equals(userName))) {
-            throw new IllegalArgumentException(USER_ALREADY_EXISTS);
+            throw new InvalidUserInput(USER_ALREADY_EXISTS);
         }
     }
 
@@ -75,13 +77,14 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
                 .stream()
                 .filter(t -> t.getName().equals(teamName))
                 .findAny()
-                .orElseThrow(() -> new NullPointerException(TEAM_DOES_NOT_EXIST));
+                .orElseThrow(() -> new InvalidUserInput(TEAM_DOES_NOT_EXIST));
     }
 
     @Override
     public void validateUniqueTeamName(String teamName) {
         if (getTeams().stream().anyMatch(team -> team.getName().equals(teamName))) {
-            throw new IllegalArgumentException(TEAM_ALREADY_EXISTS);
+            throw new InvalidUserInput(TEAM_ALREADY_EXISTS);
         }
     }
+
 }
