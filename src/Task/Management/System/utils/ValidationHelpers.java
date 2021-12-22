@@ -1,5 +1,6 @@
 package Task.Management.System.utils;
 
+import Task.Management.System.models.exceptions.InvalidNumberOfArguments;
 import Task.Management.System.models.exceptions.InvalidUserInput;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public class ValidationHelpers {
 
     public static void validateArgumentsCount(List<String> list, int expectedNumberOfParameters) {
         if (list.size() < expectedNumberOfParameters) {
-            throw new InvalidUserInput(
+            throw new InvalidNumberOfArguments(
                     String.format(INVALID_NUMBER_OF_ARGUMENTS, expectedNumberOfParameters, list.size())
             );
         }
