@@ -100,6 +100,7 @@ public class TeamImpl implements Team {
 
     @Override
     public String getHistory() {
+
         StringBuilder history = new StringBuilder(String.format(TEAM_HISTORY_HEADER,
                 this.getClass().getSimpleName().replace("Impl", ""), getName()))
                 .append(System.lineSeparator());
@@ -117,7 +118,7 @@ public class TeamImpl implements Team {
 
     @Override
     public String toString() {
-        return String.format("Team: %s - Users: %d - Boards: %d - Tasks: %d",
+        return String.format("Team: %s - Users: %d - Boards: %d - Tasks: %d%n",
                 getName(),
                 getUsers().size(),
                 getBoards().size(),

@@ -8,8 +8,8 @@ import Task.Management.System.utils.ValidationHelpers;
 import java.util.List;
 
 public class CreateFeedbackCommand extends BaseCommand {
-    public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 7;
-    public static final String FEEDBACK_RATING_ERROR = "Feedback rating should be a numeric value between 0 and 10";
+    public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 5;
+    public static final String FEEDBACK_RATING_ERROR = "Feedback rating should be a numeric value between 0 and 10!";
 
     public CreateFeedbackCommand(TaskManagementSystemRepository repository) {
         super(repository);

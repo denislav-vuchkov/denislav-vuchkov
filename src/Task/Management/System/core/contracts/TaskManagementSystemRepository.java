@@ -5,6 +5,7 @@ import Task.Management.System.models.tasks.contracts.*;
 import Task.Management.System.models.tasks.enums.Priority;
 import Task.Management.System.models.tasks.enums.Severity;
 import Task.Management.System.models.tasks.enums.Size;
+import Task.Management.System.models.teams.contracts.Board;
 import Task.Management.System.models.teams.contracts.Team;
 import Task.Management.System.models.teams.contracts.User;
 
@@ -34,6 +35,7 @@ public interface TaskManagementSystemRepository {
 
     Team findTeam(String teamName);
 
+
     String addBug(String teamName, String boardName,
                   String title, String description, List<String> stepsToReproduce,
                   Priority priority, Severity severity, String assignee);
@@ -44,5 +46,7 @@ public interface TaskManagementSystemRepository {
 
     String addFeedback(String teamName, String boardName,
                        String title, String description, int rating);
+
+    Board findBoard(String boardName, String teamName);
 
 }

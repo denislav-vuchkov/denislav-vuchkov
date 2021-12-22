@@ -204,7 +204,7 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
         board.addTask(task);
     }
 
-    private Board findBoard(String boardName, String teamName) {
+    public Board findBoard(String boardName, String teamName) {
         Team team = findTeam(teamName);
         return team.getBoards()
                 .stream()

@@ -20,8 +20,6 @@ public class UserImpl implements User {
     public static final String TASK_ALREADY_ASSIGNED_TO_USER = "%s with %d is already assigned to user %s";
     public static final String TASK_NOT_ASSIGNED_TO_USER = "%s with %d is not assigned to user %s";
 
-    public static final String HISTORY_HEADER = "--HISTORY--";
-
     private final ChangesLogger historyOfChanges;
     private final List<AssignableTask> assignedTasks;
     private String name;
@@ -32,7 +30,7 @@ public class UserImpl implements User {
         historyOfChanges = new ChangesLoggerImpl();
         historyOfChanges.addChange(
                 String.format(CREATION_MESSAGE,
-                        getClass().getSimpleName().replace("Impl", " "),
+                        getClass().getSimpleName().replace("Impl", ""),
                         getName()));
     }
 
@@ -98,15 +96,12 @@ public class UserImpl implements User {
 
     @Override
     public String getHistory() {
-        return String.format("%s%n%s%s",
-                HISTORY_HEADER,
-                historyOfChanges.getCompleteHistory(),
-                HISTORY_HEADER);
+        return historyOfChanges.getCompleteHistory();
     }
 
     @Override
     public String toString() {
-        return String.format("Username: %s - Tasks: %d",
+        return String.format("User: %s - Tasks: %d%n",
                 getName(),
                 getAssignedTasks().size());
     }

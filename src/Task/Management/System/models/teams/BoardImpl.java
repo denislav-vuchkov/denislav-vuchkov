@@ -30,7 +30,7 @@ public class BoardImpl implements Board {
         historyOfChanges = new ChangesLoggerImpl();
         historyOfChanges.addChange(
                 String.format(CREATION_MESSAGE,
-                        getClass().getSimpleName().replace("Impl", " "),
+                        getClass().getSimpleName().replace("Impl", ""),
                         getName()));
     }
 

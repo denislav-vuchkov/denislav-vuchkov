@@ -16,7 +16,7 @@ public class ShowTeamActivityCommand extends BaseCommand {
     @Override
     protected String executeCommand(List<String> parameters) {
         ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
-
-        return getRepository().findTeam(parameters.get(0)).getHistory();
+        String teamName = parameters.get(0);
+        return getRepository().findTeam(teamName).getHistory();
     }
 }
