@@ -12,6 +12,7 @@ import Task.Management.System.models.tasks.contracts.Task;
 import Task.Management.System.models.tasks.enums.Priority;
 import Task.Management.System.models.tasks.enums.Severity;
 import Task.Management.System.models.tasks.enums.Size;
+import Task.Management.System.models.teams.contracts.Board;
 import Task.Management.System.models.teams.contracts.Nameable;
 import Task.Management.System.models.teams.contracts.Team;
 import Task.Management.System.models.teams.contracts.User;
@@ -98,20 +99,44 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
 
     @Override
     public void addBug(String title, String description, List<String> stepsToReproduce,
-                       Priority priority, Severity severity, String assignee) {
+                       Priority priority, Severity severity, String assignee,
+                       String boardName, String teamName) {
         Task bug = new BugImpl(++nextTaskID, title, description, stepsToReproduce, priority, severity, assignee);
         tasks.add(bug);
+
+        addTaskToBoard(bug, boardName, teamName);
     }
 
     @Override
-    public void addStory(String title, String description, Priority priority, Size size, String assignee) {
+    public void addStory(String title, String description, Priority priority, Size size, String assignee,
+                         String boardName, String teamName) {
         Task story = new StoryImpl(++nextTaskID, title, description, priority, size, assignee);
         tasks.add(story);
+
+        addTaskToBoard(story, boardName, teamName);
     }
 
     @Override
-    public void addFeedback(String title, String description, int rating) {
+    public void addFeedback(String title, String description, int rating, String boardName, String teamName) {
         Task feedback = new FeedbackImpl(++nextTaskID, title, description, rating);
         tasks.add(feedback);
+
+        addTaskToBoard(feedback, boardName, teamName);
+    }
+
+    private void addTaskToBoard(Task task, String boardName, String teamName) {
+        Board board = findBoard(boardName, teamName);
+        board.addTask(task);
+    }
+
+    private Board findBoard(String boardName, String teamName) {
+        for (Team team : teams) {
+            if (team.getName().equals(teamName)) {
+                for (Board board : team.getBoards()) {
+
+                }
+            }
+        }
+        throw new InvalidUserInput("Not implemented yet");
     }
 }

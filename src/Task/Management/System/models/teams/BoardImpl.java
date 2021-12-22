@@ -66,4 +66,9 @@ public class BoardImpl implements Board {
     public String getHistory() {
         return historyOfChanges.getCompleteHistory();
     }
+
+    @Override
+    public String toString() {
+        return String.format("Board name: %s - Board items: %d", getName(), getTasks().size());
+    }
 }
