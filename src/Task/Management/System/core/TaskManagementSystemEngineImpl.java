@@ -15,7 +15,7 @@ public class TaskManagementSystemEngineImpl implements TaskManagementSystemEngin
 
     private static final String TERMINATION_COMMAND = "Exit";
     private static final String EMPTY_COMMAND_ERROR = "Command cannot be empty.";
-    private static final String MAIN_SPLIT_SYMBOL = " ";
+    private static final String COMMAND_AND_PARAMETERS_SPLIT_SYMBOL = " ";
     private static final String REPORT_SEPARATOR = "####################";
 
     private final CommandFactory commandFactory;
@@ -77,20 +77,19 @@ public class TaskManagementSystemEngineImpl implements TaskManagementSystemEngin
      * @return A list of the parameters needed to execute the command
      */
     private List<String> extractParameters(String inputLine) {
-        if (!inputLine.contains(MAIN_SPLIT_SYMBOL)) {
+        if (!inputLine.contains(COMMAND_AND_PARAMETERS_SPLIT_SYMBOL)) {
             return new ArrayList<>();
         }
 
         String regex = "\\{[^}]*}";
         Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(inputLine.substring(inputLine.indexOf(MAIN_SPLIT_SYMBOL)));
+        Matcher matcher = pattern.matcher(inputLine.substring(inputLine.indexOf(COMMAND_AND_PARAMETERS_SPLIT_SYMBOL)));
 
         List<String> commandParameters = new ArrayList<>();
         while (matcher.find()) {
             String parameter = matcher.group();
             commandParameters.add(parameter.substring(1, parameter.length()-1));
         }
-
 
         return commandParameters;
     }

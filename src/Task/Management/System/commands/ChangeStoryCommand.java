@@ -20,9 +20,7 @@ public class ChangeStoryCommand extends BaseCommand {
 
     @Override
     protected String executeCommand(List<String> parameters) {
-        //TODO
         //Change the Priority/Size/Status of a story.
-
         String nameOfCommandIssuer = parameters.get(0).trim();
         int storyID = ParsingHelpers.tryParseInt(parameters.get(1), INVALID_ID);
         String propertyToChange = parameters.get(2).trim();

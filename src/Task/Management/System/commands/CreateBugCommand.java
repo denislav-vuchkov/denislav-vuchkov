@@ -26,7 +26,8 @@ public class CreateBugCommand extends BaseCommand {
 
     @Override
     protected String executeCommand(List<String> parameters) {
-        //String teamName, String boardName, String title, String description, List<String> steps, Priority priority, Severity severity, String assignee
+        //String teamName, String boardName, String title, String description, List<String> steps,
+        //Priority priority, Severity severity, String assignee
         ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
 
         String teamName = parameters.get(0);
@@ -41,5 +42,7 @@ public class CreateBugCommand extends BaseCommand {
 
         return getRepository().addBug(teamName, boardName, title,
                 description, stepsToReproduce, priority, severity, assignee);
+
     }
+
 }
