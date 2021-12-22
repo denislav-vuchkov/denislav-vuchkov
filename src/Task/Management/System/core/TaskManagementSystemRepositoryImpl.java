@@ -5,6 +5,7 @@ import Task.Management.System.models.exceptions.InvalidUserInput;
 import Task.Management.System.models.tasks.BugImpl;
 import Task.Management.System.models.tasks.FeedbackImpl;
 import Task.Management.System.models.tasks.StoryImpl;
+import Task.Management.System.models.tasks.contracts.AssignableTask;
 import Task.Management.System.models.tasks.contracts.Task;
 import Task.Management.System.models.tasks.enums.Priority;
 import Task.Management.System.models.tasks.enums.Severity;
@@ -94,10 +95,13 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
     public String addBug(String teamName, String boardName, String title, String description, List<String> stepsToReproduce,
                        Priority priority, Severity severity, String assignee) {
         checkIfAssigneeIsValid(teamName, assignee);
-        Task bug = new BugImpl(++nextTaskID, title, description, stepsToReproduce, priority, severity, assignee);
+        AssignableTask bug = new BugImpl(++nextTaskID, title, description, stepsToReproduce, priority, severity, assignee);
         tasks.add(bug);
 
         addTaskToBoard(bug, boardName, teamName);
+        if (!assignee.equals(UNASSIGNED)) {
+            addTaskToUser(bug, assignee);
+        }
 
         return String.format(TASK_ADDED_TO_BOARD, "Bug", nextTaskID, boardName, teamName);
     }
@@ -106,12 +110,24 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
     public String addStory(String teamName, String boardName, String title, String description,
                          Priority priority, Size size, String assignee) {
         checkIfAssigneeIsValid(teamName, assignee);
-        Task story = new StoryImpl(++nextTaskID, title, description, priority, size, assignee);
+        AssignableTask story = new StoryImpl(++nextTaskID, title, description, priority, size, assignee);
         tasks.add(story);
 
         addTaskToBoard(story, boardName, teamName);
+        if (!assignee.equals(UNASSIGNED)) {
+            addTaskToUser(story, assignee);
+        }
 
         return String.format(TASK_ADDED_TO_BOARD, "Story", nextTaskID, boardName, teamName);
+    }
+
+    private void addTaskToUser(AssignableTask bug, String assignee) {
+        User user = users.stream()
+                .filter(e -> e.getName().equals(assignee))
+                .findFirst()
+                .orElseThrow(() -> new InvalidUserInput());
+
+        user.assignTask(bug);
     }
 
     @Override
