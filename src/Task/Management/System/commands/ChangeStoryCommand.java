@@ -3,7 +3,6 @@ package Task.Management.System.commands;
 import Task.Management.System.core.contracts.TaskManagementSystemRepository;
 import Task.Management.System.models.exceptions.InvalidUserInput;
 import Task.Management.System.models.tasks.contracts.Story;
-import Task.Management.System.models.tasks.contracts.Task;
 import Task.Management.System.models.tasks.enums.Priority;
 import Task.Management.System.models.tasks.enums.Size;
 import Task.Management.System.models.tasks.enums.StoryStatus;
@@ -31,11 +30,7 @@ public class ChangeStoryCommand extends BaseCommand {
         String propertyToChange = parameters.get(2).trim();
         String newValue = parameters.get(3).toUpperCase();
 
-        Story story = getRepository().getStories()
-                .stream()
-                .filter(e -> e.getID() == storyID)
-                .findFirst()
-                .orElseThrow(() -> new InvalidUserInput(INVALID_ID));
+        Story story = getRepository().findStory(storyID);
 
         switch (propertyToChange.toUpperCase()) {
             case "PRIORITY":

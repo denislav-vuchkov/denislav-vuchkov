@@ -8,8 +8,8 @@ public class ChangeBugCommand extends BaseCommand {
 
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 666;
 
-    public ChangeBugCommand(TaskManagementSystemRepository repository) {
-        super(repository);
+    public ChangeBugCommand(TaskManagementSystemRepository taskManagementSystemRepository) {
+        super(taskManagementSystemRepository);
     }
 
     @Override

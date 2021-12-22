@@ -49,4 +49,12 @@ public interface TaskManagementSystemRepository {
 
     Board findBoard(String boardName, String teamName);
 
+    Task findTask(int taskID);
+
+    Bug findBug(int bugID);
+
+    Feedback findFeedback(int feedbackID);
+
+    Story findStory(int taskID);
+
 }

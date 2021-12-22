@@ -29,14 +29,17 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
             "%s with ID %d successfully added to board %s in team %s.";
 
     public static final String USER_NOT_IN_TEAM = "User %s does not exist in team %s.";
+    public static final String INVALID_ID = "Invalid ID provided.";
+
     private static final String NOT_EXIST = "The %s does not exist! Create a %s with this name first.";
     public static final String TEAM_DOES_NOT_EXIST = String.format(NOT_EXIST, "team", "team");
     public static final String USER_DOES_NOT_EXIST = String.format(NOT_EXIST, "user", "user");
     public static final String BOARD_DOES_NOT_EXIST = String.format(NOT_EXIST, "board", "board");
+
     private static final String ALREADY_EXISTS = "This %s name already exists! Please choose a unique %s name.";
     public static final String TEAM_ALREADY_EXISTS = String.format(ALREADY_EXISTS, "team", "team");
     public static final String USER_ALREADY_EXISTS = String.format(ALREADY_EXISTS, "user", "user");
-    
+
     private static int nextTaskID = 0;
     private final List<Team> teams;
     private final List<User> users;
@@ -129,7 +132,7 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
     public Team findTeam(String teamName) {
         return getTeams()
                 .stream()
-                .filter(t -> t.getName().equals(teamName))
+                .filter(team -> team.getName().equals(teamName))
                 .findAny()
                 .orElseThrow(() -> new InvalidUserInput(TEAM_DOES_NOT_EXIST));
     }
@@ -145,9 +148,10 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
                          List<String> stepsToReproduce, Priority priority, Severity severity, String assignee) {
         checkIfAssigneeIsValid(teamName, assignee);
         Bug bug = new BugImpl(++nextTaskID, title, description, stepsToReproduce, priority, severity, assignee);
-        bugs.add(bug);
 
+        bugs.add(bug);
         addTaskToBoard(bug, boardName, teamName);
+
         if (!assignee.equals(UNASSIGNED)) {
             addTaskToUser(bug, assignee);
         }
@@ -158,8 +162,8 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
     @Override
     public String addFeedback(String teamName, String boardName, String title, String description, int rating) {
         Feedback feedback = new FeedbackImpl(++nextTaskID, title, description, rating);
-        feedbacks.add(feedback);
 
+        feedbacks.add(feedback);
         addTaskToBoard(feedback, boardName, teamName);
 
         return String.format(TASK_ADDED_TO_BOARD, "Feedback", nextTaskID, boardName, teamName);
@@ -170,9 +174,10 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
                            Priority priority, Size size, String assignee) {
         checkIfAssigneeIsValid(teamName, assignee);
         Story story = new StoryImpl(++nextTaskID, title, description, priority, size, assignee);
-        stories.add(story);
 
+        stories.add(story);
         addTaskToBoard(story, boardName, teamName);
+
         if (!assignee.equals(UNASSIGNED)) {
             addTaskToUser(story, assignee);
         }
@@ -182,9 +187,9 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
 
     private void addTaskToUser(AssignableTask bug, String assignee) {
         User user = users.stream()
-                .filter(e -> e.getName().equals(assignee))
+                .filter(u -> u.getName().equals(assignee))
                 .findFirst()
-                .orElseThrow(() -> new InvalidUserInput());
+                .orElseThrow(() -> new InvalidUserInput(USER_DOES_NOT_EXIST));
 
         user.assignTask(bug);
     }
@@ -193,7 +198,7 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
         if (!assignee.equals(UNASSIGNED)) {
             findTeam(teamName).getUsers()
                     .stream()
-                    .filter(e -> e.getName().equals(assignee))
+                    .filter(user -> user.getName().equals(assignee))
                     .findFirst()
                     .orElseThrow(() -> new InvalidUserInput(String.format(USER_NOT_IN_TEAM, assignee, teamName)));
         }
@@ -208,8 +213,35 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
         Team team = findTeam(teamName);
         return team.getBoards()
                 .stream()
-                .filter(e -> e.getName().equals(boardName))
+                .filter(board -> board.getName().equals(boardName))
                 .findFirst()
                 .orElseThrow(() -> new InvalidUserInput(BOARD_DOES_NOT_EXIST));
+    }
+
+    @Override
+    public Task findTask(int taskID) {
+        return genericTaskFinder(taskID, getTasks());
+    }
+
+    @Override
+    public Bug findBug(int bugID) {
+        return genericTaskFinder(bugID, getBugs());
+    }
+
+    @Override
+    public Feedback findFeedback(int feedbackID) {
+        return genericTaskFinder(feedbackID, getFeedbacks());
+    }
+
+    @Override
+    public Story findStory(int storyID) {
+        return genericTaskFinder(storyID, getStories());
+    }
+
+    private <T extends Task> T genericTaskFinder(int taskID, List<T> tasks) {
+        return tasks.stream()
+                .filter(task -> task.getID() == taskID)
+                .findFirst()
+                .orElseThrow(() -> new InvalidUserInput(INVALID_ID));
     }
 }
