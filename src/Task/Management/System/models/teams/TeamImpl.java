@@ -2,6 +2,7 @@ package Task.Management.System.models.teams;
 
 import Task.Management.System.models.contracts.Changeable;
 import Task.Management.System.models.exceptions.InvalidUserInput;
+import Task.Management.System.models.tasks.contracts.Task;
 import Task.Management.System.models.teams.contracts.Board;
 import Task.Management.System.models.teams.contracts.Team;
 import Task.Management.System.models.teams.contracts.User;
@@ -96,6 +97,16 @@ public class TeamImpl implements Team {
         }
 
         users.remove(user);
+    }
+
+    @Override
+    public boolean containsTask(Task task) {
+        for (Board board : boards) {
+            if (board.getTasks().contains(task)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

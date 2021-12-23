@@ -22,7 +22,7 @@ public class ShowTeamUsersCommand extends BaseCommand {
             return String.format(NO_ITEMS_TO_DISPLAY, "users");
         }
         StringBuilder output = new StringBuilder();
-        team.getBoards().forEach(output::append);
+        team.getUsers().forEach(output::append);
         return output.toString().trim();
     }
 }

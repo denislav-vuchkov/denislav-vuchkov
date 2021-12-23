@@ -30,16 +30,14 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
 
     public static final String USER_NOT_IN_TEAM = "User %s does not exist in team %s.";
     public static final String INVALID_ID = "Invalid ID provided.";
-
+    public static final String CREATOR_SHOULD_BE_FROM_THE_TEAM = "The task creator should be a member of the team!";
     private static final String NOT_EXIST = "The %s does not exist! Create a %s with this name first.";
     public static final String TEAM_DOES_NOT_EXIST = String.format(NOT_EXIST, "team", "team");
     public static final String USER_DOES_NOT_EXIST = String.format(NOT_EXIST, "user", "user");
     public static final String BOARD_DOES_NOT_EXIST = String.format(NOT_EXIST, "board", "board");
-
     private static final String ALREADY_EXISTS = "This %s name already exists! Please choose a unique %s name.";
     public static final String TEAM_ALREADY_EXISTS = String.format(ALREADY_EXISTS, "team", "team");
     public static final String USER_ALREADY_EXISTS = String.format(ALREADY_EXISTS, "user", "user");
-
     private static long nextTaskID = 1;
     private final List<Team> teams;
     private final List<User> users;
@@ -222,29 +220,43 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
     }
 
     @Override
-    public Task findTask(int taskID) {
+    public Task findTask(long taskID) {
         return genericTaskFinder(taskID, getTasks());
     }
 
     @Override
-    public Bug findBug(int bugID) {
+    public Bug findBug(long bugID) {
         return genericTaskFinder(bugID, getBugs());
     }
 
     @Override
-    public Feedback findFeedback(int feedbackID) {
+    public Feedback findFeedback(long feedbackID) {
         return genericTaskFinder(feedbackID, getFeedbacks());
     }
 
     @Override
-    public Story findStory(int storyID) {
+    public Story findStory(long storyID) {
         return genericTaskFinder(storyID, getStories());
     }
 
-    private <T extends Task> T genericTaskFinder(int taskID, List<T> tasks) {
+    @Override
+    public AssignableTask findAssignableTask(long assignableTaskID) {
+        return genericTaskFinder(assignableTaskID, getAssignableTasks());
+    }
+
+    private <T extends Task> T genericTaskFinder(long taskID, List<T> tasks) {
         return tasks.stream()
                 .filter(task -> task.getID() == taskID)
                 .findFirst()
                 .orElseThrow(() -> new InvalidUserInput(INVALID_ID));
+    }
+
+    @Override
+    public void validateUserIsFromTeam(String userName, String teamName) {
+        User user = findUser(userName);
+        Team team = findTeam(teamName);
+        if (!team.getUsers().contains(user)) {
+            throw new InvalidUserInput(CREATOR_SHOULD_BE_FROM_THE_TEAM);
+        }
     }
 }

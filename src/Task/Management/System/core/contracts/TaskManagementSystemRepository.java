@@ -49,12 +49,16 @@ public interface TaskManagementSystemRepository {
 
     Board findBoard(String boardName, String teamName);
 
-    Task findTask(int taskID);
+    Task findTask(long taskID);
 
-    Bug findBug(int bugID);
+    Bug findBug(long bugID);
 
-    Feedback findFeedback(int feedbackID);
+    Feedback findFeedback(long feedbackID);
 
-    Story findStory(int taskID);
+    Story findStory(long taskID);
+
+    AssignableTask findAssignableTask(long assignableTaskID);
+
+    void validateUserIsFromTeam(String userName,String teamName);
 
 }

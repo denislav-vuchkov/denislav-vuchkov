@@ -24,6 +24,7 @@ public class CreateStoryCommand extends BaseCommand {
 
         User user = getRepository().findUser(parameters.get(0));
         String teamName = parameters.get(1);
+        getRepository().validateUserIsFromTeam(user.getName(), teamName);
         String boardName = parameters.get(2);
         String title = parameters.get(3);
         String description = parameters.get(4);
