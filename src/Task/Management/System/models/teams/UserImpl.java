@@ -1,7 +1,7 @@
 package Task.Management.System.models.teams;
 
-import Task.Management.System.models.ChangesLoggerImpl;
-import Task.Management.System.models.contracts.ChangesLogger;
+import Task.Management.System.models.EventLoggerImpl;
+import Task.Management.System.models.contracts.EventLogger;
 import Task.Management.System.models.exceptions.InvalidUserInput;
 import Task.Management.System.models.tasks.contracts.AssignableTask;
 import Task.Management.System.models.teams.contracts.User;
@@ -10,7 +10,7 @@ import Task.Management.System.utils.ValidationHelpers;
 import java.util.ArrayList;
 import java.util.List;
 
-import static Task.Management.System.models.contracts.ChangesLogger.CREATION_MESSAGE;
+import static Task.Management.System.models.contracts.EventLogger.CREATION_MESSAGE;
 
 public class UserImpl implements User {
 
@@ -20,15 +20,15 @@ public class UserImpl implements User {
     public static final String TASK_ALREADY_ASSIGNED_TO_USER = "%s with %d is already assigned to user %s";
     public static final String TASK_NOT_ASSIGNED_TO_USER = "%s with %d is not assigned to user %s";
 
-    private final ChangesLogger historyOfChanges;
+    private final EventLogger historyOfChanges;
     private final List<AssignableTask> tasks;
     private String name;
 
     public UserImpl(String name) {
         setName(name);
         tasks = new ArrayList<>();
-        historyOfChanges = new ChangesLoggerImpl();
-        historyOfChanges.addChange(
+        historyOfChanges = new EventLoggerImpl();
+        historyOfChanges.addEvent(
                 String.format(CREATION_MESSAGE,
                         getClass().getSimpleName().replace("Impl", ""),
                         getName()));
@@ -59,7 +59,7 @@ public class UserImpl implements User {
                             getName()));
         }
 
-        historyOfChanges.addChange(
+        historyOfChanges.addEvent(
                 String.format(USER_TASK_ASSIGNED,
                         task.getClass().getSimpleName().replace("Impl", ""),
                         task.getID(),
@@ -79,7 +79,7 @@ public class UserImpl implements User {
                             getName()));
         }
 
-        historyOfChanges.addChange(
+        historyOfChanges.addEvent(
                 String.format(USER_TASK_UNASSIGNED,
                         task.getClass().getSimpleName().replace("Impl", ""),
                         task.getID(),
@@ -91,13 +91,13 @@ public class UserImpl implements User {
 
 
     public void recordActivity(String description) {
-        historyOfChanges.addChange(description);
+        historyOfChanges.addEvent(description);
     }
 
 
     @Override
-    public String getHistory() {
-        return historyOfChanges.getCompleteHistory();
+    public String getLog() {
+        return historyOfChanges.getEvents();
     }
 
     @Override

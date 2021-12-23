@@ -1,8 +1,8 @@
-package Task.Management.System.models.tasks.contracts.small_contracts;
+package Task.Management.System.models.tasks.contracts.subcontracts;
 
 import Task.Management.System.models.tasks.enums.Priority;
 
-public interface Prioritisеable {
+public interface Prioritizable {
 
     Priority getPriority();
 

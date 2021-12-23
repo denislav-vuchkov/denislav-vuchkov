@@ -1,4 +1,4 @@
-package Task.Management.System.models.tasks.contracts.small_contracts;
+package Task.Management.System.models.tasks.contracts.subcontracts;
 
 import Task.Management.System.models.tasks.contracts.Comment;
 
@@ -10,6 +10,6 @@ public interface Commentable {
 
     List<Comment> getComments();
 
-    String displayComments();
+    String printComments();
 
 }

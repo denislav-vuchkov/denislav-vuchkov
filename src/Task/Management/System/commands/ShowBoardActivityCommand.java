@@ -18,6 +18,6 @@ public class ShowBoardActivityCommand extends BaseCommand {
         ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
         String boardName = parameters.get(0);
         String teamName = parameters.get(1);
-        return getRepository().findBoard(boardName, teamName).getHistory();
+        return getRepository().findBoard(boardName, teamName).getLog();
     }
 }

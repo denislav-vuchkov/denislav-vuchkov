@@ -1,4 +1,4 @@
-package Task.Management.System.models.teams.contracts;
+package Task.Management.System.models.teams.contracts.subcontracts;
 
 public interface Nameable {
 

@@ -1,11 +1,12 @@
 package Task.Management.System.models.teams.contracts;
 
-import Task.Management.System.models.contracts.Changeable;
+import Task.Management.System.models.contracts.Loggable;
 import Task.Management.System.models.tasks.contracts.Task;
+import Task.Management.System.models.teams.contracts.subcontracts.Nameable;
 
 import java.util.List;
 
-public interface Team extends Changeable,Nameable {
+public interface Team extends Loggable, Nameable {
 
     List<Board> getBoards();
 

@@ -7,8 +7,8 @@ import Task.Management.System.models.tasks.enums.Size;
 import Task.Management.System.models.tasks.enums.StoryStatus;
 import Task.Management.System.models.tasks.enums.Tasks;
 
-import static Task.Management.System.models.contracts.ChangesLogger.CHANGE_MESSAGE;
-import static Task.Management.System.models.contracts.ChangesLogger.IMPOSSIBLE_CHANGE_MESSAGE;
+import static Task.Management.System.models.contracts.EventLogger.CHANGE_MESSAGE;
+import static Task.Management.System.models.contracts.EventLogger.IMPOSSIBLE_CHANGE_MESSAGE;
 
 public class StoryImpl extends AssignableTaskImpl implements Story {
 
@@ -93,7 +93,7 @@ public class StoryImpl extends AssignableTaskImpl implements Story {
     }
 
     @Override
-    public String displayAllDetails() {
+    public String printDetails() {
         return String.format("Task type: %s%n" +
                         "%s" +
                         "Priority: %s%n" +
@@ -103,10 +103,10 @@ public class StoryImpl extends AssignableTaskImpl implements Story {
                         "%s" +
                         "%s",
                 this.getClass().getSimpleName().replace("Impl", ""),
-                super.displayAllDetails(),
+                super.printDetails(),
                 getPriority(), getSize(), getStatus(), getAssignee(),
-                displayComments(),
-                getHistory());
+                printComments(),
+                getLog());
     }
 
     @Override

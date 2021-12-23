@@ -1,4 +1,4 @@
-package Task.Management.System.models.tasks.contracts.small_contracts;
+package Task.Management.System.models.tasks.contracts.subcontracts;
 
 public interface Titleable {
 

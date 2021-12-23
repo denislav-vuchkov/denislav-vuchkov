@@ -1,6 +1,6 @@
 package Task.Management.System.models.teams;
 
-import Task.Management.System.models.contracts.Changeable;
+import Task.Management.System.models.contracts.Loggable;
 import Task.Management.System.models.exceptions.InvalidUserInput;
 import Task.Management.System.models.tasks.contracts.Task;
 import Task.Management.System.models.teams.contracts.Board;
@@ -110,7 +110,7 @@ public class TeamImpl implements Team {
     }
 
     @Override
-    public String getHistory() {
+    public String getLog() {
 
         StringBuilder history = new StringBuilder(String.format(TEAM_HISTORY_HEADER,
                 this.getClass().getSimpleName().replace("Impl", ""), getName()))
@@ -121,7 +121,7 @@ public class TeamImpl implements Team {
         } else {
             history.append(getUsers()
                     .stream()
-                    .map(Changeable::getHistory)
+                    .map(Loggable::getLog)
                     .collect(Collectors.joining(System.lineSeparator())));
         }
         return history.toString().trim();

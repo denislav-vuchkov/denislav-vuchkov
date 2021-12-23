@@ -3,7 +3,7 @@ package Task.Management.System.models.teams;
 import Task.Management.System.models.exceptions.InvalidUserInput;
 import Task.Management.System.models.tasks.contracts.Task;
 import Task.Management.System.models.teams.contracts.Board;
-import Task.Management.System.models.teams.contracts.Nameable;
+import Task.Management.System.models.teams.contracts.subcontracts.Nameable;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,8 +14,8 @@ import java.util.List;
 
 import static Task.Management.System.models.Factory.*;
 import static Task.Management.System.models.TestData.BoardImpl.VALID_BOARD_NAME;
-import static Task.Management.System.models.teams.contracts.Nameable.NAME_MAX_LENGTH;
-import static Task.Management.System.models.teams.contracts.Nameable.NAME_MIN_LENGTH;
+import static Task.Management.System.models.teams.contracts.subcontracts.Nameable.NAME_MAX_LENGTH;
+import static Task.Management.System.models.teams.contracts.subcontracts.Nameable.NAME_MIN_LENGTH;
 
 public class BoardImpl_Tests {
 
@@ -35,7 +35,7 @@ public class BoardImpl_Tests {
     @Test
     public void constructor_Should_Initialise_When_ValidInput() {
         Assertions.assertDoesNotThrow(() -> new BoardImpl(VALID_BOARD_NAME));
-        Assertions.assertTrue(board.getTasks().isEmpty() && board.getHistory() != null);
+        Assertions.assertTrue(board.getTasks().isEmpty() && board.getLog() != null);
     }
 
     @ParameterizedTest(name = "with length {0" +

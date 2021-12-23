@@ -1,10 +1,8 @@
 package Task.Management.System.models.teams;
 
-import Task.Management.System.models.TestData;
 import Task.Management.System.models.exceptions.InvalidUserInput;
-import Task.Management.System.models.tasks.contracts.Task;
 import Task.Management.System.models.teams.contracts.Board;
-import Task.Management.System.models.teams.contracts.Nameable;
+import Task.Management.System.models.teams.contracts.subcontracts.Nameable;
 import Task.Management.System.models.teams.contracts.Team;
 import Task.Management.System.models.teams.contracts.User;
 import org.junit.jupiter.api.Assertions;
@@ -18,8 +16,8 @@ import java.util.List;
 import static Task.Management.System.models.Factory.*;
 import static Task.Management.System.models.TestData.BoardImpl.VALID_BOARD_NAME;
 import static Task.Management.System.models.TestData.TeamImpl.VALID_TEAM_NAME;
-import static Task.Management.System.models.teams.contracts.Nameable.NAME_MAX_LENGTH;
-import static Task.Management.System.models.teams.contracts.Nameable.NAME_MIN_LENGTH;
+import static Task.Management.System.models.teams.contracts.subcontracts.Nameable.NAME_MAX_LENGTH;
+import static Task.Management.System.models.teams.contracts.subcontracts.Nameable.NAME_MIN_LENGTH;
 
 public class TeamImpl_Tests {
 
@@ -39,7 +37,7 @@ public class TeamImpl_Tests {
         Assertions.assertDoesNotThrow(() -> new TeamImpl(VALID_BOARD_NAME));
         Assertions.assertTrue(team.getBoards().size() == 0 &&
                 team.getUsers().size() == 0 &&
-                board.getHistory() != null);
+                board.getLog() != null);
     }
 
     @ParameterizedTest(name = "with length {0}")

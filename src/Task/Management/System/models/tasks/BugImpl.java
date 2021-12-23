@@ -9,8 +9,8 @@ import Task.Management.System.models.tasks.enums.Tasks;
 
 import java.util.List;
 
-import static Task.Management.System.models.contracts.ChangesLogger.CHANGE_MESSAGE;
-import static Task.Management.System.models.contracts.ChangesLogger.IMPOSSIBLE_CHANGE_MESSAGE;
+import static Task.Management.System.models.contracts.EventLogger.CHANGE_MESSAGE;
+import static Task.Management.System.models.contracts.EventLogger.IMPOSSIBLE_CHANGE_MESSAGE;
 
 public class BugImpl extends AssignableTaskImpl implements Bug {
 
@@ -134,7 +134,7 @@ public class BugImpl extends AssignableTaskImpl implements Bug {
     }
 
     @Override
-    public String displayAllDetails() {
+    public String printDetails() {
         return String.format("Task type: %s%n" +
                         "%s" +
                         "Priority: %s%n" +
@@ -145,11 +145,11 @@ public class BugImpl extends AssignableTaskImpl implements Bug {
                         "%s" +
                         "%s",
                 this.getClass().getSimpleName().replace("Impl", ""),
-                super.displayAllDetails(),
+                super.printDetails(),
                 getPriority(), getSeverity(), getStatus(), getAssignee(),
                 getStepsToReproduce(),
-                displayComments(),
-                getHistory());
+                printComments(),
+                getLog());
     }
 
     @Override

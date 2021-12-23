@@ -1,9 +1,11 @@
 package Task.Management.System.models.teams.contracts;
 
-import Task.Management.System.models.contracts.Changeable;
+import Task.Management.System.models.contracts.Loggable;
 import Task.Management.System.models.tasks.contracts.AssignableTask;
+import Task.Management.System.models.teams.contracts.subcontracts.Nameable;
+import Task.Management.System.models.teams.contracts.subcontracts.TaskHandler;
 
-public interface User extends Changeable, Nameable, TaskHandler<AssignableTask> {
+public interface User extends Loggable, Nameable, TaskHandler<AssignableTask> {
 
     void recordActivity(String description);
 

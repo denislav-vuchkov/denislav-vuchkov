@@ -1,8 +1,8 @@
 package Task.Management.System.models.tasks.contracts;
 
-import Task.Management.System.models.tasks.contracts.small_contracts.Prioritisеable;
+import Task.Management.System.models.tasks.contracts.subcontracts.Prioritizable;
 
-public interface AssignableTask extends Task, Prioritisеable {
+public interface AssignableTask extends Task, Prioritizable {
 
     String getAssignee();
 

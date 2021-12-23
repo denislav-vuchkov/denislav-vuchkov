@@ -5,8 +5,8 @@ import Task.Management.System.models.tasks.contracts.AssignableTask;
 import Task.Management.System.models.tasks.enums.Priority;
 import Task.Management.System.models.tasks.enums.Tasks;
 
-import static Task.Management.System.models.contracts.ChangesLogger.CHANGE_MESSAGE;
-import static Task.Management.System.models.contracts.ChangesLogger.IMPOSSIBLE_CHANGE_MESSAGE;
+import static Task.Management.System.models.contracts.EventLogger.CHANGE_MESSAGE;
+import static Task.Management.System.models.contracts.EventLogger.IMPOSSIBLE_CHANGE_MESSAGE;
 
 public abstract class AssignableTaskImpl extends TaskBase implements AssignableTask {
 

@@ -9,7 +9,7 @@ import java.util.List;
 
 import static Task.Management.System.models.tasks.BugImpl.*;
 import static Task.Management.System.models.tasks.FeedbackImpl.*;
-import static Task.Management.System.models.teams.contracts.Nameable.*;
+import static Task.Management.System.models.teams.contracts.subcontracts.Nameable.*;
 
 public class TestData {
 

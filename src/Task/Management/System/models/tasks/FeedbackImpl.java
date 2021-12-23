@@ -6,8 +6,8 @@ import Task.Management.System.models.tasks.enums.FeedbackStatus;
 import Task.Management.System.models.tasks.enums.Tasks;
 import Task.Management.System.utils.ValidationHelpers;
 
-import static Task.Management.System.models.contracts.ChangesLogger.CHANGE_MESSAGE;
-import static Task.Management.System.models.contracts.ChangesLogger.IMPOSSIBLE_CHANGE_MESSAGE;
+import static Task.Management.System.models.contracts.EventLogger.CHANGE_MESSAGE;
+import static Task.Management.System.models.contracts.EventLogger.IMPOSSIBLE_CHANGE_MESSAGE;
 
 public class FeedbackImpl extends TaskBase implements Feedback {
 
@@ -107,7 +107,7 @@ public class FeedbackImpl extends TaskBase implements Feedback {
     }
 
     @Override
-    public String displayAllDetails() {
+    public String printDetails() {
         return String.format("Task type: %s%n" +
                         "%s" +
                         "Rating: %d%n" +
@@ -115,11 +115,11 @@ public class FeedbackImpl extends TaskBase implements Feedback {
                         "%s" +
                         "%s",
                 this.getClass().getSimpleName().replace("Impl", ""),
-                super.displayAllDetails(),
+                super.printDetails(),
                 getRating(),
                 getStatus(),
-                displayComments(),
-                getHistory());
+                printComments(),
+                getLog());
     }
 
     @Override

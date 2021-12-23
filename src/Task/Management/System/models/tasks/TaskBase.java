@@ -1,7 +1,7 @@
 package Task.Management.System.models.tasks;
 
-import Task.Management.System.models.ChangesLoggerImpl;
-import Task.Management.System.models.contracts.ChangesLogger;
+import Task.Management.System.models.EventLoggerImpl;
+import Task.Management.System.models.contracts.EventLogger;
 import Task.Management.System.models.exceptions.InvalidUserInput;
 import Task.Management.System.models.tasks.contracts.Comment;
 import Task.Management.System.models.tasks.contracts.Task;
@@ -11,7 +11,7 @@ import Task.Management.System.utils.ValidationHelpers;
 import java.util.ArrayList;
 import java.util.List;
 
-import static Task.Management.System.models.contracts.ChangesLogger.*;
+import static Task.Management.System.models.contracts.EventLogger.*;
 
 public abstract class TaskBase implements Task {
 
@@ -32,7 +32,7 @@ public abstract class TaskBase implements Task {
 
     private final long id;
     private final List<Comment> comments;
-    private final ChangesLogger historyOfChanges;
+    private final EventLogger historyOfChanges;
     private String title;
     private String description;
 
@@ -42,7 +42,7 @@ public abstract class TaskBase implements Task {
         setTitle(title);
         setDescription(description);
         this.comments = new ArrayList<>();
-        this.historyOfChanges = new ChangesLoggerImpl();
+        this.historyOfChanges = new EventLoggerImpl();
 
         addChangeToHistory(String.format(CREATION_MESSAGE,
                 super.getClass().getSimpleName().replace("Base", ""),
@@ -69,7 +69,7 @@ public abstract class TaskBase implements Task {
         if (this.title.equals(title)) {
             throw new InvalidUserInput(String.format(IMPOSSIBLE_CHANGE_MESSAGE, "Title", this.title));
         }
-        historyOfChanges.addChange(String.format(CHANGE_MESSAGE, "Title", this.title, title));
+        historyOfChanges.addEvent(String.format(CHANGE_MESSAGE, "Title", this.title, title));
         this.title = title;
     }
 
@@ -91,7 +91,7 @@ public abstract class TaskBase implements Task {
         if (this.description.equals(description)) {
             throw new InvalidUserInput(String.format(IMPOSSIBLE_CHANGE_MESSAGE, "Description", this.description));
         }
-        historyOfChanges.addChange(String.format(CHANGE_MESSAGE, "Description", this.description, description));
+        historyOfChanges.addEvent(String.format(CHANGE_MESSAGE, "Description", this.description, description));
         this.description = description;
     }
 
@@ -106,7 +106,7 @@ public abstract class TaskBase implements Task {
     }
 
     @Override
-    public String displayComments() {
+    public String printComments() {
         StringBuilder output = new StringBuilder();
 
         if (comments.isEmpty()) {
@@ -121,19 +121,19 @@ public abstract class TaskBase implements Task {
     }
 
     @Override
-    public String getHistory() {
+    public String getLog() {
         return String.format("%s%n%s%s",
                 HISTORY_HEADER,
-                historyOfChanges.getCompleteHistory(),
+                historyOfChanges.getEvents(),
                 HISTORY_HEADER);
     }
 
     protected void addChangeToHistory(String description) {
-        historyOfChanges.addChange(description);
+        historyOfChanges.addEvent(description);
     }
 
     @Override
-    public String displayAllDetails() {
+    public String printDetails() {
         return String.format("ID: %d%n" +
                         "Title: %s%n" +
                         "Description: %s%n",

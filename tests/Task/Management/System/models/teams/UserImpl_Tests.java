@@ -2,7 +2,7 @@ package Task.Management.System.models.teams;
 
 import Task.Management.System.models.exceptions.InvalidUserInput;
 import Task.Management.System.models.tasks.contracts.AssignableTask;
-import Task.Management.System.models.teams.contracts.Nameable;
+import Task.Management.System.models.teams.contracts.subcontracts.Nameable;
 import Task.Management.System.models.teams.contracts.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,8 +15,8 @@ import java.util.List;
 import static Task.Management.System.models.Factory.createBug;
 import static Task.Management.System.models.Factory.createStory;
 import static Task.Management.System.models.TestData.UserImpl.VALID_USER_NAME;
-import static Task.Management.System.models.teams.contracts.Nameable.NAME_MAX_LENGTH;
-import static Task.Management.System.models.teams.contracts.Nameable.NAME_MIN_LENGTH;
+import static Task.Management.System.models.teams.contracts.subcontracts.Nameable.NAME_MAX_LENGTH;
+import static Task.Management.System.models.teams.contracts.subcontracts.Nameable.NAME_MIN_LENGTH;
 
 public class UserImpl_Tests {
 
@@ -34,7 +34,7 @@ public class UserImpl_Tests {
     @Test
     public void constructor_Should_Initialise_When_ValidInput() {
         Assertions.assertDoesNotThrow(() -> new UserImpl(VALID_USER_NAME));
-        Assertions.assertTrue(user.getTasks().isEmpty() && user.getHistory() != null);
+        Assertions.assertTrue(user.getTasks().isEmpty() && user.getLog() != null);
     }
 
     @ParameterizedTest(name = "with length {0}")

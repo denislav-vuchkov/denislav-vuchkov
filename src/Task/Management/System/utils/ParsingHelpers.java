@@ -3,7 +3,7 @@ package Task.Management.System.utils;
 import Task.Management.System.models.exceptions.InvalidUserInput;
 
 public class ParsingHelpers {
-    public static final String NO_SUCH_ENUM = "There is no %s in %ss.";
+    public static final String NO_SUCH_ENUM = "%s is not a valid %s type.";
 
     public static int tryParseInt(String valueToParse, String errorMessage) {
         try {
