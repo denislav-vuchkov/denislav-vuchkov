@@ -29,7 +29,7 @@ public class CreateStoryCommand extends BaseCommand {
         String description = parameters.get(4);
         Priority priority = ParsingHelpers.tryParseEnum(parameters.get(5), Priority.class);
         Size size = ParsingHelpers.tryParseEnum(parameters.get(6), Size.class);
-        String assignee = parameters.get(7).isEmpty() ? UNASSIGNED : parameters.get(7);
+        String assignee = parameters.get(7);
 
         user.recordActivity(String.format(USER_CREATED_TASK, user.getName(), "Story", boardName));
 

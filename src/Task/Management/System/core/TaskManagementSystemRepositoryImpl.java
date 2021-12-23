@@ -40,7 +40,7 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
     public static final String TEAM_ALREADY_EXISTS = String.format(ALREADY_EXISTS, "team", "team");
     public static final String USER_ALREADY_EXISTS = String.format(ALREADY_EXISTS, "user", "user");
 
-    private static int nextTaskID = 0;
+    private static long nextTaskID = 1;
     private final List<Team> teams;
     private final List<User> users;
     private final List<Bug> bugs;
@@ -147,42 +147,45 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
     public String addBug(String teamName, String boardName, String title, String description,
                          List<String> stepsToReproduce, Priority priority, Severity severity, String assignee) {
         checkIfAssigneeIsValid(teamName, assignee);
-        Bug bug = new BugImpl(++nextTaskID, title, description, stepsToReproduce, priority, severity, assignee);
+        Bug bug = new BugImpl(nextTaskID, title, description, stepsToReproduce, priority, severity);
 
-        bugs.add(bug);
         addTaskToBoard(bug, boardName, teamName);
-
-        if (!assignee.equals(UNASSIGNED)) {
+        if (!assignee.isEmpty()) {
             addTaskToUser(bug, assignee);
         }
 
-        return String.format(TASK_ADDED_TO_BOARD, "Bug", nextTaskID, boardName, teamName);
+        bugs.add(bug);
+        nextTaskID++;
+
+        return String.format(TASK_ADDED_TO_BOARD, "Bug", bug.getID(), boardName, teamName);
     }
 
     @Override
     public String addFeedback(String teamName, String boardName, String title, String description, int rating) {
-        Feedback feedback = new FeedbackImpl(++nextTaskID, title, description, rating);
+        Feedback feedback = new FeedbackImpl(nextTaskID, title, description, rating);
 
-        feedbacks.add(feedback);
         addTaskToBoard(feedback, boardName, teamName);
+        feedbacks.add(feedback);
+        nextTaskID++;
 
-        return String.format(TASK_ADDED_TO_BOARD, "Feedback", nextTaskID, boardName, teamName);
+        return String.format(TASK_ADDED_TO_BOARD, "Feedback", feedback.getID(), boardName, teamName);
     }
 
     @Override
     public String addStory(String teamName, String boardName, String title, String description,
                            Priority priority, Size size, String assignee) {
         checkIfAssigneeIsValid(teamName, assignee);
-        Story story = new StoryImpl(++nextTaskID, title, description, priority, size, assignee);
+        Story story = new StoryImpl(nextTaskID, title, description, priority, size);
 
-        stories.add(story);
         addTaskToBoard(story, boardName, teamName);
-
-        if (!assignee.equals(UNASSIGNED)) {
+        if (!assignee.isEmpty()) {
             addTaskToUser(story, assignee);
         }
 
-        return String.format(TASK_ADDED_TO_BOARD, "Story", nextTaskID, boardName, teamName);
+        stories.add(story);
+        nextTaskID++;
+
+        return String.format(TASK_ADDED_TO_BOARD, "Story", story.getID(), boardName, teamName);
     }
 
     private void addTaskToUser(AssignableTask bug, String assignee) {

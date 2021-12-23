@@ -21,8 +21,7 @@ public class StoryImpl_Tests {
                 "Not Too Short",
                 "Just Right Length",
                 Priority.MEDIUM,
-                Size.MEDIUM,
-                "Mr_No_One");
+                Size.MEDIUM);
     }
 
     @Test
@@ -33,7 +32,6 @@ public class StoryImpl_Tests {
         Assertions.assertEquals("Just Right Length", myStory.getDescription());
         Assertions.assertEquals(Priority.MEDIUM, myStory.getPriority());
         Assertions.assertEquals(Size.MEDIUM, myStory.getSize());
-        Assertions.assertEquals("Mr_No_One", myStory.getAssignee());
         Assertions.assertEquals(StoryStatus.NOT_DONE.toString(), myStory.getStatus());
 
         myStory.setTitle("New Valid Title");
@@ -48,8 +46,7 @@ public class StoryImpl_Tests {
                 "Too Short",
                 "Long Enough Description",
                 Priority.LOW,
-                Size.SMALL,
-                "User10"));
+                Size.SMALL));
 
     }
 
@@ -61,8 +58,7 @@ public class StoryImpl_Tests {
                 "Not Too Short",
                 "Too Short",
                 Priority.MEDIUM,
-                Size.MEDIUM,
-                "User10"));
+                Size.MEDIUM));
 
     }
 

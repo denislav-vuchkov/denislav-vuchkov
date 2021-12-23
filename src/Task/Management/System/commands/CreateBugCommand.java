@@ -34,7 +34,7 @@ public class CreateBugCommand extends BaseCommand {
                 .collect(Collectors.toList());
         Priority priority = ParsingHelpers.tryParseEnum(parameters.get(6), Priority.class);
         Severity severity = ParsingHelpers.tryParseEnum(parameters.get(7), Severity.class);
-        String assignee = parameters.get(8).isEmpty() ? UNASSIGNED : parameters.get(8);
+        String assignee = parameters.get(8);
 
         user.recordActivity(String.format(USER_CREATED_TASK, user.getName(), "Bug", boardName));
 

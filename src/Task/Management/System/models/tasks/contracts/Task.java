@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface Task extends Changeable {
 
-    int getID();
+    long getID();
 
     String getTitle();
 

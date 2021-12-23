@@ -30,14 +30,14 @@ public abstract class TaskBase implements Task {
     public static final String HISTORY_HEADER = "--HISTORY--";
     public static final String NO_COMMENTS_HEADER = "--NO COMMENTS--";
 
-    private final int id;
+    private final long id;
     private final List<Comment> comments;
     private final ChangesLogger historyOfChanges;
     private String title;
     private String description;
 
 
-    public TaskBase(int id, Tasks tasksType, String title, String description) {
+    public TaskBase(long id, Tasks tasksType, String title, String description) {
         this.id = id;
         setTitle(title);
         setDescription(description);
@@ -50,7 +50,7 @@ public abstract class TaskBase implements Task {
     }
 
     @Override
-    public int getID() {
+    public long getID() {
         return id;
     }
 

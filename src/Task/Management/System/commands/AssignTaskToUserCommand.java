@@ -46,8 +46,6 @@ public class AssignTaskToUserCommand extends BaseCommand {
 
         String currentAssigneeName = task.getAssignee();
 
-        task.setAssignee(newAssigneeName);
-
         if (!currentAssigneeName.equals(UNASSIGNED)) {
             User currentAssignee = getRepository().findUser(currentAssigneeName);
             currentAssignee.unAssignTask(task);

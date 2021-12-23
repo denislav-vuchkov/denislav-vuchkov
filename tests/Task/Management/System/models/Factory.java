@@ -31,11 +31,11 @@ public class Factory {
 
     public static Bug createBug() {
         return new BugImpl(++nextID, VALID_TITLE, VALID_DESCRIPTION, STEPS_TO_REPRODUCE,
-                VALID_PRIORITY, VALID_SEVERITY, VALID_ASSIGNEE);
+                VALID_PRIORITY, VALID_SEVERITY);
     }
 
     public static Story createStory() {
-        return new StoryImpl(++nextID, VALID_TITLE, VALID_DESCRIPTION, VALID_PRIORITY, VALID_SIZE, VALID_ASSIGNEE);
+        return new StoryImpl(++nextID, VALID_TITLE, VALID_DESCRIPTION, VALID_PRIORITY, VALID_SIZE);
     }
 
     public static Feedback createFeedback() {

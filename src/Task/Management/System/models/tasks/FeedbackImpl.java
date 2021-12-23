@@ -23,7 +23,7 @@ public class FeedbackImpl extends TaskBase implements Feedback {
     private FeedbackStatus status;
     private int rating = RATING_UNINITIALIZED;
 
-    public FeedbackImpl(int id, String title, String description, int rating) {
+    public FeedbackImpl(long id, String title, String description, int rating) {
         super(id, Tasks.FEEDBACK, title, description);
         setRating(rating);
         setStatus(FeedbackStatus.NEW);

@@ -24,8 +24,7 @@ public class BugImpl_Tests {
                 "Just Right Length",
                 List.of("Nothing", "Works", "Help"),
                 Priority.MEDIUM,
-                Severity.MAJOR,
-                "User10");
+                Severity.MAJOR);
     }
 
     @Test
@@ -36,7 +35,6 @@ public class BugImpl_Tests {
         Assertions.assertEquals("Just Right Length", myBug.getDescription());
         Assertions.assertEquals(Priority.MEDIUM, myBug.getPriority());
         Assertions.assertEquals(Severity.MAJOR, myBug.getSeverity());
-        Assertions.assertEquals("User10", myBug.getAssignee());
         Assertions.assertEquals(BugStatus.ACTIVE.toString(), myBug.getStatus());
 
         String stepsOutput = "--STEPS TO REPRODUCE--\n" +
@@ -60,8 +58,7 @@ public class BugImpl_Tests {
                 "Long Enough Description",
                 List.of("Nothing", "Works", "Help"),
                 Priority.LOW,
-                Severity.MINOR,
-                "User10"));
+                Severity.MINOR));
 
     }
 
@@ -74,8 +71,7 @@ public class BugImpl_Tests {
                 "Too Short",
                 List.of("Nothing", "Works", "Help"),
                 Priority.LOW,
-                Severity.MINOR,
-                "User10"));
+                Severity.MINOR));
 
     }
 

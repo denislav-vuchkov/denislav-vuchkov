@@ -16,10 +16,10 @@ public abstract class AssignableTaskImpl extends TaskBase implements AssignableT
     private Priority priority;
     private String assignee;
 
-    public AssignableTaskImpl(int id, Tasks tasksType, String title, String description, Priority priority, String assignee) {
+    public AssignableTaskImpl(long id, Tasks tasksType, String title, String description, Priority priority) {
         super(id, tasksType, title, description);
         setPriority(priority);
-        setAssignee(assignee);
+        setAssignee(UNASSIGNED);
     }
 
     @Override
