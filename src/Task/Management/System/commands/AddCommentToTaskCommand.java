@@ -11,7 +11,7 @@ public class AddCommentToTaskCommand extends BaseCommand {
 
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 3;
     public static final String INVALID_ID = "Invalid ID provided.";
-    public static final String COMMENT_SUCCESSFULLY_ADDED = "Comment by %s added to Task with ID=%d.";
+    public static final String COMMENT_SUCCESSFULLY_ADDED = "Comment by %s added to Task ID %d.";
 
     public AddCommentToTaskCommand(TaskManagementSystemRepository repository) {
         super(repository);
