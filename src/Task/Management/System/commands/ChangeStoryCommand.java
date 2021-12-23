@@ -8,6 +8,7 @@ import Task.Management.System.models.tasks.enums.Size;
 import Task.Management.System.models.tasks.enums.StoryStatus;
 import Task.Management.System.models.teams.contracts.User;
 import Task.Management.System.utils.ParsingHelpers;
+import Task.Management.System.utils.ValidationHelpers;
 
 import java.util.List;
 
@@ -21,6 +22,7 @@ public class ChangeStoryCommand extends BaseCommand {
 
     @Override
     protected String executeCommand(List<String> parameters) {
+        ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
 
         User user = getRepository().findUser(parameters.get(0).trim());
         int storyID = ParsingHelpers.tryParseInt(parameters.get(1), INVALID_ID);

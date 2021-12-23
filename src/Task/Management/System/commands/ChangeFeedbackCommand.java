@@ -21,6 +21,7 @@ public class ChangeFeedbackCommand extends BaseCommand {
 
     @Override
     protected String executeCommand(List<String> parameters) {
+        ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
 
         User user = getRepository().findUser(parameters.get(0).trim());
         int feedbackID = ParsingHelpers.tryParseInt(parameters.get(1), INVALID_ID);
