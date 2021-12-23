@@ -124,8 +124,8 @@ public class FeedbackImpl extends TaskBase implements Feedback {
 
     @Override
     public String toString() {
-        return String.format("Task type: %s - Title: %s - Rating: %s - Status: %s",
+        return String.format("Task type: %s - ID: %d - Title: %s - Rating: %s - Status: %s",
                 this.getClass().getSimpleName().replace("Impl", ""),
-                getTitle(), getRating(), getStatus());
+                getID(), getTitle(), getRating(), getStatus());
     }
 }

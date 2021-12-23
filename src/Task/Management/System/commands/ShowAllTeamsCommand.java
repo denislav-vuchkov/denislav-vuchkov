@@ -5,6 +5,7 @@ import Task.Management.System.models.teams.contracts.Team;
 import Task.Management.System.utils.ValidationHelpers;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ShowAllTeamsCommand extends BaseCommand {
 
@@ -21,8 +22,9 @@ public class ShowAllTeamsCommand extends BaseCommand {
         if (teams.isEmpty()) {
             return String.format(NO_ITEMS_TO_DISPLAY, "teams");
         }
-        StringBuilder output = new StringBuilder();
-        teams.forEach(output::append);
-        return output.toString().trim();
+        return teams
+                .stream()
+                .map(Team::toString)
+                .collect(Collectors.joining(System.lineSeparator()));
     }
 }

@@ -1,10 +1,12 @@
 package Task.Management.System.commands;
 
 import Task.Management.System.core.contracts.TaskManagementSystemRepository;
+import Task.Management.System.models.teams.contracts.Board;
 import Task.Management.System.models.teams.contracts.Team;
 import Task.Management.System.utils.ValidationHelpers;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ShowTeamBoardsCommand extends BaseCommand {
 
@@ -21,8 +23,9 @@ public class ShowTeamBoardsCommand extends BaseCommand {
         if (team.getBoards().isEmpty()) {
             return String.format(NO_ITEMS_TO_DISPLAY, "boards");
         }
-        StringBuilder output = new StringBuilder();
-        team.getBoards().forEach(output::append);
-        return output.toString().trim();
+        return team.getBoards()
+                .stream()
+                .map(Board::toString)
+                .collect(Collectors.joining(System.lineSeparator()));
     }
 }

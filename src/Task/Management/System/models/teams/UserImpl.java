@@ -21,12 +21,12 @@ public class UserImpl implements User {
     public static final String TASK_NOT_ASSIGNED_TO_USER = "%s with %d is not assigned to user %s";
 
     private final ChangesLogger historyOfChanges;
-    private final List<AssignableTask> assignedTasks;
+    private final List<AssignableTask> tasks;
     private String name;
 
     public UserImpl(String name) {
         setName(name);
-        assignedTasks = new ArrayList<>();
+        tasks = new ArrayList<>();
         historyOfChanges = new ChangesLoggerImpl();
         historyOfChanges.addChange(
                 String.format(CREATION_MESSAGE,
@@ -45,18 +45,13 @@ public class UserImpl implements User {
     }
 
     @Override
-    public List<AssignableTask> getAssignedTasks() {
-        return new ArrayList<>(assignedTasks);
+    public List<AssignableTask> getTasks() {
+        return new ArrayList<>(tasks);
     }
 
     @Override
-    public void recordActivity(String description) {
-        historyOfChanges.addChange(description);
-    }
-
-    @Override
-    public void assignTask(AssignableTask task) {
-        if (assignedTasks.contains(task)) {
+    public void addTask(AssignableTask task) {
+        if (tasks.contains(task)) {
             throw new InvalidUserInput(
                     String.format(TASK_ALREADY_ASSIGNED_TO_USER,
                             task.getClass().getSimpleName().replace("Impl", ""),
@@ -71,12 +66,12 @@ public class UserImpl implements User {
                         getName()));
 
         task.setAssignee(getName());
-        assignedTasks.add(task);
+        tasks.add(task);
     }
 
     @Override
-    public void unAssignTask(AssignableTask task) {
-        if (!assignedTasks.contains(task)) {
+    public void removeTask(AssignableTask task) {
+        if (!tasks.contains(task)) {
             throw new InvalidUserInput(
                     String.format(TASK_NOT_ASSIGNED_TO_USER,
                             task.getClass().getSimpleName().replace("Impl", ""),
@@ -91,8 +86,14 @@ public class UserImpl implements User {
                         getName()));
 
         task.unAssign();
-        assignedTasks.remove(task);
+        tasks.remove(task);
     }
+
+
+    public void recordActivity(String description) {
+        historyOfChanges.addChange(description);
+    }
+
 
     @Override
     public String getHistory() {
@@ -101,8 +102,8 @@ public class UserImpl implements User {
 
     @Override
     public String toString() {
-        return String.format("User: %s - Tasks: %d%n",
+        return String.format("User: %s - Tasks: %d",
                 getName(),
-                getAssignedTasks().size());
+                getTasks().size());
     }
 }

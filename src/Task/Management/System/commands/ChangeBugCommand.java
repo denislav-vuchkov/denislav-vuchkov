@@ -25,13 +25,13 @@ public class ChangeBugCommand extends BaseCommand {
         ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
 
         User user = getRepository().findUser(parameters.get(0).trim());
-        int bugID = ParsingHelpers.tryParseInt(parameters.get(1), INVALID_ID);
-        String propertyToChange = parameters.get(2).trim();
+        long ID = ParsingHelpers.tryParseLong(parameters.get(1), INVALID_ID);
+        Bug bug = getRepository().findBug(ID);
+        getRepository().validateUserAndTaskAreFromTheSameTeam(user.getName(), bug.getID());
+        String propertyToChange = parameters.get(2).trim().toUpperCase();
         String newValue = parameters.get(3).toUpperCase();
 
-        Bug bug = getRepository().findBug(bugID);
-
-        switch (propertyToChange.toUpperCase()) {
+        switch (propertyToChange) {
             case "PRIORITY":
                 Priority priority = ParsingHelpers.tryParseEnum(newValue, Priority.class);
                 bug.setPriority(priority);
@@ -48,9 +48,8 @@ public class ChangeBugCommand extends BaseCommand {
                 throw new InvalidUserInput(INVALID_PROPERTY);
         }
 
-        user.recordActivity(
-                String.format(RECORD_ACTIVITY, user.getName(), propertyToChange, "Bug", bugID, newValue));
-
-        return String.format(PROPERTY_UPDATED, propertyToChange, "Bug", bugID, newValue);
+        String result = String.format(RECORD_ACTIVITY, user.getName(), propertyToChange, "Bug", ID, newValue);
+        user.recordActivity(result);
+        return result;
     }
 }

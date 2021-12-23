@@ -24,14 +24,14 @@ public class ChangeFeedbackCommand extends BaseCommand {
         ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
 
         User user = getRepository().findUser(parameters.get(0).trim());
-        int feedbackID = ParsingHelpers.tryParseInt(parameters.get(1), INVALID_ID);
-        String propertyToChange = parameters.get(2).trim();
+        int ID = ParsingHelpers.tryParseInt(parameters.get(1), INVALID_ID);
+        Feedback feedback = getRepository().findFeedback(ID);
+        getRepository().validateUserAndTaskAreFromTheSameTeam(user.getName(), feedback.getID());
+        String propertyToChange = parameters.get(2).trim().toUpperCase();
         String newValue = parameters.get(3).toUpperCase();
 
-        Feedback feedback = getRepository().findFeedback(feedbackID);
-
-        switch (propertyToChange.toUpperCase()) {
-            case "Rating":
+        switch (propertyToChange) {
+            case "RATING":
                 int rating = ParsingHelpers.tryParseInt(newValue, FEEDBACK_RATING_ERROR);
                 ValidationHelpers.validateIntRange(
                         rating, FeedbackImpl.RATING_MIN, FeedbackImpl.RATING_MAX, FEEDBACK_RATING_ERROR);
@@ -45,10 +45,9 @@ public class ChangeFeedbackCommand extends BaseCommand {
                 throw new InvalidUserInput(INVALID_PROPERTY);
         }
 
-        user.recordActivity(
-                String.format(RECORD_ACTIVITY, user.getName(), propertyToChange, "Feedback", feedbackID, newValue));
-
-        return String.format(PROPERTY_UPDATED, propertyToChange, "Feedback", feedbackID, newValue);
+        String result = String.format(RECORD_ACTIVITY, user.getName(), propertyToChange, "Feedback", ID, newValue);
+        user.recordActivity(result);
+        return result;
     }
 }
 

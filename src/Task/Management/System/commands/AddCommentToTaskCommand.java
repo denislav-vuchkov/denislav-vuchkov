@@ -19,7 +19,7 @@ public class AddCommentToTaskCommand extends BaseCommand {
 
     @Override
     protected String executeCommand(List<String> parameters) {
-        int taskID = ParsingHelpers.tryParseInt(parameters.get(0), INVALID_ID);
+        long taskID = ParsingHelpers.tryParseLong(parameters.get(0), INVALID_ID);
         String content = parameters.get(1);
         String author = parameters.get(2);
         getRepository().findUser(author);

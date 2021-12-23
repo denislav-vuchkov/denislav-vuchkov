@@ -3,16 +3,13 @@ package Task.Management.System.commands;
 import Task.Management.System.core.contracts.TaskManagementSystemRepository;
 import Task.Management.System.models.exceptions.InvalidUserInput;
 import Task.Management.System.models.tasks.contracts.AssignableTask;
-import Task.Management.System.models.tasks.contracts.Feedback;
 import Task.Management.System.models.tasks.contracts.Task;
-import Task.Management.System.models.teams.TeamImpl;
 import Task.Management.System.models.teams.contracts.Board;
 import Task.Management.System.models.teams.contracts.Team;
 import Task.Management.System.models.teams.contracts.User;
 import Task.Management.System.utils.ParsingHelpers;
 import Task.Management.System.utils.ValidationHelpers;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class AssignTaskToUserCommand extends BaseCommand {
@@ -30,12 +27,12 @@ public class AssignTaskToUserCommand extends BaseCommand {
     protected String executeCommand(List<String> parameters) {
         ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
 
-        int taskID = ParsingHelpers.tryParseInt(parameters.get(0), "Task ID must be a number.");
+        long taskID = ParsingHelpers.tryParseLong(parameters.get(0), "Task ID must be a number.");
         String newAssigneeName = parameters.get(1);
 
         AssignableTask task = getRepository().getAssignableTasks()
-                        .stream().filter(e -> e.getID() == taskID)
-                        .findFirst().orElseThrow(() -> new InvalidUserInput(INVALID_TASK_ID));
+                .stream().filter(e -> e.getID() == taskID)
+                .findFirst().orElseThrow(() -> new InvalidUserInput(INVALID_TASK_ID));
 
         Team team = findTeamWhereTaskIsLocated(task);
 
@@ -45,11 +42,11 @@ public class AssignTaskToUserCommand extends BaseCommand {
 
         if (!currentAssigneeName.equals(UNASSIGNED)) {
             User currentAssignee = getRepository().findUser(currentAssigneeName);
-            currentAssignee.unAssignTask(task);
+            currentAssignee.removeTask(task);
         }
 
         User newAssignee = getRepository().findUser(newAssigneeName);
-        newAssignee.assignTask(task);
+        newAssignee.addTask(task);
 
         return String.format(TASK_REASSIGNED, taskID, newAssignee);
     }

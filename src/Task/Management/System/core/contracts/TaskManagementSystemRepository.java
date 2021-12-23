@@ -59,6 +59,8 @@ public interface TaskManagementSystemRepository {
 
     AssignableTask findAssignableTask(long assignableTaskID);
 
-    void validateUserIsFromTeam(String userName,String teamName);
+    void validateUserIsFromTeam(String userName, String teamName);
+
+    void validateUserAndTaskAreFromTheSameTeam(String userName, long taskID);
 
 }

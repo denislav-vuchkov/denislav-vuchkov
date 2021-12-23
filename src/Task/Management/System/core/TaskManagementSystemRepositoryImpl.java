@@ -31,6 +31,7 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
     public static final String USER_NOT_IN_TEAM = "User %s does not exist in team %s.";
     public static final String INVALID_ID = "Invalid ID provided.";
     public static final String CREATOR_SHOULD_BE_FROM_THE_TEAM = "The task creator should be a member of the team!";
+    public static final String MODIFIER_SHOULD_BE_FROM_THE_TEAM = "The task modifier should be a member of the team!";
     private static final String NOT_EXIST = "The %s does not exist! Create a %s with this name first.";
     public static final String TEAM_DOES_NOT_EXIST = String.format(NOT_EXIST, "team", "team");
     public static final String USER_DOES_NOT_EXIST = String.format(NOT_EXIST, "user", "user");
@@ -187,12 +188,12 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
     }
 
     private void addTaskToUser(AssignableTask task, String assignee) {
-        User user = users.stream()
+        User user = getUsers().stream()
                 .filter(u -> u.getName().equals(assignee))
-                .findFirst()
+                .findAny()
                 .orElseThrow(() -> new InvalidUserInput(USER_DOES_NOT_EXIST));
 
-        user.assignTask(task);
+        user.addTask(task);
     }
 
     private void checkIfAssigneeIsValid(String teamName, String assignee) {
@@ -200,7 +201,7 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
             findTeam(teamName).getUsers()
                     .stream()
                     .filter(user -> user.getName().equals(assignee))
-                    .findFirst()
+                    .findAny()
                     .orElseThrow(() -> new InvalidUserInput(String.format(USER_NOT_IN_TEAM, assignee, teamName)));
         }
     }
@@ -215,7 +216,7 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
         return team.getBoards()
                 .stream()
                 .filter(board -> board.getName().equals(boardName))
-                .findFirst()
+                .findAny()
                 .orElseThrow(() -> new InvalidUserInput(BOARD_DOES_NOT_EXIST));
     }
 
@@ -247,7 +248,7 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
     private <T extends Task> T genericTaskFinder(long taskID, List<T> tasks) {
         return tasks.stream()
                 .filter(task -> task.getID() == taskID)
-                .findFirst()
+                .findAny()
                 .orElseThrow(() -> new InvalidUserInput(INVALID_ID));
     }
 
@@ -258,5 +259,17 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
         if (!team.getUsers().contains(user)) {
             throw new InvalidUserInput(CREATOR_SHOULD_BE_FROM_THE_TEAM);
         }
+    }
+
+    @Override
+    public void validateUserAndTaskAreFromTheSameTeam(String userName, long taskID) {
+        User user = findUser(userName);
+        Task task = findTask(taskID);
+        for (Team team : teams) {
+            if (team.getUsers().contains(user) && team.containsTask(task)) {
+                return;
+            }
+        }
+        throw new InvalidUserInput(MODIFIER_SHOULD_BE_FROM_THE_TEAM);
     }
 }

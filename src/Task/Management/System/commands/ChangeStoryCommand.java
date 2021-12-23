@@ -25,13 +25,13 @@ public class ChangeStoryCommand extends BaseCommand {
         ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
 
         User user = getRepository().findUser(parameters.get(0).trim());
-        int storyID = ParsingHelpers.tryParseInt(parameters.get(1), INVALID_ID);
-        String propertyToChange = parameters.get(2).trim();
+        long ID = ParsingHelpers.tryParseLong(parameters.get(1), INVALID_ID);
+        Story story = getRepository().findStory(ID);
+        getRepository().validateUserAndTaskAreFromTheSameTeam(user.getName(), story.getID());
+        String propertyToChange = parameters.get(2).trim().toUpperCase();
         String newValue = parameters.get(3).toUpperCase();
 
-        Story story = getRepository().findStory(storyID);
-
-        switch (propertyToChange.toUpperCase()) {
+        switch (propertyToChange) {
             case "PRIORITY":
                 Priority priority = ParsingHelpers.tryParseEnum(newValue, Priority.class);
                 story.setPriority(priority);
@@ -48,9 +48,8 @@ public class ChangeStoryCommand extends BaseCommand {
                 throw new InvalidUserInput(INVALID_PROPERTY);
         }
 
-        user.recordActivity(
-                String.format(RECORD_ACTIVITY, user.getName(), propertyToChange, "Story", storyID, newValue));
-
-        return String.format(PROPERTY_UPDATED, propertyToChange, "Story", storyID, newValue);
+        String result = String.format(RECORD_ACTIVITY, user.getName(), propertyToChange, "Story", ID, newValue);
+        user.recordActivity(result);
+        return result;
     }
 }

@@ -2,9 +2,11 @@ package Task.Management.System.commands;
 
 import Task.Management.System.core.contracts.TaskManagementSystemRepository;
 import Task.Management.System.models.teams.contracts.Team;
+import Task.Management.System.models.teams.contracts.User;
 import Task.Management.System.utils.ValidationHelpers;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ShowTeamUsersCommand extends BaseCommand {
 
@@ -21,8 +23,9 @@ public class ShowTeamUsersCommand extends BaseCommand {
         if (team.getUsers().isEmpty()) {
             return String.format(NO_ITEMS_TO_DISPLAY, "users");
         }
-        StringBuilder output = new StringBuilder();
-        team.getUsers().forEach(output::append);
-        return output.toString().trim();
+        return team.getUsers()
+                .stream()
+                .map(User::toString)
+                .collect(Collectors.joining(System.lineSeparator()));
     }
 }

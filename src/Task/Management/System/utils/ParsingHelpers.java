@@ -13,6 +13,14 @@ public class ParsingHelpers {
         }
     }
 
+    public static long tryParseLong(String valueToParse, String errorMessage) {
+        try {
+            return Long.parseLong(valueToParse);
+        } catch (NumberFormatException e) {
+            throw new InvalidUserInput(errorMessage);
+        }
+    }
+
     public static <E extends Enum<E>> E tryParseCommand(String valueToParse, Class<E> type) {
         try {
             StringBuilder command = new StringBuilder();

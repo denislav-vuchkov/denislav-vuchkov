@@ -3,6 +3,7 @@ package Task.Management.System.commands.enums;
 public enum CommandType {
     SHOW_ALL_USERS,
     SHOW_ALL_TEAMS,
+    SHOW_ALL_TASKS,
     SHOW_TEAM_USERS,
     SHOW_TEAM_BOARDS,
     CREATE_USER,

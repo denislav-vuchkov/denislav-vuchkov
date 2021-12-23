@@ -154,8 +154,8 @@ public class BugImpl extends AssignableTaskImpl implements Bug {
 
     @Override
     public String toString() {
-        return String.format("Task type: %s - Title: %s - Priority: %s - Severity: %s - Status - %s - Assignee - %s",
+        return String.format("Task type: %s - ID: %d - Title: %s - Priority: %s - Severity: %s - Status - %s - Assignee - %s",
                 this.getClass().getSimpleName().replace("Impl", ""),
-                getTitle(), getPriority(), getSeverity(), getStatus(), getAssignee());
+                getID(), getTitle(), getPriority(), getSeverity(), getStatus(), getAssignee());
     }
 }

@@ -1,30 +1,30 @@
 package Task.Management.System.commands;
 
 import Task.Management.System.core.contracts.TaskManagementSystemRepository;
-import Task.Management.System.models.teams.contracts.User;
+import Task.Management.System.models.tasks.contracts.Task;
 import Task.Management.System.utils.ValidationHelpers;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ShowAllUsersCommand extends BaseCommand {
+public class ShowAllTasksCommand extends BaseCommand {
 
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 0;
 
-    public ShowAllUsersCommand(TaskManagementSystemRepository repository) {
+    public ShowAllTasksCommand(TaskManagementSystemRepository repository) {
         super(repository);
     }
 
     @Override
     protected String executeCommand(List<String> parameters) {
         ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
-        List<User> users = getRepository().getUsers();
-        if (users.isEmpty()) {
-            return String.format(NO_ITEMS_TO_DISPLAY, "users");
+        List<Task> tasks = getRepository().getTasks();
+        if (tasks.isEmpty()) {
+            return String.format(NO_ITEMS_TO_DISPLAY, "tasks");
         }
-        return users
+        return tasks
                 .stream()
-                .map(User::toString)
+                .map(Task::toString)
                 .collect(Collectors.joining(System.lineSeparator()));
     }
 }
