@@ -59,6 +59,7 @@ public abstract class TaskBase implements Task {
         return title;
     }
 
+    @Override
     public void setTitle(String title) {
         ValidationHelpers.validateIntRange(title.length(), TITLE_MIN_LENGTH, TITLE_MAX_LENGTH, INVALID_NAME_MESSAGE);
         if (this.title == null) {
@@ -77,6 +78,7 @@ public abstract class TaskBase implements Task {
         return description;
     }
 
+    @Override
     public void setDescription(String description) {
         ValidationHelpers.validateIntRange(description.length(),
                 DESCRIPTION_MIN_LENGTH,
@@ -128,11 +130,6 @@ public abstract class TaskBase implements Task {
 
     protected void addChangeToHistory(String description) {
         historyOfChanges.addChange(description);
-    }
-
-    @Override
-    public String getChangeAt(int index) {
-        return historyOfChanges.getChangeAt(index);
     }
 
     @Override

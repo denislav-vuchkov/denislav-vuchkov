@@ -37,8 +37,4 @@ public class ChangesLoggerImpl implements ChangesLogger {
         return completeHistory.toString().trim();
     }
 
-    @Override
-    public String getChangeAt(int index) {
-        return changes.get(index);
-    }
 }
