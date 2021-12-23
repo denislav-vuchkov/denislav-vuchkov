@@ -31,15 +31,15 @@ public class ChangeBugCommand extends BaseCommand {
 
         switch (propertyToChange.toUpperCase()) {
             case "PRIORITY":
-                Priority priority = ParsingHelpers.tryParseEnum(propertyToChange, Priority.class);
+                Priority priority = ParsingHelpers.tryParseEnum(newValue, Priority.class);
                 bug.setPriority(priority);
                 break;
             case "SEVERITY":
-                Severity severity = ParsingHelpers.tryParseEnum(propertyToChange, Severity.class);
+                Severity severity = ParsingHelpers.tryParseEnum(newValue, Severity.class);
                 bug.setSeverity(severity);
                 break;
             case "STATUS":
-                BugStatus status = ParsingHelpers.tryParseEnum(propertyToChange, BugStatus.class);
+                BugStatus status = ParsingHelpers.tryParseEnum(newValue, BugStatus.class);
                 bug.setStatus(status);
                 break;
             default:

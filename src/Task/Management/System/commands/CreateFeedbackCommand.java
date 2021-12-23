@@ -8,8 +8,8 @@ import Task.Management.System.utils.ValidationHelpers;
 import java.util.List;
 
 public class CreateFeedbackCommand extends BaseCommand {
+
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 5;
-    public static final String FEEDBACK_RATING_ERROR = "Feedback rating should be a numeric value between 0 and 10!";
 
     public CreateFeedbackCommand(TaskManagementSystemRepository repository) {
         super(repository);
@@ -24,7 +24,8 @@ public class CreateFeedbackCommand extends BaseCommand {
         String title = parameters.get(2);
         String description = parameters.get(3);
         int rating = ParsingHelpers.tryParseInt(parameters.get(4), FEEDBACK_RATING_ERROR);
-        ValidationHelpers.validateIntRange(rating, FeedbackImpl.RATING_MIN, FeedbackImpl.RATING_MAX, FEEDBACK_RATING_ERROR);
+        ValidationHelpers.validateIntRange(
+                rating, FeedbackImpl.RATING_MIN, FeedbackImpl.RATING_MAX, FEEDBACK_RATING_ERROR);
 
         return getRepository().addFeedback(teamName, boardName, title, description, rating);
     }

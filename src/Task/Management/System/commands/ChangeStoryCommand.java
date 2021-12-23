@@ -31,15 +31,15 @@ public class ChangeStoryCommand extends BaseCommand {
 
         switch (propertyToChange.toUpperCase()) {
             case "PRIORITY":
-                Priority priority = ParsingHelpers.tryParseEnum(propertyToChange, Priority.class);
+                Priority priority = ParsingHelpers.tryParseEnum(newValue, Priority.class);
                 story.setPriority(priority);
                 break;
             case "SIZE":
-                Size size = ParsingHelpers.tryParseEnum(propertyToChange, Size.class);
+                Size size = ParsingHelpers.tryParseEnum(newValue, Size.class);
                 story.setSize(size);
                 break;
             case "STATUS":
-                StoryStatus status = ParsingHelpers.tryParseEnum(propertyToChange, StoryStatus.class);
+                StoryStatus status = ParsingHelpers.tryParseEnum(newValue, StoryStatus.class);
                 story.setStatus(status);
                 break;
             default:
