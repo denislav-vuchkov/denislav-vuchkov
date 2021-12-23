@@ -12,6 +12,8 @@ public abstract class BaseCommand implements Command {
     public static final String RECORD_ACTIVITY = "User %s changed the %s of %s with ID %d to %s.";
     public static final String INVALID_PROPERTY = "Invalid property to change has been provided.";
     public static final String FEEDBACK_RATING_ERROR = "Feedback rating should be a numeric value between 0 and 10!";
+    public static final String USER_CREATED_TASK = "User %s created a new %s in board %s.";
+    public static final String UNASSIGNED = "Unassigned";
 
     private final TaskManagementSystemRepository repository;
 

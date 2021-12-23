@@ -10,9 +10,8 @@ import Task.Management.System.utils.ValidationHelpers;
 import java.util.List;
 
 public class CreateStoryCommand extends BaseCommand {
+
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 8;
-    public static final String UNASSIGNED = "Unassigned";
-    public static final String USER_CREATED_STORY = "User %s created a new story in board %s.";
 
     public CreateStoryCommand(TaskManagementSystemRepository repository) {
         super(repository);
@@ -23,7 +22,7 @@ public class CreateStoryCommand extends BaseCommand {
         //String teamName, String boardName, String title, String description, Priority priority, Size size, String assignee
         ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
 
-        String nameOfCommandIssuer = parameters.get(0);
+        User user = getRepository().findUser(parameters.get(0));
         String teamName = parameters.get(1);
         String boardName = parameters.get(2);
         String title = parameters.get(3);
@@ -32,8 +31,7 @@ public class CreateStoryCommand extends BaseCommand {
         Size size = ParsingHelpers.tryParseEnum(parameters.get(6), Size.class);
         String assignee = parameters.get(7).isEmpty() ? UNASSIGNED : parameters.get(7);
 
-        User user = getRepository().findUser(nameOfCommandIssuer);
-        user.recordActivity(String.format(USER_CREATED_STORY, nameOfCommandIssuer, boardName));
+        user.recordActivity(String.format(USER_CREATED_TASK, user.getName(), "Story", boardName));
 
         return getRepository().addStory(teamName, boardName, title, description, priority, size, assignee);
     }
