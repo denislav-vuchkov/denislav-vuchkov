@@ -39,7 +39,6 @@ public class AssignTaskToUserCommand extends BaseCommand {
                         .stream().filter(e -> e.getID() == taskID)
                         .findFirst().orElseThrow(() -> new InvalidUserInput(INVALID_TASK_ID));
 
-
         //Checks if the task provided is contained in the team provided and returns link to the Board where it exists
         checkIfTaskIsContainedInTeam(task, team);
         //Checks if the new assignee is within the team the task is
@@ -49,8 +48,10 @@ public class AssignTaskToUserCommand extends BaseCommand {
 
         task.setAssignee(newAssigneeName);
 
-        User currentAssignee = getRepository().findUser(currentAssigneeName);
-        currentAssignee.unAssignTask(task);
+        if (!currentAssigneeName.equals(UNASSIGNED)) {
+            User currentAssignee = getRepository().findUser(currentAssigneeName);
+            currentAssignee.unAssignTask(task);
+        }
 
         User newAssignee = getRepository().findUser(newAssigneeName);
         newAssignee.assignTask(task);
