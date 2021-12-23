@@ -188,13 +188,13 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
         return String.format(TASK_ADDED_TO_BOARD, "Story", story.getID(), boardName, teamName);
     }
 
-    private void addTaskToUser(AssignableTask bug, String assignee) {
+    private void addTaskToUser(AssignableTask task, String assignee) {
         User user = users.stream()
                 .filter(u -> u.getName().equals(assignee))
                 .findFirst()
                 .orElseThrow(() -> new InvalidUserInput(USER_DOES_NOT_EXIST));
 
-        user.assignTask(bug);
+        user.assignTask(task);
     }
 
     private void checkIfAssigneeIsValid(String teamName, String assignee) {
