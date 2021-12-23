@@ -2,7 +2,7 @@ package Task.Management.System.models.tasks;
 
 import Task.Management.System.models.EventLoggerImpl;
 import Task.Management.System.models.contracts.EventLogger;
-import Task.Management.System.models.exceptions.InvalidUserInput;
+import Task.Management.System.exceptions.InvalidUserInput;
 import Task.Management.System.models.tasks.contracts.Comment;
 import Task.Management.System.models.tasks.contracts.Task;
 import Task.Management.System.models.tasks.enums.Tasks;

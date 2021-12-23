@@ -1,6 +1,6 @@
 package Task.Management.System.models.tasks;
 
-import Task.Management.System.models.exceptions.InvalidUserInput;
+import Task.Management.System.exceptions.InvalidUserInput;
 import Task.Management.System.models.tasks.contracts.Bug;
 import Task.Management.System.models.tasks.enums.BugStatus;
 import Task.Management.System.models.tasks.enums.Priority;

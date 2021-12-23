@@ -1,7 +1,7 @@
 package Task.Management.System.core;
 
 import Task.Management.System.core.contracts.TaskManagementSystemRepository;
-import Task.Management.System.models.exceptions.InvalidUserInput;
+import Task.Management.System.exceptions.InvalidUserInput;
 import Task.Management.System.models.tasks.BugImpl;
 import Task.Management.System.models.tasks.FeedbackImpl;
 import Task.Management.System.models.tasks.StoryImpl;
@@ -18,7 +18,7 @@ import Task.Management.System.models.teams.contracts.User;
 import java.util.ArrayList;
 import java.util.List;
 
-import static Task.Management.System.commands.CreateStoryCommand.UNASSIGNED;
+import static Task.Management.System.commands.task.CreateStoryCommand.UNASSIGNED;
 
 public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemRepository {
 

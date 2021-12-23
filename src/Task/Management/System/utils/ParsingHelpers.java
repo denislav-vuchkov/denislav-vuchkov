@@ -1,6 +1,6 @@
 package Task.Management.System.utils;
 
-import Task.Management.System.models.exceptions.InvalidUserInput;
+import Task.Management.System.exceptions.InvalidUserInput;
 
 public class ParsingHelpers {
     public static final String NO_SUCH_ENUM = "%s is not a valid %s type.";

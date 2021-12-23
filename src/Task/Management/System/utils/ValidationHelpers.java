@@ -1,7 +1,7 @@
 package Task.Management.System.utils;
 
-import Task.Management.System.models.exceptions.InvalidNumberOfArguments;
-import Task.Management.System.models.exceptions.InvalidUserInput;
+import Task.Management.System.exceptions.InvalidNumberOfArguments;
+import Task.Management.System.exceptions.InvalidUserInput;
 
 import java.util.List;
 import java.util.regex.Matcher;

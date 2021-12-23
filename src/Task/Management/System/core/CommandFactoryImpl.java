@@ -1,9 +1,14 @@
 package Task.Management.System.core;
 
-import Task.Management.System.commands.*;
+import Task.Management.System.commands.activity.ShowBoardActivityCommand;
+import Task.Management.System.commands.activity.ShowTeamActivityCommand;
+import Task.Management.System.commands.activity.ShowUserActivityCommand;
 import Task.Management.System.commands.contracts.Command;
 import Task.Management.System.commands.enums.CommandType;
-import Task.Management.System.commands.listing_commands.*;
+import Task.Management.System.commands.list.*;
+import Task.Management.System.commands.show.*;
+import Task.Management.System.commands.task.*;
+import Task.Management.System.commands.team.*;
 import Task.Management.System.core.contracts.CommandFactory;
 import Task.Management.System.core.contracts.TaskManagementSystemRepository;
 import Task.Management.System.utils.ParsingHelpers;
