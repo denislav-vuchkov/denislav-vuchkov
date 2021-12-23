@@ -1,16 +1,8 @@
 package Task.Management.System.models.tasks.contracts;
 
-import Task.Management.System.models.tasks.enums.Priority;
+import Task.Management.System.models.tasks.contracts.small_contracts.Prioritisеable;
 
-public interface AssignableTask extends Task {
-
-    Priority getPriority();
-
-    void setPriority(Priority priority);
-
-    void increasePriority();
-
-    void decreasePriority();
+public interface AssignableTask extends Task, Prioritisеable {
 
     String getAssignee();
 
