@@ -30,12 +30,12 @@ public class CommandFactoryImpl implements CommandFactory {
                 return new ShowTeamActivityCommand(taskManagementSystemRepository);
             case ADD_USER_TO_TEAM:
                 return new AddUserToTeamCommand(taskManagementSystemRepository);
-            case SHOW_ALL_USERS_IN_TEAM:
-                return new ShowAllUsersInTeamCommand(taskManagementSystemRepository);
+            case SHOW_TEAM_USERS:
+                return new ShowTeamUsersCommand(taskManagementSystemRepository);
             case CREATE_BOARD:
                 return new CreateBoardCommand(taskManagementSystemRepository);
-            case SHOW_ALL_TEAM_BOARDS:
-                return new ShowAllTeamBoardsCommand(taskManagementSystemRepository);
+            case SHOW_TEAM_BOARDS:
+                return new ShowTeamBoardsCommand(taskManagementSystemRepository);
             case SHOW_BOARD_ACTIVITY:
                 return new ShowBoardActivityCommand(taskManagementSystemRepository);
             case CREATE_BUG:

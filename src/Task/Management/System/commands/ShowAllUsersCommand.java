@@ -9,8 +9,6 @@ import java.util.List;
 public class ShowAllUsersCommand extends BaseCommand {
 
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 0;
-    public static final String USERS_HEADER = "USERS:";
-    public static final String USERS_EMPTY = "No users to display.";
 
     public ShowAllUsersCommand(TaskManagementSystemRepository repository) {
         super(repository);
@@ -21,10 +19,9 @@ public class ShowAllUsersCommand extends BaseCommand {
         ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
         List<User> users = getRepository().getUsers();
         if (users.isEmpty()) {
-            return USERS_EMPTY;
+            return String.format(NO_ITEMS_TO_DISPLAY, "users");
         }
-        StringBuilder output = new StringBuilder(USERS_HEADER);
-        output.append(System.lineSeparator());
+        StringBuilder output = new StringBuilder();
         users.forEach(output::append);
         return output.toString().trim();
     }

@@ -6,23 +6,23 @@ import Task.Management.System.utils.ValidationHelpers;
 
 import java.util.List;
 
-public class ShowAllTeamsCommand extends BaseCommand {
+public class ShowTeamUsersCommand extends BaseCommand {
 
-    public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 0;
+    public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 1;
 
-    public ShowAllTeamsCommand(TaskManagementSystemRepository repository) {
+    public ShowTeamUsersCommand(TaskManagementSystemRepository repository) {
         super(repository);
     }
 
     @Override
     protected String executeCommand(List<String> parameters) {
         ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
-        List<Team> teams = getRepository().getTeams();
-        if (teams.isEmpty()) {
-            return String.format(NO_ITEMS_TO_DISPLAY, "teams");
+        Team team = getRepository().findTeam(parameters.get(0));
+        if (team.getUsers().isEmpty()) {
+            return String.format(NO_ITEMS_TO_DISPLAY, "users");
         }
         StringBuilder output = new StringBuilder();
-        teams.forEach(output::append);
+        team.getBoards().forEach(output::append);
         return output.toString().trim();
     }
 }

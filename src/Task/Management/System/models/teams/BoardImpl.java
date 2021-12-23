@@ -93,6 +93,6 @@ public class BoardImpl implements Board {
 
     @Override
     public String toString() {
-        return String.format("Board name: %s - Board items: %d", getName(), getTasks().size());
+        return String.format("Board name: %s - Board items: %d\n", getName(), getTasks().size());
     }
 }
