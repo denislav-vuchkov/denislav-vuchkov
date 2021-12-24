@@ -1,17 +1,17 @@
 package Task.Management.System.models.tasks.enums;
 
 public enum Size {
-    SMALL, MEDIUM, LARGE;
+    LARGE, MEDIUM, SMALL;
 
     @Override
     public String toString() {
         switch (this) {
-            case SMALL:
-                return "Small";
-            case MEDIUM:
-                return "Medium";
             case LARGE:
                 return "Large";
+            case MEDIUM:
+                return "Medium";
+            case SMALL:
+                return "Small";
             default:
                 throw new IllegalArgumentException("Unreachable exception - Size Enum");
         }
