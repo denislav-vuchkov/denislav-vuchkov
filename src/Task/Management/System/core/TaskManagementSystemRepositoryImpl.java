@@ -275,15 +275,13 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
 
     @Override
     public Team findTeamWhereTaskIsLocated(Task task) {
-        Team targetTeam = teams.get(0);
-
         for (Team team : teams) {
             if (checkIfTaskIsInTeam(team, task)) {
-                targetTeam = team;
+                return team;
             }
         }
 
-        return targetTeam;
+        throw new InvalidUserInput("Unreachable exception. Thrown by repository findTeamWhereTaskIsLocated().");
     }
 
     private boolean checkIfTaskIsInTeam(Team team, Task task) {
