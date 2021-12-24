@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 public class ListFeedbacksSorted extends BaseCommand {
 
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 1;
-    public static final String NO_FEEDBACKS_EXIST = "There are no feedbacks in the system!";
+    public static final String NO_FEEDBACKS_IN_THE_SYSTEM = "There are no feedbacks in the system!";
     public static final String INVALID_PARAMETER_FOR_SORTING = "Feedback can only be sorted by title or rating.";
 
     public ListFeedbacksSorted(TaskManagementSystemRepository repository) {
@@ -25,7 +25,7 @@ public class ListFeedbacksSorted extends BaseCommand {
         ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
 
         if (getRepository().getFeedbacks().isEmpty()) {
-            return NO_FEEDBACKS_EXIST;
+            return NO_FEEDBACKS_IN_THE_SYSTEM;
         }
 
         String criterion = parameters.get(0);
