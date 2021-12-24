@@ -14,8 +14,7 @@ public class ListStoriesSorted extends BaseCommand {
 
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 1;
     public static final String NO_STORIES_EXIST = "There are no stories in the system!";
-    public static final String INVALID_PARAMETER_FOR_SORTING = "Stories cannot be sorted by the provided parameter. " +
-            "You can only sort by title, priority or size.";
+    public static final String INVALID_PARAMETER_FOR_SORTING = "Story can only be sorted by title, priority or size.";
 
     public ListStoriesSorted(TaskManagementSystemRepository repository) {
         super(repository);

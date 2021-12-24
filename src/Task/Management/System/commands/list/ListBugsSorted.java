@@ -13,9 +13,8 @@ import java.util.stream.Collectors;
 public class ListBugsSorted extends BaseCommand {
 
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 1;
-    public static final String INVALID_PARAMETER_FOR_SORTING = "Bugs cannot be sorted by the provided parameter. " +
-            "You can only sort by title, priority or severity.";
     public static final String NO_BUGS_EXIST = "There are no bugs in the system!";
+    public static final String INVALID_PARAMETER_FOR_SORTING = "Bug can only be sorted by title, priority or severity.";
 
     public ListBugsSorted(TaskManagementSystemRepository repository) {
         super(repository);
@@ -53,7 +52,5 @@ public class ListBugsSorted extends BaseCommand {
             default:
                 throw new InvalidUserInput(INVALID_PARAMETER_FOR_SORTING);
         }
-
     }
-
 }
