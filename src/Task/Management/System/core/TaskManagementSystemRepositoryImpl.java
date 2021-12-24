@@ -272,4 +272,27 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
         }
         throw new InvalidUserInput(MODIFIER_SHOULD_BE_FROM_THE_TEAM);
     }
+
+    @Override
+    public Team findTeamWhereTaskIsLocated(Task task) {
+        Team targetTeam = teams.get(0);
+
+        for (Team team : teams) {
+            if (checkIfTaskIsInTeam(team, task)) {
+                targetTeam = team;
+            }
+        }
+
+        return targetTeam;
+    }
+
+    private boolean checkIfTaskIsInTeam(Team team, Task task) {
+        for (Board board : team.getBoards()) {
+            if (board.getTasks().contains(task)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

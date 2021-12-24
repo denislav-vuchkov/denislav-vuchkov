@@ -35,6 +35,7 @@ public interface TaskManagementSystemRepository {
 
     Team findTeam(String teamName);
 
+    Team findTeamWhereTaskIsLocated(Task task);
 
     String addBug(String teamName, String boardName,
                   String title, String description, List<String> stepsToReproduce,

@@ -15,10 +15,10 @@ import java.util.List;
 
 public class AssignTaskToUserCommand extends BaseCommand {
 
-    public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 2;
+    public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 3;
     public static final String INVALID_TASK_ID = "Invalid task ID provided";
-    public static final String INVALID_TEAM = "Task is not contained in the boards of team %s.";
     public static final String TASK_REASSIGNED = "Task with ID %d has now been reassigned to %s.";
+    public static final String USER_ACTIVITY = "User %s assigned task %d to %s.";
 
     public AssignTaskToUserCommand(TaskManagementSystemRepository repository) {
         super(repository);
@@ -28,16 +28,17 @@ public class AssignTaskToUserCommand extends BaseCommand {
     protected String executeCommand(List<String> parameters) {
         ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
 
-        long taskID = ParsingHelpers.tryParseLong(parameters.get(0), "Task ID must be a number.");
-        String newAssigneeName = parameters.get(1);
+        User executorOfTask = getRepository().findUser(parameters.get(0));
+        long taskID = ParsingHelpers.tryParseLong(parameters.get(1), "Task ID must be a number.");
+        User newAssignee = getRepository().findUser(parameters.get(2));
 
         AssignableTask task = getRepository().getAssignableTasks()
                 .stream().filter(e -> e.getID() == taskID)
                 .findFirst().orElseThrow(() -> new InvalidUserInput(INVALID_TASK_ID));
 
-        Team team = findTeamWhereTaskIsLocated(task);
-
-        getRepository().validateUserIsFromTeam(newAssigneeName, team.getName());
+        Team team = getRepository().findTeamWhereTaskIsLocated(task);
+        getRepository().validateUserIsFromTeam(executorOfTask.getName(), team.getName());
+        getRepository().validateUserIsFromTeam(newAssignee.getName(), team.getName());
 
         String currentAssigneeName = task.getAssignee();
 
@@ -46,33 +47,13 @@ public class AssignTaskToUserCommand extends BaseCommand {
             currentAssignee.removeTask(task);
         }
 
-        User newAssignee = getRepository().findUser(newAssigneeName);
         newAssignee.addTask(task);
+
+        executorOfTask.recordActivity(String.format(USER_ACTIVITY,
+                executorOfTask.getName(), task.getID(), newAssignee.getName()));
 
         return String.format(TASK_REASSIGNED, taskID, newAssignee);
     }
 
-    private Team findTeamWhereTaskIsLocated(Task task) {
-        List<Team> teamsList = getRepository().getTeams();
 
-        Team targetTeam = teamsList.get(0);
-
-        for (Team team : teamsList) {
-            if (checkIfTaskIsInTeam(team, task)) {
-                targetTeam = team;
-            }
-        }
-
-        return targetTeam;
-    }
-
-    private boolean checkIfTaskIsInTeam(Team team, Task task) {
-        for (Board board : team.getBoards()) {
-            if (board.getTasks().contains(task)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
 }
