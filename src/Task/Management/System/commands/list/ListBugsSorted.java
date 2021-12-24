@@ -8,13 +8,13 @@ import Task.Management.System.utils.ValidationHelpers;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ListBugsSorted extends BaseCommand {
 
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 1;
     public static final String INVALID_PARAMETER_FOR_SORTING = "Bugs cannot be sorted by the provided parameter. " +
             "You can only sort by title, priority or severity.";
-    public static final String HEADER = "--BUGS SORTED BY %s";
     public static final String NO_BUGS_EXIST = "There are no bugs in the system!";
 
     public ListBugsSorted(TaskManagementSystemRepository repository) {
@@ -29,38 +29,31 @@ public class ListBugsSorted extends BaseCommand {
             return NO_BUGS_EXIST;
         }
 
-        String parameter = parameters.get(0);
+        String criterion = parameters.get(0);
 
-        StringBuilder bugsSorted = new StringBuilder();
-
-        bugsSorted.append(String.format(HEADER, parameter.toUpperCase())).append("\n");
-
-        switch(parameter.toUpperCase()) {
+        switch (criterion.toUpperCase()) {
             case "TITLE":
-                getRepository().getBugs()
+                return getRepository().getBugs()
                         .stream()
                         .sorted(Comparator.comparing(Bug::getTitle))
-                        .forEach(bug -> bugsSorted.append(bug).append("\n"));
-                break;
+                        .map(Bug::toString)
+                        .collect(Collectors.joining(System.lineSeparator()));
             case "PRIORITY":
-                getRepository().getBugs()
+                return getRepository().getBugs()
                         .stream()
                         .sorted(Comparator.comparing(Bug::getPriority))
-                        .forEach(bug -> bugsSorted.append(bug).append("\n"));
-                break;
+                        .map(Bug::toString)
+                        .collect(Collectors.joining(System.lineSeparator()));
             case "SEVERITY":
-                getRepository().getBugs()
+                return getRepository().getBugs()
                         .stream()
                         .sorted(Comparator.comparing(Bug::getSeverity))
-                        .forEach(bug -> bugsSorted.append(bug).append("\n"));
-                break;
+                        .map(Bug::toString)
+                        .collect(Collectors.joining(System.lineSeparator()));
             default:
                 throw new InvalidUserInput(INVALID_PARAMETER_FOR_SORTING);
         }
 
-        bugsSorted.append(String.format(HEADER, parameter.toUpperCase()));
-
-        return bugsSorted.toString();
     }
 
 }

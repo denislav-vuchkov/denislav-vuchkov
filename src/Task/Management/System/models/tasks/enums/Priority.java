@@ -3,7 +3,6 @@ package Task.Management.System.models.tasks.enums;
 public enum Priority {
     HIGH, MEDIUM, LOW;
 
-
     @Override
     public String toString() {
         switch (this) {
