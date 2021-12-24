@@ -4,7 +4,7 @@ import Task.Management.System.commands.BaseCommand;
 import Task.Management.System.core.contracts.TaskManagementSystemRepository;
 import Task.Management.System.exceptions.InvalidUserInput;
 import Task.Management.System.models.tasks.contracts.Story;
-import Task.Management.System.models.tasks.enums.BugStatus;
+import Task.Management.System.models.tasks.enums.StoryStatus;
 import Task.Management.System.utils.ParsingHelpers;
 import Task.Management.System.utils.ValidationHelpers;
 
@@ -52,7 +52,7 @@ public class ListStoriesFiltered extends BaseCommand {
 
         switch (filter.toUpperCase()) {
             case "STATUS":
-                BugStatus status = ParsingHelpers.tryParseEnum(value, BugStatus.class);
+                StoryStatus status = ParsingHelpers.tryParseEnum(value, StoryStatus.class);
                 return stories
                         .stream()
                         .filter(e -> e.getStatus().equals(status.toString()))
