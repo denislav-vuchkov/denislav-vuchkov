@@ -19,7 +19,7 @@ public class ListStoriesFiltered extends BaseCommand {
     public static final String INVALID_FILTERS_COUNT =
             String.format("Filters must be no less than %d and no more than %d.", MIN_ARGUMENTS, MAX_ARGUMENTS);
     public static final String NO_STORIES_EXIST = "No stories to display.";
-    public static final String INVALID_PARAMETER_FOR_SORTING = "Story can only be filtered by status or assignee.";
+    public static final String INVALID_FILTER = "Story can only be filtered by status or assignee.";
 
     public ListStoriesFiltered(TaskManagementSystemRepository repository) {
         super(repository);
@@ -64,7 +64,7 @@ public class ListStoriesFiltered extends BaseCommand {
                         .filter(e -> assignee.matcher(e.getAssignee()).find())
                         .collect(Collectors.toList());
             default:
-                throw new InvalidUserInput(INVALID_PARAMETER_FOR_SORTING);
+                throw new InvalidUserInput(INVALID_FILTER);
         }
     }
 }
