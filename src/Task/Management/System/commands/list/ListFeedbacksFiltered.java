@@ -14,8 +14,6 @@ import java.util.stream.Collectors;
 public class ListFeedbacksFiltered extends BaseCommand {
 
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 1;
-    public static final String NO_FEEDBACKS_EXIST = "No feedbacks to display.";
-    public static final String INVALID_FILTER = "Feedback can only be filtered by status.";
 
     public ListFeedbacksFiltered(TaskManagementSystemRepository repository) {
         super(repository);
@@ -29,7 +27,7 @@ public class ListFeedbacksFiltered extends BaseCommand {
         String value = parameters.get(0).split(":")[1].trim();
 
         if (!filter.equalsIgnoreCase("Status")) {
-            throw new InvalidUserInput(INVALID_FILTER);
+            throw new InvalidUserInput(String.format(INVALID_FILTER, "Feedbacks", "status"));
         }
 
         FeedbackStatus status = ParsingHelpers.tryParseEnum(value, FeedbackStatus.class);
@@ -41,7 +39,7 @@ public class ListFeedbacksFiltered extends BaseCommand {
                 .collect(Collectors.toList());
 
         if (result.isEmpty()) {
-            return NO_FEEDBACKS_EXIST;
+            return String.format(NO_ITEMS_TO_DISPLAY, "feedbacks");
         }
 
         return result
