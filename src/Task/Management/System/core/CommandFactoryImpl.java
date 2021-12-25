@@ -79,9 +79,9 @@ public class CommandFactoryImpl implements CommandFactory {
             case LIST_FEEDBACKS_SORTED:
                 return new ListFeedbacksSorted(taskManagementSystemRepository);
             case LIST_TASKS_WITH_ASSIGNEE_FILTERED:
-                return new ListTasksWithAssigneeFiltered(taskManagementSystemRepository);
+                return new ListAssignableTasksFiltered(taskManagementSystemRepository);
             case LIST_TASKS_WITH_ASSIGNEE_SORTED:
-                return new ListTasksWithAssigneeSorted(taskManagementSystemRepository);
+                return new ListAssignableTasksSorted(taskManagementSystemRepository);
             default:
                 throw new IllegalArgumentException();
         }

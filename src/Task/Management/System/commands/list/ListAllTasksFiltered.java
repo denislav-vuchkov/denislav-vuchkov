@@ -4,6 +4,7 @@ import Task.Management.System.commands.BaseCommand;
 import Task.Management.System.core.contracts.TaskManagementSystemRepository;
 import Task.Management.System.exceptions.InvalidUserInput;
 import Task.Management.System.models.tasks.contracts.Task;
+import Task.Management.System.utils.FiltrationHelpers;
 import Task.Management.System.utils.ValidationHelpers;
 
 import java.util.List;
@@ -28,8 +29,8 @@ public class ListAllTasksFiltered extends BaseCommand {
             throw new InvalidUserInput(String.format(INVALID_FILTER, "All tasks", "title"));
         }
 
-        List<Task> result = getRepository().
-                getFilteredByTitle(value, getRepository().getTasks());
+        List<Task> result = FiltrationHelpers.
+                filterByTitle(value, getRepository().getTasks());
 
         if (result.isEmpty()) {
             return String.format(NO_ITEMS_TO_DISPLAY, "tasks");

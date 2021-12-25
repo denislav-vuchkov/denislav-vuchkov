@@ -4,6 +4,7 @@ import Task.Management.System.commands.BaseCommand;
 import Task.Management.System.core.contracts.TaskManagementSystemRepository;
 import Task.Management.System.models.tasks.contracts.Story;
 import Task.Management.System.models.tasks.enums.StoryStatus;
+import Task.Management.System.utils.FiltrationHelpers;
 import Task.Management.System.utils.ValidationHelpers;
 
 import java.util.List;
@@ -25,12 +26,12 @@ public class ListStoriesFiltered extends BaseCommand {
         ValidationHelpers.validateIntRange(parameters.size(),
                 MIN_ARGUMENTS, MAX_ARGUMENTS, INVALID_FILTERS_COUNT);
 
-        List<Story> result = getRepository().
-                getFilteredList(parameters.get(0), getRepository().getStories(), StoryStatus.class);
+        List<Story> result = FiltrationHelpers.
+                filterList(parameters.get(0), getRepository().getStories(), StoryStatus.class);
 
         if (parameters.size() == MAX_ARGUMENTS) {
-            result = getRepository().
-                    getFilteredList(parameters.get(1), result, StoryStatus.class);
+            result = FiltrationHelpers.
+                    filterList(parameters.get(1), result, StoryStatus.class);
         }
 
         if (result.isEmpty()) {

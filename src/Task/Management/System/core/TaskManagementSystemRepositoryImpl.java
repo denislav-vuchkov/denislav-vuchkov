@@ -35,7 +35,6 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
     public static final String INVALID_ID = "Invalid ID provided.";
     public static final String CREATOR_SHOULD_BE_FROM_THE_TEAM = "The task creator should be a member of the team!";
     public static final String MODIFIER_SHOULD_BE_FROM_THE_TEAM = "The task modifier should be a member of the team!";
-    public static final String INVALID_FILTER = "%s can only be filtered by %s.";
     public static final String UNREACHABLE_EXCEPTION = "Unreachable exception. Thrown by repository findTeamWhereTaskIsLocated().";
     private static final String NOT_EXIST = "The %s does not exist! Create a %s with this name first.";
     public static final String TEAM_DOES_NOT_EXIST = String.format(NOT_EXIST, "team", "team");
@@ -297,67 +296,5 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
         }
 
         return false;
-    }
-
-    public <T extends AssignableTask, E extends Enum<E>> List<T> getFilteredList
-            (String criterion, List<T> tasks, Class<E> type) {
-
-        String filter = criterion.split(":")[0].trim();
-        String value = criterion.split(":")[1].trim();
-
-        switch (filter.toUpperCase()) {
-            case "STATUS":
-                return getFilteredByStatus(value, tasks, type);
-            case "ASSIGNEE":
-                return getFilteredByAssignee(value, tasks);
-            default:
-                throw new InvalidUserInput(String.format(INVALID_FILTER, "Bugs and Stories", "status or assignee"));
-        }
-    }
-
-    public <T extends AssignableTask, E extends Enum<E>> List<T> getFilteredList
-            (String criterion, List<T> tasks) {
-
-        String filter = criterion.split(":")[0].trim();
-        String value = criterion.split(":")[1].trim();
-
-        switch (filter.toUpperCase()) {
-            case "TITLE":
-                return getFilteredByTitle(value, tasks);
-            case "ASSIGNEE":
-                return getFilteredByAssignee(value, tasks);
-            default:
-                throw new InvalidUserInput(String.format(INVALID_FILTER, "Assignable tasks", "title or assignee"));
-        }
-    }
-
-    public <T extends Task> List<T> getFilteredByTitle
-            (String filter, List<T> tasks) {
-
-        Pattern title = Pattern.compile(Pattern.quote(filter), Pattern.CASE_INSENSITIVE);
-        return tasks
-                .stream()
-                .filter(e -> title.matcher(e.getTitle()).find())
-                .collect(Collectors.toList());
-    }
-
-    public <T extends Task, E extends Enum<E>> List<T> getFilteredByStatus
-            (String filter, List<T> tasks, Class<E> type) {
-
-        E status = ParsingHelpers.tryParseEnum(filter, type);
-        return tasks
-                .stream()
-                .filter(e -> e.getStatus().equals(status.toString()))
-                .collect(Collectors.toList());
-    }
-
-    public <T extends AssignableTask> List<T> getFilteredByAssignee
-            (String criterion, List<T> tasks) {
-
-        Pattern assignee = Pattern.compile(Pattern.quote(criterion), Pattern.CASE_INSENSITIVE);
-        return tasks
-                .stream()
-                .filter(e -> assignee.matcher(e.getAssignee()).find())
-                .collect(Collectors.toList());
     }
 }

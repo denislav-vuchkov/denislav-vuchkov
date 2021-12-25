@@ -64,19 +64,5 @@ public interface TaskManagementSystemRepository {
 
     void validateUserAndTaskAreFromTheSameTeam(String userName, long taskID);
 
-    <T extends AssignableTask, E extends Enum<E>> List<T> getFilteredList
-            (String criterion, List<T> tasks, Class<E> type);
-
-    <T extends AssignableTask, E extends Enum<E>> List<T> getFilteredList
-            (String criterion, List<T> tasks);
-
-    <T extends Task> List<T> getFilteredByTitle
-            (String filter, List<T> tasks);
-
-    <T extends Task, E extends Enum<E>> List<T> getFilteredByStatus
-            (String filter, List<T> tasks, Class<E> type);
-
-    <T extends AssignableTask> List<T> getFilteredByAssignee
-            (String criterion, List<T> tasks);
 }
 

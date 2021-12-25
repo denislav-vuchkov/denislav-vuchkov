@@ -5,6 +5,7 @@ import Task.Management.System.core.contracts.TaskManagementSystemRepository;
 import Task.Management.System.exceptions.InvalidUserInput;
 import Task.Management.System.models.tasks.contracts.Feedback;
 import Task.Management.System.models.tasks.enums.FeedbackStatus;
+import Task.Management.System.utils.FiltrationHelpers;
 import Task.Management.System.utils.ValidationHelpers;
 
 import java.util.List;
@@ -29,8 +30,8 @@ public class ListFeedbacksFiltered extends BaseCommand {
             throw new InvalidUserInput(String.format(INVALID_FILTER, "Feedbacks", "status"));
         }
 
-        List<Feedback> result = getRepository().
-                getFilteredByStatus(value, getRepository().getFeedbacks(), FeedbackStatus.class);
+        List<Feedback> result = FiltrationHelpers.
+                filterByStatus(value, getRepository().getFeedbacks(), FeedbackStatus.class);
 
         if (result.isEmpty()) {
             return String.format(NO_ITEMS_TO_DISPLAY, "feedbacks");

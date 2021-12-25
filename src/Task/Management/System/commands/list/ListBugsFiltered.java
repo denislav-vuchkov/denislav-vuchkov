@@ -4,6 +4,7 @@ import Task.Management.System.commands.BaseCommand;
 import Task.Management.System.core.contracts.TaskManagementSystemRepository;
 import Task.Management.System.models.tasks.contracts.Bug;
 import Task.Management.System.models.tasks.enums.BugStatus;
+import Task.Management.System.utils.FiltrationHelpers;
 import Task.Management.System.utils.ValidationHelpers;
 
 import java.util.List;
@@ -25,12 +26,12 @@ public class ListBugsFiltered extends BaseCommand {
         ValidationHelpers.validateIntRange(parameters.size(),
                 MIN_ARGUMENTS, MAX_ARGUMENTS, INVALID_FILTERS_COUNT);
 
-        List<Bug> result = getRepository().
-                getFilteredList(parameters.get(0), getRepository().getBugs(), BugStatus.class);
+        List<Bug> result = FiltrationHelpers.
+                filterList(parameters.get(0), getRepository().getBugs(), BugStatus.class);
 
         if (parameters.size() == MAX_ARGUMENTS) {
-            result = getRepository().
-                    getFilteredList(parameters.get(1), result, BugStatus.class);
+            result = FiltrationHelpers.
+                    filterList(parameters.get(1), result, BugStatus.class);
         }
 
         if (result.isEmpty()) {

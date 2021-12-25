@@ -6,11 +6,11 @@ import Task.Management.System.exceptions.InvalidUserInput;
 
 import java.util.List;
 
-public class ListTasksWithAssigneeSorted extends BaseCommand {
+public class ListAssignableTasksSorted extends BaseCommand {
 
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 666;
 
-    public ListTasksWithAssigneeSorted(TaskManagementSystemRepository repository) {
+    public ListAssignableTasksSorted(TaskManagementSystemRepository repository) {
         super(repository);
     }
 
