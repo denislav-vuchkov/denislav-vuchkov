@@ -4,17 +4,15 @@ import Task.Management.System.commands.BaseCommand;
 import Task.Management.System.core.contracts.TaskManagementSystemRepository;
 import Task.Management.System.exceptions.InvalidUserInput;
 import Task.Management.System.models.tasks.contracts.Story;
+import Task.Management.System.utils.ListHelpers;
 import Task.Management.System.utils.ValidationHelpers;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class SortStories extends BaseCommand {
 
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 1;
-    public static final String NO_STORIES_EXIST = "There are no stories in the system!";
-    public static final String INVALID_PARAMETER_FOR_SORTING = "Story can only be sorted by title, priority or size.";
 
     public SortStories(TaskManagementSystemRepository repository) {
         super(repository);
@@ -22,35 +20,26 @@ public class SortStories extends BaseCommand {
 
     @Override
     protected String executeCommand(List<String> parameters) {
+
         ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
 
-        if (getRepository().getStories().isEmpty()) {
-            return NO_STORIES_EXIST;
+        List<Story> stories = getRepository().getStories();
+
+        if (stories.isEmpty()) {
+            return String.format(NO_ITEMS_TO_DISPLAY, "stories");
         }
 
         String criterion = parameters.get(0);
 
         switch (criterion.toUpperCase()) {
             case "TITLE":
-                return getRepository().getStories()
-                        .stream()
-                        .sorted(Comparator.comparing(Story::getTitle))
-                        .map(Story::toString)
-                        .collect(Collectors.joining(System.lineSeparator()));
+                return ListHelpers.sort(Comparator.comparing(Story::getTitle), stories);
             case "PRIORITY":
-                return getRepository().getStories()
-                        .stream()
-                        .sorted(Comparator.comparing(Story::getPriority))
-                        .map(Story::toString)
-                        .collect(Collectors.joining(System.lineSeparator()));
+                return ListHelpers.sort(Comparator.comparing(Story::getPriority), stories);
             case "SIZE":
-                return getRepository().getStories()
-                        .stream()
-                        .sorted(Comparator.comparing(Story::getSize))
-                        .map(Story::toString)
-                        .collect(Collectors.joining(System.lineSeparator()));
+                return ListHelpers.sort(Comparator.comparing(Story::getSize), stories);
             default:
-                throw new InvalidUserInput(INVALID_PARAMETER_FOR_SORTING);
+                throw new InvalidUserInput(String.format(INVALID_SORT_PARAMETER, "Stories", "title, priority or size"));
         }
     }
 }

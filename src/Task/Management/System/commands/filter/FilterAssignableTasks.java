@@ -3,7 +3,7 @@ package Task.Management.System.commands.filter;
 import Task.Management.System.commands.BaseCommand;
 import Task.Management.System.core.contracts.TaskManagementSystemRepository;
 import Task.Management.System.models.tasks.contracts.AssignableTask;
-import Task.Management.System.utils.FiltrationHelpers;
+import Task.Management.System.utils.ListHelpers;
 import Task.Management.System.utils.ValidationHelpers;
 
 import java.util.List;
@@ -25,11 +25,11 @@ public class FilterAssignableTasks extends BaseCommand {
         ValidationHelpers.validateIntRange(parameters.size(),
                 MIN_ARGUMENTS, MAX_ARGUMENTS, INVALID_FILTERS_COUNT);
 
-        List<AssignableTask> result = FiltrationHelpers.
+        List<AssignableTask> result = ListHelpers.
                 filterList(parameters.get(0), getRepository().getAssignableTasks());
 
         if (parameters.size() == MAX_ARGUMENTS) {
-            result = FiltrationHelpers.filterList(parameters.get(1), result);
+            result = ListHelpers.filterList(parameters.get(1), result);
         }
 
         if (result.isEmpty()) {

@@ -4,17 +4,15 @@ import Task.Management.System.commands.BaseCommand;
 import Task.Management.System.core.contracts.TaskManagementSystemRepository;
 import Task.Management.System.exceptions.InvalidUserInput;
 import Task.Management.System.models.tasks.contracts.Feedback;
+import Task.Management.System.utils.ListHelpers;
 import Task.Management.System.utils.ValidationHelpers;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class SortFeedbacks extends BaseCommand {
 
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 1;
-    public static final String NO_FEEDBACKS_EXIST = "There are no feedbacks in the system!";
-    public static final String INVALID_PARAMETER_FOR_SORTING = "Feedback can only be sorted by title or rating.";
 
     public SortFeedbacks(TaskManagementSystemRepository repository) {
         super(repository);
@@ -22,29 +20,24 @@ public class SortFeedbacks extends BaseCommand {
 
     @Override
     protected String executeCommand(List<String> parameters) {
+
         ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
 
-        if (getRepository().getFeedbacks().isEmpty()) {
-            return NO_FEEDBACKS_EXIST;
+        List<Feedback> feedbacks = getRepository().getFeedbacks();
+
+        if (feedbacks.isEmpty()) {
+            return String.format(NO_ITEMS_TO_DISPLAY, "feedbacks");
         }
 
         String criterion = parameters.get(0);
 
         switch (criterion.toUpperCase()) {
             case "TITLE":
-                return getRepository().getFeedbacks()
-                        .stream()
-                        .sorted(Comparator.comparing(Feedback::getTitle))
-                        .map(Feedback::toString)
-                        .collect(Collectors.joining(System.lineSeparator()));
+                return ListHelpers.sort(Comparator.comparing(Feedback::getTitle), feedbacks);
             case "RATING":
-                return getRepository().getFeedbacks()
-                        .stream()
-                        .sorted(Comparator.comparing(Feedback::getRating).reversed())
-                        .map(Feedback::toString)
-                        .collect(Collectors.joining(System.lineSeparator()));
+                return ListHelpers.sort((Comparator.comparing(Feedback::getRating).reversed()), feedbacks);
             default:
-                throw new InvalidUserInput(INVALID_PARAMETER_FOR_SORTING);
+                throw new InvalidUserInput(String.format(INVALID_SORT_PARAMETER, "Feedbacks", "title or rating"));
         }
     }
 }

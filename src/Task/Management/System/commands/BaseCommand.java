@@ -15,6 +15,7 @@ public abstract class BaseCommand implements Command {
     public static final String UNASSIGNED = "Unassigned";
     public static final String NO_ITEMS_TO_DISPLAY = "No %s to display.";
     public static final String INVALID_FILTER = "%s can only be filtered by %s.";
+    public static final String INVALID_SORT_PARAMETER = "%s can only be sorted by %s.";
 
     private final TaskManagementSystemRepository repository;
 

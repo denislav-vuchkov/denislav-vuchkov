@@ -4,11 +4,12 @@ import Task.Management.System.exceptions.InvalidUserInput;
 import Task.Management.System.models.tasks.contracts.AssignableTask;
 import Task.Management.System.models.tasks.contracts.Task;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-public class FiltrationHelpers {
+public class ListHelpers {
 
     public static final String INVALID_FILTER = "%s can only be filtered by %s.";
 
@@ -73,4 +74,13 @@ public class FiltrationHelpers {
                 .filter(e -> assignee.matcher(e.getAssignee()).find())
                 .collect(Collectors.toList());
     }
+
+    public static <T extends Task> String sort(Comparator<T> criterion, List<T> tasks) {
+        return tasks
+                .stream()
+                .sorted(criterion)
+                .map(Task::toString)
+                .collect(Collectors.joining(System.lineSeparator()));
+    }
+
 }

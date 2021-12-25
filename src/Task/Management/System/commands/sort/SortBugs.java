@@ -4,17 +4,15 @@ import Task.Management.System.commands.BaseCommand;
 import Task.Management.System.core.contracts.TaskManagementSystemRepository;
 import Task.Management.System.exceptions.InvalidUserInput;
 import Task.Management.System.models.tasks.contracts.Bug;
+import Task.Management.System.utils.ListHelpers;
 import Task.Management.System.utils.ValidationHelpers;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class SortBugs extends BaseCommand {
 
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 1;
-    public static final String NO_BUGS_EXIST = "There are no bugs in the system!";
-    public static final String INVALID_PARAMETER_FOR_SORTING = "Bug can only be sorted by title, priority or severity.";
 
     public SortBugs(TaskManagementSystemRepository repository) {
         super(repository);
@@ -22,35 +20,26 @@ public class SortBugs extends BaseCommand {
 
     @Override
     protected String executeCommand(List<String> parameters) {
+
         ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
 
-        if (getRepository().getBugs().isEmpty()) {
-            return NO_BUGS_EXIST;
+        List<Bug> bugs = getRepository().getBugs();
+
+        if (bugs.isEmpty()) {
+            return String.format(NO_ITEMS_TO_DISPLAY, "bugs");
         }
 
         String criterion = parameters.get(0);
 
         switch (criterion.toUpperCase()) {
             case "TITLE":
-                return getRepository().getBugs()
-                        .stream()
-                        .sorted(Comparator.comparing(Bug::getTitle))
-                        .map(Bug::toString)
-                        .collect(Collectors.joining(System.lineSeparator()));
+                return ListHelpers.sort(Comparator.comparing(Bug::getTitle), bugs);
             case "PRIORITY":
-                return getRepository().getBugs()
-                        .stream()
-                        .sorted(Comparator.comparing(Bug::getPriority))
-                        .map(Bug::toString)
-                        .collect(Collectors.joining(System.lineSeparator()));
+                return ListHelpers.sort(Comparator.comparing(Bug::getPriority), bugs);
             case "SEVERITY":
-                return getRepository().getBugs()
-                        .stream()
-                        .sorted(Comparator.comparing(Bug::getSeverity))
-                        .map(Bug::toString)
-                        .collect(Collectors.joining(System.lineSeparator()));
+                return ListHelpers.sort(Comparator.comparing(Bug::getSeverity), bugs);
             default:
-                throw new InvalidUserInput(INVALID_PARAMETER_FOR_SORTING);
+                throw new InvalidUserInput(String.format(INVALID_SORT_PARAMETER, "Bugs", "title, priority or severity"));
         }
     }
 }
