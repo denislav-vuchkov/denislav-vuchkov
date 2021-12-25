@@ -2,25 +2,23 @@ package Task.Management.System.commands.task;
 
 import Task.Management.System.commands.BaseCommand;
 import Task.Management.System.core.contracts.TaskManagementSystemRepository;
-import Task.Management.System.models.tasks.enums.Priority;
-import Task.Management.System.models.tasks.enums.Size;
+import Task.Management.System.models.tasks.FeedbackImpl;
 import Task.Management.System.models.teams.contracts.User;
 import Task.Management.System.utils.ParsingHelpers;
 import Task.Management.System.utils.ValidationHelpers;
 
 import java.util.List;
 
-public class CreateStoryCommand extends BaseCommand {
+public class CreateFeedback extends BaseCommand {
 
-    public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 8;
+    public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 6;
 
-    public CreateStoryCommand(TaskManagementSystemRepository repository) {
+    public CreateFeedback(TaskManagementSystemRepository repository) {
         super(repository);
     }
 
     @Override
     protected String executeCommand(List<String> parameters) {
-        //String teamName, String boardName, String title, String description, Priority priority, Size size, String assignee
         ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
 
         User user = getRepository().findUser(parameters.get(0));
@@ -29,12 +27,12 @@ public class CreateStoryCommand extends BaseCommand {
         String boardName = parameters.get(2);
         String title = parameters.get(3);
         String description = parameters.get(4);
-        Priority priority = ParsingHelpers.tryParseEnum(parameters.get(5), Priority.class);
-        Size size = ParsingHelpers.tryParseEnum(parameters.get(6), Size.class);
-        String assignee = parameters.get(7);
+        int rating = ParsingHelpers.tryParseInt(parameters.get(5), FEEDBACK_RATING_ERROR);
+        ValidationHelpers.validateIntRange(
+                rating, FeedbackImpl.RATING_MIN, FeedbackImpl.RATING_MAX, FEEDBACK_RATING_ERROR);
 
-        user.recordActivity(String.format(USER_CREATED_TASK, user.getName(), "Story", boardName));
+        user.recordActivity(String.format(USER_CREATED_TASK, user.getName(), "Feedback", boardName));
 
-        return getRepository().addStory(teamName, boardName, title, description, priority, size, assignee);
+        return getRepository().addFeedback(teamName, boardName, title, description, rating);
     }
 }

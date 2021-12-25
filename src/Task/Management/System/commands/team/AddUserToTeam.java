@@ -8,13 +8,13 @@ import Task.Management.System.utils.ValidationHelpers;
 
 import java.util.List;
 
-public class AddUserToTeamCommand extends BaseCommand {
+public class AddUserToTeam extends BaseCommand {
 
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 2;
     public static final String USER_ADDED_TO_TEAM = "User %s successfully added to team %s.";
     public static final String USER_ALREADY_ON_TEAM = "User %s is already part of team %s!";
 
-    public AddUserToTeamCommand(TaskManagementSystemRepository repository) {
+    public AddUserToTeam(TaskManagementSystemRepository repository) {
         super(repository);
     }
 

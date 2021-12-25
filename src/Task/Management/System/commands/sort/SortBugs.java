@@ -1,4 +1,4 @@
-package Task.Management.System.commands.list;
+package Task.Management.System.commands.sort;
 
 import Task.Management.System.commands.BaseCommand;
 import Task.Management.System.core.contracts.TaskManagementSystemRepository;
@@ -10,13 +10,13 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ListBugsSorted extends BaseCommand {
+public class SortBugs extends BaseCommand {
 
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 1;
     public static final String NO_BUGS_EXIST = "There are no bugs in the system!";
     public static final String INVALID_PARAMETER_FOR_SORTING = "Bug can only be sorted by title, priority or severity.";
 
-    public ListBugsSorted(TaskManagementSystemRepository repository) {
+    public SortBugs(TaskManagementSystemRepository repository) {
         super(repository);
     }
 

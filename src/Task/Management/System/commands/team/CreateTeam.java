@@ -6,11 +6,11 @@ import Task.Management.System.utils.ValidationHelpers;
 
 import java.util.List;
 
-public class CreateTeamCommand extends BaseCommand {
+public class CreateTeam extends BaseCommand {
 
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 1;
 
-    public CreateTeamCommand(TaskManagementSystemRepository repository) {
+    public CreateTeam(TaskManagementSystemRepository repository) {
         super(repository);
     }
 

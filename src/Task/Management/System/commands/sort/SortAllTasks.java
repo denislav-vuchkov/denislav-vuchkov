@@ -1,4 +1,4 @@
-package Task.Management.System.commands.list;
+package Task.Management.System.commands.sort;
 
 import Task.Management.System.commands.BaseCommand;
 import Task.Management.System.core.contracts.TaskManagementSystemRepository;
@@ -6,13 +6,13 @@ import Task.Management.System.utils.ValidationHelpers;
 
 import java.util.List;
 
-public class ListAllTasksSorted extends BaseCommand {
+public class SortAllTasks extends BaseCommand {
 
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 0;
     public static final String HEADER = "--TASKS SORTED BY TITLE--";
     public static final String NO_TASKS_EXIST = "There are no tasks in the system!";
 
-    public ListAllTasksSorted(TaskManagementSystemRepository repository) {
+    public SortAllTasks(TaskManagementSystemRepository repository) {
         super(repository);
     }
 

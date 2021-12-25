@@ -6,18 +6,18 @@ import Task.Management.System.utils.ValidationHelpers;
 
 import java.util.List;
 
-public class ShowUserActivityCommand extends BaseCommand {
+public class ShowTeamActivity extends BaseCommand {
 
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 1;
 
-    public ShowUserActivityCommand(TaskManagementSystemRepository repository) {
+    public ShowTeamActivity(TaskManagementSystemRepository repository) {
         super(repository);
     }
 
     @Override
     protected String executeCommand(List<String> parameters) {
         ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
-        String userName = parameters.get(0);
-        return getRepository().findUser(userName).getLog();
+        String teamName = parameters.get(0);
+        return getRepository().findTeam(teamName).getLog();
     }
 }

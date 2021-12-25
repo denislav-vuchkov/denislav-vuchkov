@@ -1,4 +1,4 @@
-package Task.Management.System.commands.list;
+package Task.Management.System.commands.sort;
 
 import Task.Management.System.commands.BaseCommand;
 import Task.Management.System.core.contracts.TaskManagementSystemRepository;
@@ -6,11 +6,11 @@ import Task.Management.System.exceptions.InvalidUserInput;
 
 import java.util.List;
 
-public class ListAssignableTasksSorted extends BaseCommand {
+public class SortAssignableTasks extends BaseCommand {
 
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 666;
 
-    public ListAssignableTasksSorted(TaskManagementSystemRepository repository) {
+    public SortAssignableTasks(TaskManagementSystemRepository repository) {
         super(repository);
     }
 

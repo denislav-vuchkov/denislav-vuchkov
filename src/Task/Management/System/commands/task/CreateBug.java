@@ -12,11 +12,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class CreateBugCommand extends BaseCommand {
+public class CreateBug extends BaseCommand {
 
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 9;
 
-    public CreateBugCommand(TaskManagementSystemRepository repository) {
+    public CreateBug(TaskManagementSystemRepository repository) {
         super(repository);
     }
 

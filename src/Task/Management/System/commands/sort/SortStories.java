@@ -1,4 +1,4 @@
-package Task.Management.System.commands.list;
+package Task.Management.System.commands.sort;
 
 import Task.Management.System.commands.BaseCommand;
 import Task.Management.System.core.contracts.TaskManagementSystemRepository;
@@ -10,13 +10,13 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ListStoriesSorted extends BaseCommand {
+public class SortStories extends BaseCommand {
 
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 1;
     public static final String NO_STORIES_EXIST = "There are no stories in the system!";
     public static final String INVALID_PARAMETER_FOR_SORTING = "Story can only be sorted by title, priority or size.";
 
-    public ListStoriesSorted(TaskManagementSystemRepository repository) {
+    public SortStories(TaskManagementSystemRepository repository) {
         super(repository);
     }
 

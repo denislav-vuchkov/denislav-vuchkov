@@ -14,14 +14,11 @@ import Task.Management.System.models.teams.UserImpl;
 import Task.Management.System.models.teams.contracts.Board;
 import Task.Management.System.models.teams.contracts.Team;
 import Task.Management.System.models.teams.contracts.User;
-import Task.Management.System.utils.ParsingHelpers;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
-import static Task.Management.System.commands.task.CreateStoryCommand.UNASSIGNED;
+import static Task.Management.System.commands.task.CreateStory.UNASSIGNED;
 
 public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemRepository {
 

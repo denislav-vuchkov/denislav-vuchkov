@@ -9,11 +9,11 @@ import Task.Management.System.utils.ValidationHelpers;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ShowTeamUsersCommand extends BaseCommand {
+public class ShowTeamUsers extends BaseCommand {
 
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 1;
 
-    public ShowTeamUsersCommand(TaskManagementSystemRepository repository) {
+    public ShowTeamUsers(TaskManagementSystemRepository repository) {
         super(repository);
     }
 

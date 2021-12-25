@@ -11,14 +11,14 @@ import Task.Management.System.utils.ParsingHelpers;
 
 import java.util.List;
 
-public class AddCommentToTaskCommand extends BaseCommand {
+public class AddCommentToTask extends BaseCommand {
 
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 3;
     public static final String INVALID_ID = "Invalid ID provided.";
     public static final String COMMENT_SUCCESSFULLY_ADDED = "Comment by %s added to Task ID %d.";
     public static final String COMMENT_ADDED = "User %s added a comment to task %d.";
 
-    public AddCommentToTaskCommand(TaskManagementSystemRepository repository) {
+    public AddCommentToTask(TaskManagementSystemRepository repository) {
         super(repository);
     }
 

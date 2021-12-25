@@ -1,4 +1,4 @@
-package Task.Management.System.commands.list;
+package Task.Management.System.commands.sort;
 
 import Task.Management.System.commands.BaseCommand;
 import Task.Management.System.core.contracts.TaskManagementSystemRepository;
@@ -10,13 +10,13 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ListFeedbacksSorted extends BaseCommand {
+public class SortFeedbacks extends BaseCommand {
 
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 1;
     public static final String NO_FEEDBACKS_EXIST = "There are no feedbacks in the system!";
     public static final String INVALID_PARAMETER_FOR_SORTING = "Feedback can only be sorted by title or rating.";
 
-    public ListFeedbacksSorted(TaskManagementSystemRepository repository) {
+    public SortFeedbacks(TaskManagementSystemRepository repository) {
         super(repository);
     }
 

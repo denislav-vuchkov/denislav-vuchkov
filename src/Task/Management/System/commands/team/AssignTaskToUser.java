@@ -13,14 +13,14 @@ import Task.Management.System.utils.ValidationHelpers;
 
 import java.util.List;
 
-public class AssignTaskToUserCommand extends BaseCommand {
+public class AssignTaskToUser extends BaseCommand {
 
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 3;
     public static final String INVALID_TASK_ID = "Invalid task ID provided";
     public static final String TASK_REASSIGNED = "Task with ID %d has now been reassigned to %s.";
     public static final String USER_ACTIVITY = "User %s assigned task %d to %s.";
 
-    public AssignTaskToUserCommand(TaskManagementSystemRepository repository) {
+    public AssignTaskToUser(TaskManagementSystemRepository repository) {
         super(repository);
     }
 

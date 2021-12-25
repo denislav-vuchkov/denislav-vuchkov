@@ -6,19 +6,18 @@ import Task.Management.System.utils.ValidationHelpers;
 
 import java.util.List;
 
-public class ShowBoardActivityCommand extends BaseCommand {
+public class ShowUserActivity extends BaseCommand {
 
-    public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 2;
+    public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 1;
 
-    public ShowBoardActivityCommand(TaskManagementSystemRepository repository) {
+    public ShowUserActivity(TaskManagementSystemRepository repository) {
         super(repository);
     }
 
     @Override
     protected String executeCommand(List<String> parameters) {
         ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
-        String boardName = parameters.get(0);
-        String teamName = parameters.get(1);
-        return getRepository().findBoard(boardName, teamName).getLog();
+        String userName = parameters.get(0);
+        return getRepository().findUser(userName).getLog();
     }
 }
