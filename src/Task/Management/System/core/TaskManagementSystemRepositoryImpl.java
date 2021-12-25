@@ -36,6 +36,7 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
     public static final String CREATOR_SHOULD_BE_FROM_THE_TEAM = "The task creator should be a member of the team!";
     public static final String MODIFIER_SHOULD_BE_FROM_THE_TEAM = "The task modifier should be a member of the team!";
     public static final String INVALID_FILTER = "%s can only be filtered by %s.";
+    public static final String UNREACHABLE_EXCEPTION = "Unreachable exception. Thrown by repository findTeamWhereTaskIsLocated().";
     private static final String NOT_EXIST = "The %s does not exist! Create a %s with this name first.";
     public static final String TEAM_DOES_NOT_EXIST = String.format(NOT_EXIST, "team", "team");
     public static final String USER_DOES_NOT_EXIST = String.format(NOT_EXIST, "user", "user");
@@ -43,7 +44,6 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
     private static final String ALREADY_EXISTS = "This %s name already exists! Please choose a unique %s name.";
     public static final String TEAM_ALREADY_EXISTS = String.format(ALREADY_EXISTS, "team", "team");
     public static final String USER_ALREADY_EXISTS = String.format(ALREADY_EXISTS, "user", "user");
-    public static final String UNREACHABLE_EXCEPTION = "Unreachable exception. Thrown by repository findTeamWhereTaskIsLocated().";
     private static long nextTaskID = 1;
     private final List<Team> teams;
     private final List<User> users;
