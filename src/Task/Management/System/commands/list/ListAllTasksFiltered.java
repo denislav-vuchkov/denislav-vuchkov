@@ -2,6 +2,7 @@ package Task.Management.System.commands.list;
 
 import Task.Management.System.commands.BaseCommand;
 import Task.Management.System.core.contracts.TaskManagementSystemRepository;
+import Task.Management.System.exceptions.InvalidUserInput;
 import Task.Management.System.models.tasks.contracts.Task;
 import Task.Management.System.utils.ValidationHelpers;
 
@@ -20,10 +21,15 @@ public class ListAllTasksFiltered extends BaseCommand {
     protected String executeCommand(List<String> parameters) {
         ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
 
-        String title = parameters.get(0);
+        String filter = parameters.get(0).split(":")[0].trim();
+        String value = parameters.get(0).split(":")[1].trim();
+
+        if (!filter.equalsIgnoreCase("Title")) {
+            throw new InvalidUserInput(String.format(INVALID_FILTER, "All tasks", "title"));
+        }
 
         List<Task> result = getRepository().
-                getFilteredByTitle(title, getRepository().getTasks());
+                getFilteredByTitle(value, getRepository().getTasks());
 
         if (result.isEmpty()) {
             return String.format(NO_ITEMS_TO_DISPLAY, "tasks");
