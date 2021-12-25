@@ -2,14 +2,11 @@ package Task.Management.System.commands.list;
 
 import Task.Management.System.commands.BaseCommand;
 import Task.Management.System.core.contracts.TaskManagementSystemRepository;
-import Task.Management.System.exceptions.InvalidUserInput;
 import Task.Management.System.models.tasks.contracts.Bug;
 import Task.Management.System.models.tasks.enums.BugStatus;
-import Task.Management.System.utils.ParsingHelpers;
 import Task.Management.System.utils.ValidationHelpers;
 
 import java.util.List;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class ListBugsFiltered extends BaseCommand {
@@ -28,9 +25,12 @@ public class ListBugsFiltered extends BaseCommand {
         ValidationHelpers.validateIntRange(parameters.size(),
                 MIN_ARGUMENTS, MAX_ARGUMENTS, INVALID_FILTERS_COUNT);
 
-        List<Bug> result = getFilteredList(parameters.get(0), getRepository().getBugs());
+        List<Bug> result = getRepository().
+                getFilteredList(parameters.get(0), getRepository().getBugs(), BugStatus.class);
+
         if (parameters.size() == MAX_ARGUMENTS) {
-            result = getFilteredList(parameters.get(1), result);
+            result = getRepository().
+                    getFilteredList(parameters.get(1), result, BugStatus.class);
         }
 
         if (result.isEmpty()) {
@@ -41,28 +41,5 @@ public class ListBugsFiltered extends BaseCommand {
                 .stream()
                 .map(Bug::toString)
                 .collect(Collectors.joining(System.lineSeparator()));
-    }
-
-    private List<Bug> getFilteredList(String criterion, List<Bug> bugs) {
-
-        String filter = criterion.split(":")[0].trim();
-        String value = criterion.split(":")[1].trim();
-
-        switch (filter.toUpperCase()) {
-            case "STATUS":
-                BugStatus status = ParsingHelpers.tryParseEnum(value, BugStatus.class);
-                return bugs
-                        .stream()
-                        .filter(e -> e.getStatus().equals(status.toString()))
-                        .collect(Collectors.toList());
-            case "ASSIGNEE":
-                Pattern assignee = Pattern.compile(Pattern.quote(value), Pattern.CASE_INSENSITIVE);
-                return bugs
-                        .stream()
-                        .filter(e -> assignee.matcher(e.getAssignee()).find())
-                        .collect(Collectors.toList());
-            default:
-                throw new InvalidUserInput(String.format(INVALID_FILTER, "Bugs", "status or assignee"));
-        }
     }
 }

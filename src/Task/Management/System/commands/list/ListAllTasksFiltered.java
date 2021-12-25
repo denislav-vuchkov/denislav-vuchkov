@@ -11,9 +11,6 @@ import java.util.stream.Collectors;
 public class ListAllTasksFiltered extends BaseCommand {
 
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 1;
-    public static final String HEADER = "--TASKS FILTERED BY TITLE--";
-    public static final String EMPTY_FILTERED_COLLECTION = "No tasks match the filtering criteria!";
-    public static final String NO_TASKS_EXIST = "There are no tasks in the system!";
 
     public ListAllTasksFiltered(TaskManagementSystemRepository repository) {
         super(repository);
@@ -23,29 +20,18 @@ public class ListAllTasksFiltered extends BaseCommand {
     protected String executeCommand(List<String> parameters) {
         ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
 
-        if (getRepository().getTasks().isEmpty()) {
-            return NO_TASKS_EXIST;
+        String title = parameters.get(0);
+
+        List<Task> result = getRepository().
+                getFilteredByTitle(title, getRepository().getTasks());
+
+        if (result.isEmpty()) {
+            return String.format(NO_ITEMS_TO_DISPLAY, "tasks");
         }
 
-        String textToFilterBy = parameters.get(0);
-
-        List<Task> filteredTasks;
-
-        filteredTasks = getRepository()
-                .getTasks()
+        return result
                 .stream()
-                .filter(e -> e.getTitle().contains(textToFilterBy))
-                .collect(Collectors.toList());
-
-        if (filteredTasks.isEmpty()) {
-            return EMPTY_FILTERED_COLLECTION;
-        }
-
-        StringBuilder output = new StringBuilder();
-        output.append(HEADER).append("\n");
-        filteredTasks.forEach(bug -> output.append(bug.toString()).append("\n"));
-        output.append(HEADER);
-
-        return output.toString();
+                .map(Task::toString)
+                .collect(Collectors.joining(System.lineSeparator()));
     }
 }

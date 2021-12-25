@@ -2,14 +2,11 @@ package Task.Management.System.commands.list;
 
 import Task.Management.System.commands.BaseCommand;
 import Task.Management.System.core.contracts.TaskManagementSystemRepository;
-import Task.Management.System.exceptions.InvalidUserInput;
 import Task.Management.System.models.tasks.contracts.Story;
 import Task.Management.System.models.tasks.enums.StoryStatus;
-import Task.Management.System.utils.ParsingHelpers;
 import Task.Management.System.utils.ValidationHelpers;
 
 import java.util.List;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class ListStoriesFiltered extends BaseCommand {
@@ -28,9 +25,12 @@ public class ListStoriesFiltered extends BaseCommand {
         ValidationHelpers.validateIntRange(parameters.size(),
                 MIN_ARGUMENTS, MAX_ARGUMENTS, INVALID_FILTERS_COUNT);
 
-        List<Story> result = getFilteredList(parameters.get(0), getRepository().getStories());
+        List<Story> result = getRepository().
+                getFilteredList(parameters.get(0), getRepository().getStories(), StoryStatus.class);
+
         if (parameters.size() == MAX_ARGUMENTS) {
-            result = getFilteredList(parameters.get(1), result);
+            result = getRepository().
+                    getFilteredList(parameters.get(1), result, StoryStatus.class);
         }
 
         if (result.isEmpty()) {
@@ -41,28 +41,5 @@ public class ListStoriesFiltered extends BaseCommand {
                 .stream()
                 .map(Story::toString)
                 .collect(Collectors.joining(System.lineSeparator()));
-    }
-
-    private List<Story> getFilteredList(String criterion, List<Story> stories) {
-
-        String filter = criterion.split(":")[0].trim();
-        String value = criterion.split(":")[1].trim();
-
-        switch (filter.toUpperCase()) {
-            case "STATUS":
-                StoryStatus status = ParsingHelpers.tryParseEnum(value, StoryStatus.class);
-                return stories
-                        .stream()
-                        .filter(e -> e.getStatus().equals(status.toString()))
-                        .collect(Collectors.toList());
-            case "ASSIGNEE":
-                Pattern assignee = Pattern.compile(Pattern.quote(value), Pattern.CASE_INSENSITIVE);
-                return stories
-                        .stream()
-                        .filter(e -> assignee.matcher(e.getAssignee()).find())
-                        .collect(Collectors.toList());
-            default:
-                throw new InvalidUserInput(String.format(INVALID_FILTER, "Stories", "status or assignee"));
-        }
     }
 }

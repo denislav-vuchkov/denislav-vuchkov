@@ -32,4 +32,5 @@ public abstract class BaseCommand implements Command {
     }
 
     protected abstract String executeCommand(List<String> parameters);
+
 }
