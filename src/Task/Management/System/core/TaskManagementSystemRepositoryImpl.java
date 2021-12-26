@@ -143,7 +143,7 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
         Bug bug = new BugImpl(nextTaskID, title, description, stepsToReproduce, priority, severity);
 
         if (!assignee.isEmpty()) {
-            validateUserIsFromTeam(teamName, assignee);
+            validateUserIsFromTeam(assignee, teamName);
             findUser(assignee).addTask(bug);
         }
 
@@ -171,7 +171,7 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
         Story story = new StoryImpl(nextTaskID, title, description, priority, size);
 
         if (!assignee.isEmpty()) {
-            validateUserIsFromTeam(teamName, assignee);
+            validateUserIsFromTeam(assignee, teamName);
             findUser(assignee).addTask(story);
         }
 
