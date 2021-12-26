@@ -37,13 +37,6 @@ public class BugImpl_Tests {
         Assertions.assertEquals(Severity.MAJOR, myBug.getSeverity());
         Assertions.assertEquals(BugStatus.ACTIVE.toString(), myBug.getStatus());
 
-        String stepsOutput = "--STEPS TO REPRODUCE--\n" +
-                "1. Nothing\n" +
-                "2. Works\n" +
-                "3. Help\n" +
-                "--STEPS TO REPRODUCE--";
-        Assertions.assertEquals(stepsOutput, myBug.getStepsToReproduce());
-
         myBug.setDescription("This Is The New Valid Description");
         Assertions.assertEquals("This Is The New Valid Description", myBug.getDescription());
 
@@ -134,12 +127,12 @@ public class BugImpl_Tests {
 
     @Test
     public void setAssignee_throwsException_whenNewOneIsTheSameAsOld() {
-        Assertions.assertThrows(InvalidUserInput.class, () -> myBug.setAssignee("User10"));
+        Assertions.assertThrows(InvalidUserInput.class, () -> myBug.setAssignee("Unassigned"));
     }
 
     @Test
     public void unAssign_changesValueToUnassigned_byCallingSetAssignee() {
-        Assertions.assertEquals("User10", myBug.getAssignee());
+        myBug.setAssignee("Denis");
         myBug.unAssign();
         Assertions.assertEquals("Unassigned", myBug.getAssignee());
         Assertions.assertThrows(InvalidUserInput.class, () -> myBug.unAssign());
