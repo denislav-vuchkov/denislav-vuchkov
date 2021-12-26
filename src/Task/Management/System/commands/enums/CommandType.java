@@ -6,6 +6,7 @@ public enum CommandType {
     SHOW_ALL_TASKS,
     SHOW_TEAM_USERS,
     SHOW_TEAM_BOARDS,
+    SHOW_TASK_COMMENTS,
     CREATE_USER,
     CREATE_TEAM,
     ADD_USER_TO_TEAM,

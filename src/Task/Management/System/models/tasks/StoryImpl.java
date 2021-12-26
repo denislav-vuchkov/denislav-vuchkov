@@ -111,8 +111,10 @@ public class StoryImpl extends AssignableTaskImpl implements Story {
 
     @Override
     public String toString() {
-        return String.format("Task type: %s - ID: %d - Title: %s - Priority: %s - Size: %s - Status - %s - Assignee - %s",
+        return String.format("%s - ID: %d - Title: %s - Priority: %s - Size: %s - " +
+                        "Status - %s - Assignee - %s - Comments: %d",
                 this.getClass().getSimpleName().replace("Impl", ""),
-                getID(), getTitle(), getPriority(), getSize(), getStatus(), getAssignee());
+                getID(), getTitle(), getPriority(), getSize(),
+                getStatus(), getAssignee(), getComments().size());
     }
 }

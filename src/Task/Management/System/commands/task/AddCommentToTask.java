@@ -37,6 +37,6 @@ public class AddCommentToTask extends BaseCommand {
         task.addComment(comment);
 
         author.recordActivity(String.format(COMMENT_EVENT, author.getName(), task.getID()));
-        return String.format(COMMENT_ADDED, author, task.getID());
+        return String.format(COMMENT_ADDED, author.getName(), task.getID());
     }
 }

@@ -12,7 +12,7 @@ import java.util.List;
 public class AssignTaskToUser extends BaseCommand {
 
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 3;
-    public static final String TASK_REASSIGNED = "Task with ID %d has now been reassigned to %s.";
+    public static final String TASK_REASSIGNED = "Task with ID %d has been assigned to %s.";
     public static final String ASSIGN_EVENT = "User %s assigned task %d to %s.";
 
     public AssignTaskToUser(TaskManagementSystemRepository repository) {
@@ -39,6 +39,6 @@ public class AssignTaskToUser extends BaseCommand {
         newAssignee.addTask(task);
 
         assigner.recordActivity(String.format(ASSIGN_EVENT, assigner.getName(), task.getID(), newAssignee.getName()));
-        return String.format(TASK_REASSIGNED, task.getID(), newAssignee);
+        return String.format(TASK_REASSIGNED, task.getID(), newAssignee.getName());
     }
 }

@@ -33,6 +33,8 @@ public class CommandFactoryImpl implements CommandFactory {
                 return new ShowTeamUsers(taskManagementSystemRepository);
             case SHOW_TEAM_BOARDS:
                 return new ShowTeamBoards(taskManagementSystemRepository);
+            case SHOW_TASK_COMMENTS:
+                return new ShowTaskComments(taskManagementSystemRepository);
             case SHOW_TEAM_ACTIVITY:
                 return new ShowTeamActivity(taskManagementSystemRepository);
             case SHOW_BOARD_ACTIVITY:
