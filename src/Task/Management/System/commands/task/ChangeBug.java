@@ -23,12 +23,13 @@ public class ChangeBug extends BaseCommand {
 
     @Override
     protected String executeCommand(List<String> parameters) {
-        ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
 
-        User user = getRepository().findUser(parameters.get(0).trim());
+        ValidationHelpers.validateCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
+
+        User changer = getRepository().findUser(parameters.get(0).trim());
         long ID = ParsingHelpers.tryParseLong(parameters.get(1), INVALID_ID);
         Bug bug = getRepository().findBug(ID);
-        getRepository().validateUserAndTaskAreFromTheSameTeam(user.getName(), bug.getID());
+        getRepository().validateUserAndTaskFromSameTeam(changer.getName(), bug.getID());
         String propertyToChange = parameters.get(2).trim().toUpperCase();
         String newValue = parameters.get(3).toUpperCase();
 
@@ -49,8 +50,8 @@ public class ChangeBug extends BaseCommand {
                 throw new InvalidUserInput(INVALID_PROPERTY);
         }
 
-        String result = String.format(RECORD_ACTIVITY, user.getName(), propertyToChange, "Bug", ID, newValue);
-        user.recordActivity(result);
+        String result = String.format(RECORD_ACTIVITY, changer.getName(), propertyToChange, "Bug", ID, newValue);
+        changer.recordActivity(result);
         return result;
     }
 }

@@ -33,7 +33,7 @@ public class TeamImpl implements Team {
     }
 
     private void setName(String name) {
-        ValidationHelpers.validateIntRange(name.length(), NAME_MIN_LENGTH, NAME_MAX_LENGTH, INVALID_NAME_MESSAGE);
+        ValidationHelpers.validateRange(name.length(), NAME_MIN_LENGTH, NAME_MAX_LENGTH, INVALID_NAME_MESSAGE);
         this.name = name;
     }
 

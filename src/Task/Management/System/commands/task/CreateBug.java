@@ -22,25 +22,21 @@ public class CreateBug extends BaseCommand {
 
     @Override
     protected String executeCommand(List<String> parameters) {
-        //String executorOfCommand, String teamName, String boardName, String title, String description, List<String> steps,
-        //Priority priority, Severity severity, String assignee
-        ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
 
-        User user = getRepository().findUser(parameters.get(0));
+        ValidationHelpers.validateCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
+
+        User creator = getRepository().findUser(parameters.get(0));
         String teamName = parameters.get(1);
-        getRepository().validateUserIsFromTeam(user.getName(),teamName);
+        getRepository().validateUserIsFromTeam(creator.getName(), teamName);
         String boardName = parameters.get(2);
         String title = parameters.get(3);
         String description = parameters.get(4);
-        List<String> stepsToReproduce = Arrays.stream(parameters.get(5).split("[!?;\\.] "))
-                .collect(Collectors.toList());
+        List<String> steps = Arrays.stream(parameters.get(5).split("[!?;\\.] ")).collect(Collectors.toList());
         Priority priority = ParsingHelpers.tryParseEnum(parameters.get(6), Priority.class);
         Severity severity = ParsingHelpers.tryParseEnum(parameters.get(7), Severity.class);
         String assignee = parameters.get(8);
 
-        user.recordActivity(String.format(USER_CREATED_TASK, user.getName(), "Bug", boardName));
-
-        return getRepository().addBug(teamName, boardName, title,
-                description, stepsToReproduce, priority, severity, assignee);
+        creator.recordActivity(String.format(USER_CREATED_TASK, creator.getName(), "Bug", boardName));
+        return getRepository().addBug(teamName, boardName, title, description, steps, priority, severity, assignee);
     }
 }

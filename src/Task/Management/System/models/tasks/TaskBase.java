@@ -61,7 +61,7 @@ public abstract class TaskBase implements Task {
 
     @Override
     public void setTitle(String title) {
-        ValidationHelpers.validateIntRange(title.length(), TITLE_MIN_LENGTH, TITLE_MAX_LENGTH, INVALID_NAME_MESSAGE);
+        ValidationHelpers.validateRange(title.length(), TITLE_MIN_LENGTH, TITLE_MAX_LENGTH, INVALID_NAME_MESSAGE);
         if (this.title == null) {
             this.title = title;
             return;
@@ -80,7 +80,7 @@ public abstract class TaskBase implements Task {
 
     @Override
     public void setDescription(String description) {
-        ValidationHelpers.validateIntRange(description.length(),
+        ValidationHelpers.validateRange(description.length(),
                 DESCRIPTION_MIN_LENGTH,
                 DESCRIPTION_MAX_LENGTH,
                 INVALID_DESCRIPTION_MESSAGE);

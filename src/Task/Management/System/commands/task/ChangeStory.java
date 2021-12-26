@@ -23,12 +23,13 @@ public class ChangeStory extends BaseCommand {
 
     @Override
     protected String executeCommand(List<String> parameters) {
-        ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
 
-        User user = getRepository().findUser(parameters.get(0).trim());
+        ValidationHelpers.validateCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
+
+        User changer = getRepository().findUser(parameters.get(0).trim());
         long ID = ParsingHelpers.tryParseLong(parameters.get(1), INVALID_ID);
         Story story = getRepository().findStory(ID);
-        getRepository().validateUserAndTaskAreFromTheSameTeam(user.getName(), story.getID());
+        getRepository().validateUserAndTaskFromSameTeam(changer.getName(), story.getID());
         String propertyToChange = parameters.get(2).trim().toUpperCase();
         String newValue = parameters.get(3).toUpperCase();
 
@@ -49,8 +50,8 @@ public class ChangeStory extends BaseCommand {
                 throw new InvalidUserInput(INVALID_PROPERTY);
         }
 
-        String result = String.format(RECORD_ACTIVITY, user.getName(), propertyToChange, "Story", ID, newValue);
-        user.recordActivity(result);
+        String result = String.format(RECORD_ACTIVITY, changer.getName(), propertyToChange, "Story", ID, newValue);
+        changer.recordActivity(result);
         return result;
     }
 }

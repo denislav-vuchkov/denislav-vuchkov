@@ -23,15 +23,15 @@ public class FilterStories extends BaseCommand {
 
     @Override
     protected String executeCommand(List<String> parameters) {
-        ValidationHelpers.validateIntRange(parameters.size(),
+
+        ValidationHelpers.validateRange(parameters.size(),
                 MIN_ARGUMENTS, MAX_ARGUMENTS, INVALID_FILTERS_COUNT);
 
         List<Story> result = ListHelpers.
                 filterList(parameters.get(0), getRepository().getStories(), StoryStatus.class);
 
         if (parameters.size() == MAX_ARGUMENTS) {
-            result = ListHelpers.
-                    filterList(parameters.get(1), result, StoryStatus.class);
+            result = ListHelpers.filterList(parameters.get(1), result, StoryStatus.class);
         }
 
         if (result.isEmpty()) {

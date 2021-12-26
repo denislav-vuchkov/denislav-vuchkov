@@ -18,11 +18,15 @@ public class ShowAllTasks extends BaseCommand {
 
     @Override
     protected String executeCommand(List<String> parameters) {
-        ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
+
+        ValidationHelpers.validateCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
+
         List<Task> tasks = getRepository().getTasks();
+
         if (tasks.isEmpty()) {
             return String.format(NO_ITEMS_TO_DISPLAY, "tasks");
         }
+
         return tasks
                 .stream()
                 .map(Task::toString)

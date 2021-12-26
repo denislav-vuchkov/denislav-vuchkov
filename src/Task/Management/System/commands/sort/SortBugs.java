@@ -21,7 +21,7 @@ public class SortBugs extends BaseCommand {
     @Override
     protected String executeCommand(List<String> parameters) {
 
-        ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
+        ValidationHelpers.validateCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
 
         List<Bug> bugs = getRepository().getBugs();
 

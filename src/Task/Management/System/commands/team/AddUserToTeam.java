@@ -20,8 +20,11 @@ public class AddUserToTeam extends BaseCommand {
 
     @Override
     protected String executeCommand(List<String> parameters) {
-        ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
+
+        ValidationHelpers.validateCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
+
         User user = getRepository().findUser(parameters.get(0));
+
         Team team = getRepository().findTeam(parameters.get(1));
 
         if (team.getUsers().contains(user)) {
@@ -30,6 +33,7 @@ public class AddUserToTeam extends BaseCommand {
         }
 
         team.addUser(user);
+
         return String.format(USER_ADDED_TO_TEAM, user.getName(), team.getName());
     }
 }

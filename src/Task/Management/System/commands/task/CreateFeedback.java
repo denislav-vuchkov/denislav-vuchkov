@@ -19,20 +19,19 @@ public class CreateFeedback extends BaseCommand {
 
     @Override
     protected String executeCommand(List<String> parameters) {
-        ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
 
-        User user = getRepository().findUser(parameters.get(0));
+        ValidationHelpers.validateCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
+
+        User creator = getRepository().findUser(parameters.get(0));
         String teamName = parameters.get(1);
-        getRepository().validateUserIsFromTeam(user.getName(), teamName);
+        getRepository().validateUserIsFromTeam(creator.getName(), teamName);
         String boardName = parameters.get(2);
         String title = parameters.get(3);
         String description = parameters.get(4);
-        int rating = ParsingHelpers.tryParseInt(parameters.get(5), FEEDBACK_RATING_ERROR);
-        ValidationHelpers.validateIntRange(
-                rating, FeedbackImpl.RATING_MIN, FeedbackImpl.RATING_MAX, FEEDBACK_RATING_ERROR);
+        int rating = ParsingHelpers.tryParseInt(parameters.get(5), RATING_ERR);
+        ValidationHelpers.validateRange(rating, FeedbackImpl.RATING_MIN, FeedbackImpl.RATING_MAX, RATING_ERR);
 
-        user.recordActivity(String.format(USER_CREATED_TASK, user.getName(), "Feedback", boardName));
-
+        creator.recordActivity(String.format(USER_CREATED_TASK, creator.getName(), "Feedback", boardName));
         return getRepository().addFeedback(teamName, boardName, title, description, rating);
     }
 }

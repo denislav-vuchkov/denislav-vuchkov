@@ -16,7 +16,7 @@ public class ShowUserActivity extends BaseCommand {
 
     @Override
     protected String executeCommand(List<String> parameters) {
-        ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
+        ValidationHelpers.validateCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
         String userName = parameters.get(0);
         return getRepository().findUser(userName).getLog();
     }

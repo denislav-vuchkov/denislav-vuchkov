@@ -94,7 +94,7 @@ public class FeedbackImpl extends TaskBase implements Feedback {
 
     @Override
     public void setRating(int rating) {
-        ValidationHelpers.validateIntRange(rating, RATING_MIN, RATING_MAX, INVALID_RATING_MESSAGE);
+        ValidationHelpers.validateRange(rating, RATING_MIN, RATING_MAX, INVALID_RATING_MESSAGE);
         if (this.rating == -1) {
             this.rating = rating;
             return;

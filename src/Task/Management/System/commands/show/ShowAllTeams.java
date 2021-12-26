@@ -18,11 +18,15 @@ public class ShowAllTeams extends BaseCommand {
 
     @Override
     protected String executeCommand(List<String> parameters) {
-        ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
+
+        ValidationHelpers.validateCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
+
         List<Team> teams = getRepository().getTeams();
+
         if (teams.isEmpty()) {
             return String.format(NO_ITEMS_TO_DISPLAY, "teams");
         }
+
         return teams
                 .stream()
                 .map(Team::toString)

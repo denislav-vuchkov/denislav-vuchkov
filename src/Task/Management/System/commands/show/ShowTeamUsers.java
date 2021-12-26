@@ -19,11 +19,15 @@ public class ShowTeamUsers extends BaseCommand {
 
     @Override
     protected String executeCommand(List<String> parameters) {
-        ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
+
+        ValidationHelpers.validateCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
+
         Team team = getRepository().findTeam(parameters.get(0));
+
         if (team.getUsers().isEmpty()) {
             return String.format(NO_ITEMS_TO_DISPLAY, "users");
         }
+
         return team.getUsers()
                 .stream()
                 .map(User::toString)

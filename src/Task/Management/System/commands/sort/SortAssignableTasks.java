@@ -20,7 +20,7 @@ public class SortAssignableTasks extends BaseCommand {
     @Override
     protected String executeCommand(List<String> parameters) {
 
-        ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
+        ValidationHelpers.validateCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
 
         if (getRepository().getAssignableTasks().isEmpty()) {
             return String.format(NO_ITEMS_TO_DISPLAY, "tasks");

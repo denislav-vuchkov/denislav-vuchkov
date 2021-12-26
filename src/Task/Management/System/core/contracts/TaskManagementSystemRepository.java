@@ -27,30 +27,27 @@ public interface TaskManagementSystemRepository {
 
     List<AssignableTask> getAssignableTasks();
 
-    String addUser(String userName);
-
-    User findUser(String userName);
-
     String addTeam(String teamName);
+
+    String addUser(String userName);
 
     Team findTeam(String teamName);
 
-    Team findTeamWhereTaskIsLocated(Task task);
+    User findUser(String userName);
+
+    Board findBoard(String boardName, String teamName);
 
     String addBug(String teamName, String boardName,
                   String title, String description, List<String> stepsToReproduce,
                   Priority priority, Severity severity, String assignee);
 
-    String addStory(String teamName, String boardName,
-                    String title, String description,
-                    Priority priority, Size size, String assignee);
-
     String addFeedback(String teamName, String boardName,
                        String title, String description, int rating);
 
-    Board findBoard(String boardName, String teamName);
 
-    Task findTask(long taskID);
+    String addStory(String teamName, String boardName,
+                    String title, String description,
+                    Priority priority, Size size, String assignee);
 
     Bug findBug(long bugID);
 
@@ -58,11 +55,12 @@ public interface TaskManagementSystemRepository {
 
     Story findStory(long taskID);
 
+    Task findTask(long taskID);
+
     AssignableTask findAssignableTask(long assignableTaskID);
 
     void validateUserIsFromTeam(String userName, String teamName);
 
-    void validateUserAndTaskAreFromTheSameTeam(String userName, long taskID);
-
+    void validateUserAndTaskFromSameTeam(String userName, long taskID);
 }
 

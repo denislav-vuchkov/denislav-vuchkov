@@ -22,7 +22,8 @@ public class FilterAssignableTasks extends BaseCommand {
 
     @Override
     protected String executeCommand(List<String> parameters) {
-        ValidationHelpers.validateIntRange(parameters.size(),
+
+        ValidationHelpers.validateRange(parameters.size(),
                 MIN_ARGUMENTS, MAX_ARGUMENTS, INVALID_FILTERS_COUNT);
 
         List<AssignableTask> result = ListHelpers.

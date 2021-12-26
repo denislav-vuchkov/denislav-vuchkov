@@ -20,7 +20,8 @@ public class FilterAllTasks extends BaseCommand {
 
     @Override
     protected String executeCommand(List<String> parameters) {
-        ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
+
+        ValidationHelpers.validateCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
 
         String filter = parameters.get(0).split(":")[0].trim();
         String value = parameters.get(0).split(":")[1].trim();

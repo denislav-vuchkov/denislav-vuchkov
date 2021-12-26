@@ -19,11 +19,15 @@ public class ShowTeamBoards extends BaseCommand {
 
     @Override
     protected String executeCommand(List<String> parameters) {
-        ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
+
+        ValidationHelpers.validateCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
+
         Team team = getRepository().findTeam(parameters.get(0));
+
         if (team.getBoards().isEmpty()) {
             return String.format(NO_ITEMS_TO_DISPLAY, "boards");
         }
+
         return team.getBoards()
                 .stream()
                 .map(Board::toString)

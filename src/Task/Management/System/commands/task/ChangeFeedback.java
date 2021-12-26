@@ -22,20 +22,20 @@ public class ChangeFeedback extends BaseCommand {
 
     @Override
     protected String executeCommand(List<String> parameters) {
-        ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
 
-        User user = getRepository().findUser(parameters.get(0).trim());
+        ValidationHelpers.validateCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
+
+        User changer = getRepository().findUser(parameters.get(0).trim());
         int ID = ParsingHelpers.tryParseInt(parameters.get(1), INVALID_ID);
         Feedback feedback = getRepository().findFeedback(ID);
-        getRepository().validateUserAndTaskAreFromTheSameTeam(user.getName(), feedback.getID());
+        getRepository().validateUserAndTaskFromSameTeam(changer.getName(), feedback.getID());
         String propertyToChange = parameters.get(2).trim().toUpperCase();
         String newValue = parameters.get(3).toUpperCase();
 
         switch (propertyToChange) {
             case "RATING":
-                int rating = ParsingHelpers.tryParseInt(newValue, FEEDBACK_RATING_ERROR);
-                ValidationHelpers.validateIntRange(
-                        rating, FeedbackImpl.RATING_MIN, FeedbackImpl.RATING_MAX, FEEDBACK_RATING_ERROR);
+                int rating = ParsingHelpers.tryParseInt(newValue, RATING_ERR);
+                ValidationHelpers.validateRange(rating, FeedbackImpl.RATING_MIN, FeedbackImpl.RATING_MAX, RATING_ERR);
                 feedback.setRating(rating);
                 break;
             case "STATUS":
@@ -46,8 +46,8 @@ public class ChangeFeedback extends BaseCommand {
                 throw new InvalidUserInput(INVALID_PROPERTY);
         }
 
-        String result = String.format(RECORD_ACTIVITY, user.getName(), propertyToChange, "Feedback", ID, newValue);
-        user.recordActivity(result);
+        String result = String.format(RECORD_ACTIVITY, changer.getName(), propertyToChange, "Feedback", ID, newValue);
+        changer.recordActivity(result);
         return result;
     }
 }
