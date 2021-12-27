@@ -10,8 +10,8 @@ import Task.Management.System.models.tasks.enums.Tasks;
 import java.util.ArrayList;
 import java.util.List;
 
-import static Task.Management.System.models.contracts.EventLogger.CHANGE_MESSAGE;
-import static Task.Management.System.models.contracts.EventLogger.IMPOSSIBLE_CHANGE_MESSAGE;
+import static Task.Management.System.models.contracts.EventLogger.CHANGE;
+import static Task.Management.System.models.contracts.EventLogger.DUPLICATE;
 
 public class BugImpl extends AssignableTaskImpl implements Bug {
 
@@ -42,9 +42,9 @@ public class BugImpl extends AssignableTaskImpl implements Bug {
             return;
         }
         if (this.severity.equals(severity)) {
-            throw new InvalidUserInput(String.format(IMPOSSIBLE_CHANGE_MESSAGE, "Severity", severity));
+            throw new InvalidUserInput(String.format(DUPLICATE, "Severity", severity));
         }
-        addChangeToHistory(String.format(CHANGE_MESSAGE, "Severity", this.severity, severity));
+        addChangeToHistory(String.format(CHANGE, "Severity", this.severity, severity));
         this.severity = severity;
     }
 

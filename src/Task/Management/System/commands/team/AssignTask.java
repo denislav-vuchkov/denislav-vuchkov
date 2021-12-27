@@ -12,8 +12,8 @@ import java.util.List;
 public class AssignTask extends BaseCommand {
 
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 3;
-    public static final String TASK_REASSIGNED = "Task with ID %d has been assigned to %s.";
-    public static final String ASSIGN_EVENT = "User %s assigned task %d to %s.";
+
+    public static final String ASSIGN_EVENT = "User %s assigned %s with ID %d to %s.";
 
     public AssignTask(TaskManagementSystemRepository repository) {
         super(repository);
@@ -38,7 +38,8 @@ public class AssignTask extends BaseCommand {
 
         newAssignee.addTask(task);
 
-        assigner.recordActivity(String.format(ASSIGN_EVENT, assigner.getName(), task.getID(), newAssignee.getName()));
-        return String.format(TASK_REASSIGNED, task.getID(), newAssignee.getName());
+        String taskType = task.getClass().getSimpleName().replace("Impl", "");
+        assigner.log(String.format(ASSIGN_EVENT, assigner.getName(), taskType, task.getID(), newAssignee.getName()));
+        return String.format(ASSIGN_EVENT, assigner.getName(), taskType, task.getID(), newAssignee.getName());
     }
 }

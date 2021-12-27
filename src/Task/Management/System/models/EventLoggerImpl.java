@@ -2,14 +2,12 @@ package Task.Management.System.models;
 
 import Task.Management.System.models.contracts.EventLogger;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 public class EventLoggerImpl implements EventLogger {
 
-    private final List<String> events;
+    private final List<Event> events;
 
     public EventLoggerImpl() {
         events = new ArrayList<>();
@@ -17,10 +15,7 @@ public class EventLoggerImpl implements EventLogger {
 
     @Override
     public void addEvent(String description) {
-        String eventEntry = String.format("[%s - %s]",
-                DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss").format(LocalDateTime.now()),
-                description);
-        events.add(eventEntry);
+        events.add(new Event(description));
     }
 
     @Override
@@ -29,9 +24,7 @@ public class EventLoggerImpl implements EventLogger {
     }
 
     @Override
-    public String getEvents() {
-        StringBuilder completeHistory = new StringBuilder();
-        events.forEach(entry -> completeHistory.append(entry).append(System.lineSeparator()));
-        return completeHistory.toString().trim();
+    public List<Event> getEvents() {
+        return new ArrayList<>(events);
     }
 }

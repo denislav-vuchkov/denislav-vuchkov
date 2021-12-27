@@ -1,6 +1,7 @@
 package Task.Management.System.models.tasks;
 
 import Task.Management.System.exceptions.InvalidUserInput;
+import Task.Management.System.models.Event;
 import Task.Management.System.models.EventLoggerImpl;
 import Task.Management.System.models.contracts.EventLogger;
 import Task.Management.System.models.tasks.contracts.Comment;
@@ -33,7 +34,7 @@ public abstract class TaskBase implements Task {
 
     private final long id;
     private final List<Comment> comments;
-    private final EventLogger historyOfChanges;
+    private final EventLogger history;
     private String title;
     private String description;
     private TaskStatus status;
@@ -44,9 +45,9 @@ public abstract class TaskBase implements Task {
         setDescription(description);
         setStatus(status);
         this.comments = new ArrayList<>();
-        this.historyOfChanges = new EventLoggerImpl();
+        this.history = new EventLoggerImpl();
 
-        addChangeToHistory(String.format(CREATION_MESSAGE,
+        addChangeToHistory(String.format(CREATION,
                 super.getClass().getSimpleName().replace("Base", ""),
                 tasksType.toString()));
     }
@@ -69,9 +70,9 @@ public abstract class TaskBase implements Task {
             return;
         }
         if (this.title.equals(title)) {
-            throw new InvalidUserInput(String.format(IMPOSSIBLE_CHANGE_MESSAGE, "Title", this.title));
+            throw new InvalidUserInput(String.format(DUPLICATE, "Title", this.title));
         }
-        historyOfChanges.addEvent(String.format(CHANGE_MESSAGE, "Title", this.title, title));
+        history.addEvent(String.format(CHANGE, "Title", this.title, title));
         this.title = title;
     }
 
@@ -91,9 +92,9 @@ public abstract class TaskBase implements Task {
             return;
         }
         if (this.description.equals(description)) {
-            throw new InvalidUserInput(String.format(IMPOSSIBLE_CHANGE_MESSAGE, "Description", this.description));
+            throw new InvalidUserInput(String.format(DUPLICATE, "Description", this.description));
         }
-        historyOfChanges.addEvent(String.format(CHANGE_MESSAGE, "Description", this.description, description));
+        history.addEvent(String.format(CHANGE, "Description", this.description, description));
         this.description = description;
     }
 
@@ -109,9 +110,9 @@ public abstract class TaskBase implements Task {
             return;
         }
         if (this.status.equals(status)) {
-            throw new InvalidUserInput(String.format(IMPOSSIBLE_CHANGE_MESSAGE, "Status", getStatus()));
+            throw new InvalidUserInput(String.format(DUPLICATE, "Status", getStatus()));
         }
-        historyOfChanges.addEvent(String.format(CHANGE_MESSAGE, "Status", this.status, status));
+        history.addEvent(String.format(CHANGE, "Status", this.status, status));
         this.status = status;
     }
 
@@ -141,15 +142,12 @@ public abstract class TaskBase implements Task {
     }
 
     @Override
-    public String getLog() {
-        return String.format("%s%n%s%s",
-                HISTORY_HEADER,
-                historyOfChanges.getEvents(),
-                HISTORY_HEADER);
+    public List<Event> getLog() {
+        return new ArrayList<>(history.getEvents());
     }
 
     protected void addChangeToHistory(String description) {
-        historyOfChanges.addEvent(description);
+        history.addEvent(description);
     }
 
     @Override

@@ -14,8 +14,8 @@ import java.util.List;
 public class AddCommentToTask extends BaseCommand {
 
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 3;
-    public static final String COMMENT_ADDED = "Comment by %s added to Task ID %d.";
-    public static final String COMMENT_EVENT = "User %s added a comment to task %d.";
+
+    public static final String COMMENT_EVENT = "User %s added a comment to %s with ID %d.";
 
     public AddCommentToTask(TaskManagementSystemRepository repository) {
         super(repository);
@@ -36,7 +36,8 @@ public class AddCommentToTask extends BaseCommand {
 
         task.addComment(comment);
 
-        author.recordActivity(String.format(COMMENT_EVENT, author.getName(), task.getID()));
-        return String.format(COMMENT_ADDED, author.getName(), task.getID());
+        String taskType = task.getClass().getSimpleName().replace("Impl", "");
+        author.log(String.format(COMMENT_EVENT, author.getName(), taskType, task.getID()));
+        return String.format(COMMENT_EVENT, author.getName(), taskType, task.getID());
     }
 }

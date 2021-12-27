@@ -1,8 +1,9 @@
 package Task.Management.System.models.teams;
 
+import Task.Management.System.exceptions.InvalidUserInput;
+import Task.Management.System.models.Event;
 import Task.Management.System.models.EventLoggerImpl;
 import Task.Management.System.models.contracts.EventLogger;
-import Task.Management.System.exceptions.InvalidUserInput;
 import Task.Management.System.models.tasks.contracts.AssignableTask;
 import Task.Management.System.models.teams.contracts.User;
 import Task.Management.System.utils.ValidationHelpers;
@@ -10,28 +11,21 @@ import Task.Management.System.utils.ValidationHelpers;
 import java.util.ArrayList;
 import java.util.List;
 
-import static Task.Management.System.models.contracts.EventLogger.CREATION_MESSAGE;
+import static Task.Management.System.models.contracts.EventLogger.*;
 
 public class UserImpl implements User {
 
-    public static final String USER_TASK_ASSIGNED = "%s with ID %d assigned to user %s.";
-    public static final String USER_TASK_UNASSIGNED = "%s with ID %d unassigned from user %s.";
-
-    public static final String TASK_ALREADY_ASSIGNED_TO_USER = "%s with %d is already assigned to user %s";
-    public static final String TASK_NOT_ASSIGNED_TO_USER = "%s with %d is not assigned to user %s";
-
-    private final EventLogger historyOfChanges;
+    public static final String ALREADY_ASSIGNED = "%s with %d is already assigned to user %s";
+    public static final String NOT_ASSIGNED = "%s with %d is not assigned to user %s";
     private final List<AssignableTask> tasks;
+    private final EventLogger history;
     private String name;
 
     public UserImpl(String name) {
         setName(name);
         tasks = new ArrayList<>();
-        historyOfChanges = new EventLoggerImpl();
-        historyOfChanges.addEvent(
-                String.format(CREATION_MESSAGE,
-                        getClass().getSimpleName().replace("Impl", ""),
-                        getName()));
+        history = new EventLoggerImpl();
+        history.addEvent(String.format(CREATION, "User", getName()));
     }
 
     @Override
@@ -51,59 +45,41 @@ public class UserImpl implements User {
 
     @Override
     public void addTask(AssignableTask task) {
-        if (tasks.contains(task)) {
-            throw new InvalidUserInput(
-                    String.format(TASK_ALREADY_ASSIGNED_TO_USER,
-                            task.getClass().getSimpleName().replace("Impl", ""),
-                            task.getID(),
-                            getName()));
-        }
+        String taskType = task.getClass().getSimpleName().replace("Impl", "");
 
-        historyOfChanges.addEvent(
-                String.format(USER_TASK_ASSIGNED,
-                        task.getClass().getSimpleName().replace("Impl", ""),
-                        task.getID(),
-                        getName()));
+        if (tasks.contains(task)) {
+            throw new InvalidUserInput(String.format(ALREADY_ASSIGNED, USER, task.getID(), getName()));
+        }
 
         task.setAssignee(getName());
         tasks.add(task);
+        history.addEvent(String.format(TASK_ASSIGNED, taskType, task.getID(), getName()));
     }
 
     @Override
     public void removeTask(AssignableTask task) {
-        if (!tasks.contains(task)) {
-            throw new InvalidUserInput(
-                    String.format(TASK_NOT_ASSIGNED_TO_USER,
-                            task.getClass().getSimpleName().replace("Impl", ""),
-                            task.getID(),
-                            getName()));
-        }
+        String taskType = task.getClass().getSimpleName().replace("Impl", "");
 
-        historyOfChanges.addEvent(
-                String.format(USER_TASK_UNASSIGNED,
-                        task.getClass().getSimpleName().replace("Impl", ""),
-                        task.getID(),
-                        getName()));
+        if (!tasks.contains(task)) {
+            throw new InvalidUserInput(String.format(NOT_ASSIGNED, taskType, task.getID(), getName()));
+        }
 
         task.unAssign();
         tasks.remove(task);
+        history.addEvent(String.format(TASK_UNASSIGNED, taskType, task.getID(), getName()));
     }
 
-
-    public void recordActivity(String description) {
-        historyOfChanges.addEvent(description);
+    public void log(String description) {
+        history.addEvent(description);
     }
-
 
     @Override
-    public String getLog() {
-        return historyOfChanges.getEvents();
+    public List<Event> getLog() {
+        return new ArrayList<>(history.getEvents());
     }
 
     @Override
     public String toString() {
-        return String.format("User: %s - Tasks: %d",
-                getName(),
-                getTasks().size());
+        return String.format("User: %s - Tasks: %d", getName(), getTasks().size());
     }
 }

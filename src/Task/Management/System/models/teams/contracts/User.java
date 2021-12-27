@@ -7,6 +7,6 @@ import Task.Management.System.models.teams.contracts.subcontracts.TaskHandler;
 
 public interface User extends Loggable, Nameable, TaskHandler<AssignableTask> {
 
-    void recordActivity(String description);
+    void log(String description);
 
 }

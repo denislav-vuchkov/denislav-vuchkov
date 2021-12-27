@@ -7,8 +7,8 @@ import Task.Management.System.models.tasks.enums.Size;
 import Task.Management.System.models.tasks.enums.StoryStatus;
 import Task.Management.System.models.tasks.enums.Tasks;
 
-import static Task.Management.System.models.contracts.EventLogger.CHANGE_MESSAGE;
-import static Task.Management.System.models.contracts.EventLogger.IMPOSSIBLE_CHANGE_MESSAGE;
+import static Task.Management.System.models.contracts.EventLogger.CHANGE;
+import static Task.Management.System.models.contracts.EventLogger.DUPLICATE;
 
 public class StoryImpl extends AssignableTaskImpl implements Story {
 
@@ -31,9 +31,9 @@ public class StoryImpl extends AssignableTaskImpl implements Story {
             return;
         }
         if (this.size.equals(size)) {
-            throw new InvalidUserInput(String.format(IMPOSSIBLE_CHANGE_MESSAGE, "Size", this.size));
+            throw new InvalidUserInput(String.format(DUPLICATE, "Size", this.size));
         }
-        addChangeToHistory(String.format(CHANGE_MESSAGE, "Size", this.size, size));
+        addChangeToHistory(String.format(CHANGE, "Size", this.size, size));
         this.size = size;
     }
 

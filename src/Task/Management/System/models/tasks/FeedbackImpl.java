@@ -6,8 +6,8 @@ import Task.Management.System.models.tasks.enums.FeedbackStatus;
 import Task.Management.System.models.tasks.enums.Tasks;
 import Task.Management.System.utils.ValidationHelpers;
 
-import static Task.Management.System.models.contracts.EventLogger.CHANGE_MESSAGE;
-import static Task.Management.System.models.contracts.EventLogger.IMPOSSIBLE_CHANGE_MESSAGE;
+import static Task.Management.System.models.contracts.EventLogger.CHANGE;
+import static Task.Management.System.models.contracts.EventLogger.DUPLICATE;
 
 public class FeedbackImpl extends TaskBase implements Feedback {
 
@@ -37,9 +37,9 @@ public class FeedbackImpl extends TaskBase implements Feedback {
             return;
         }
         if (this.rating == rating) {
-            throw new InvalidUserInput(String.format(IMPOSSIBLE_CHANGE_MESSAGE, "Rating", this.rating));
+            throw new InvalidUserInput(String.format(DUPLICATE, "Rating", this.rating));
         }
-        addChangeToHistory(String.format(CHANGE_MESSAGE, "Rating", this.rating, rating));
+        addChangeToHistory(String.format(CHANGE, "Rating", this.rating, rating));
         this.rating = rating;
     }
 

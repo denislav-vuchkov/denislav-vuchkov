@@ -6,8 +6,8 @@ import Task.Management.System.models.tasks.contracts.TaskStatus;
 import Task.Management.System.models.tasks.enums.Priority;
 import Task.Management.System.models.tasks.enums.Tasks;
 
-import static Task.Management.System.models.contracts.EventLogger.CHANGE_MESSAGE;
-import static Task.Management.System.models.contracts.EventLogger.IMPOSSIBLE_CHANGE_MESSAGE;
+import static Task.Management.System.models.contracts.EventLogger.CHANGE;
+import static Task.Management.System.models.contracts.EventLogger.DUPLICATE;
 
 public abstract class AssignableTaskImpl extends TaskBase implements AssignableTask {
 
@@ -34,9 +34,9 @@ public abstract class AssignableTaskImpl extends TaskBase implements AssignableT
             return;
         }
         if (this.priority.equals(priority)) {
-            throw new InvalidUserInput(String.format(IMPOSSIBLE_CHANGE_MESSAGE, "Priority", this.priority));
+            throw new InvalidUserInput(String.format(DUPLICATE, "Priority", this.priority));
         }
-        addChangeToHistory(String.format(CHANGE_MESSAGE, "Priority", this.priority, priority));
+        addChangeToHistory(String.format(CHANGE, "Priority", this.priority, priority));
         this.priority = priority;
     }
 
@@ -52,9 +52,9 @@ public abstract class AssignableTaskImpl extends TaskBase implements AssignableT
             return;
         }
         if (this.assignee.equals(assignee)) {
-            throw new InvalidUserInput(String.format(IMPOSSIBLE_CHANGE_MESSAGE, "Assignee", this.assignee));
+            throw new InvalidUserInput(String.format(DUPLICATE, "Assignee", this.assignee));
         }
-        addChangeToHistory(String.format(CHANGE_MESSAGE, "Assignee", this.assignee, assignee));
+        addChangeToHistory(String.format(CHANGE, "Assignee", this.assignee, assignee));
         this.assignee = assignee;
     }
 

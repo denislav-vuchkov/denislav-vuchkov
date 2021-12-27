@@ -1,8 +1,9 @@
 package Task.Management.System.models.teams;
 
+import Task.Management.System.exceptions.InvalidUserInput;
+import Task.Management.System.models.Event;
 import Task.Management.System.models.EventLoggerImpl;
 import Task.Management.System.models.contracts.EventLogger;
-import Task.Management.System.exceptions.InvalidUserInput;
 import Task.Management.System.models.tasks.contracts.Task;
 import Task.Management.System.models.teams.contracts.Board;
 import Task.Management.System.utils.ValidationHelpers;
@@ -10,28 +11,22 @@ import Task.Management.System.utils.ValidationHelpers;
 import java.util.ArrayList;
 import java.util.List;
 
-import static Task.Management.System.models.contracts.EventLogger.CREATION_MESSAGE;
+import static Task.Management.System.models.contracts.EventLogger.*;
 
 public class BoardImpl implements Board {
 
-    public static final String BOARD_TASK_ADDED = "%s with ID %d added in board %s.";
-    public static final String BOARD_TASK_REMOVED = "%s with ID %d removed from board %s.";
+    public static final String ALREADY_EXIST = "%s with %d already exists in board %s";
+    public static final String NOT_EXISTS = "%s with %d does not exist in board %s";
 
-    public static final String TASK_ALREADY_EXIST_IN_BOARD = "%s with %d already exists in board %s";
-    public static final String TASK_DOES_NOT_EXIST = "%s with %d does not exist in board %s";
-
-    private final EventLogger historyOfChanges;
-    private final List<Task> tasks;
     private String name;
+    private final List<Task> tasks;
+    private final EventLogger history;
 
     public BoardImpl(String name) {
         setName(name);
         tasks = new ArrayList<>();
-        historyOfChanges = new EventLoggerImpl();
-        historyOfChanges.addEvent(
-                String.format(CREATION_MESSAGE,
-                        getClass().getSimpleName().replace("Impl", ""),
-                        getName()));
+        history = new EventLoggerImpl();
+        history.addEvent(String.format(CREATION, BOARD, getName()));
     }
 
     @Override
@@ -51,44 +46,32 @@ public class BoardImpl implements Board {
 
     @Override
     public void addTask(Task task) {
+        String taskType = task.getClass().getSimpleName().replace("Impl", "");
+
         if (tasks.contains(task)) {
-            throw new InvalidUserInput(
-                    String.format(TASK_ALREADY_EXIST_IN_BOARD,
-                            task.getClass().getSimpleName().replace("Impl", ""),
-                            task.getID(),
-                            getName()));
+            throw new InvalidUserInput(String.format(ALREADY_EXIST, taskType, task.getID(), getName()));
         }
 
-        historyOfChanges.addEvent(
-                String.format(BOARD_TASK_ADDED,
-                        task.getClass().getSimpleName().replace("Impl", ""),
-                        task.getID(),
-                        getName()));
-
         tasks.add(task);
+        history.addEvent(String.format(TASK_ADDED, taskType, task.getID(), getName()));
     }
 
     @Override
     public void removeTask(Task task) {
+        String taskType = task.getClass().getSimpleName().replace("Impl", "");
+
         if (!tasks.contains(task)) {
             throw new InvalidUserInput(
-                    String.format(TASK_DOES_NOT_EXIST,
-                            task.getClass().getSimpleName().replace("Impl", ""),
-                            task.getID(),
-                            getName()));
+                    String.format(NOT_EXISTS, taskType, task.getID(), getName()));
         }
 
-        historyOfChanges.addEvent(
-                String.format(BOARD_TASK_REMOVED,
-                        task.getClass().getSimpleName().replace("Impl", ""),
-                        task.getID(),
-                        getName()));
         tasks.remove(task);
+        history.addEvent(String.format(TASK_REMOVED, taskType, task.getID(), getName()));
     }
 
     @Override
-    public String getLog() {
-        return historyOfChanges.getEvents();
+    public List<Event> getLog() {
+        return new ArrayList<>(history.getEvents());
     }
 
     @Override

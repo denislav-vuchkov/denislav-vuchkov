@@ -33,7 +33,7 @@ public class CreateStory extends BaseCommand {
         Size size = ParsingHelpers.tryParseEnum(parameters.get(6), Size.class);
         String assignee = parameters.get(7);
 
-        creator.recordActivity(String.format(USER_CREATED_TASK, creator.getName(), "Story", boardName));
+        creator.log(String.format(USER_CREATED_TASK, creator.getName(), "Story", boardName));
         return getRepository().addStory(teamName, boardName, title, description, priority, size, assignee);
     }
 }

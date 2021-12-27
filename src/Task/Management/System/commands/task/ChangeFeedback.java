@@ -47,7 +47,7 @@ public class ChangeFeedback extends BaseCommand {
         }
 
         String result = String.format(RECORD_ACTIVITY, changer.getName(), propertyToChange, "Feedback", ID, newValue);
-        changer.recordActivity(result);
+        changer.log(result);
         return result;
     }
 }

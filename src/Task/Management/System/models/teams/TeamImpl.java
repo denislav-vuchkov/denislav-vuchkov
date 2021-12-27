@@ -1,7 +1,10 @@
 package Task.Management.System.models.teams;
 
-import Task.Management.System.models.contracts.Loggable;
 import Task.Management.System.exceptions.InvalidUserInput;
+import Task.Management.System.models.Event;
+import Task.Management.System.models.EventLoggerImpl;
+import Task.Management.System.models.contracts.EventLogger;
+import Task.Management.System.models.contracts.Loggable;
 import Task.Management.System.models.tasks.contracts.Task;
 import Task.Management.System.models.teams.contracts.Board;
 import Task.Management.System.models.teams.contracts.Team;
@@ -10,21 +13,24 @@ import Task.Management.System.utils.ValidationHelpers;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-public class TeamImpl implements Team {
+import static Task.Management.System.models.contracts.EventLogger.*;
+
+public class TeamImpl implements Loggable, Team {
 
     public static final String NOT_IN_TEAM = "%s %s is not in team %s";
     public static final String ALREADY_IN_TEAM = "%s %s is already in team %s";
-
     private final List<Board> boards;
     private final List<User> users;
+    private final EventLogger history;
     private String name;
 
     public TeamImpl(String name) {
         setName(name);
         boards = new ArrayList<>();
         users = new ArrayList<>();
+        history = new EventLoggerImpl();
+        history.addEvent(String.format(CREATION, TEAM, getName()));
     }
 
     @Override
@@ -45,27 +51,19 @@ public class TeamImpl implements Team {
     @Override
     public void addBoard(Board board) {
         if (getBoards().contains(board)) {
-            throw new InvalidUserInput(
-                    String.format(ALREADY_IN_TEAM,
-                            board.getClass().getSimpleName().replace("Impl", " "),
-                            board.getName(),
-                            getName()));
+            throw new InvalidUserInput(String.format(ALREADY_IN_TEAM, BOARD, board.getName(), getName()));
         }
-
         boards.add(board);
+        history.addEvent(String.format(ADDITION, BOARD, board.getName()));
     }
 
     @Override
     public void removeBoard(Board board) {
         if (!getBoards().contains(board)) {
-            throw new InvalidUserInput(
-                    String.format(NOT_IN_TEAM,
-                            board.getClass().getSimpleName().replace("Impl", " "),
-                            board.getName(),
-                            getName()));
+            throw new InvalidUserInput(String.format(NOT_IN_TEAM, BOARD, board.getName(), getName()));
         }
-
         boards.remove(board);
+        history.addEvent(String.format(REMOVAL, BOARD, board.getName()));
     }
 
     @Override
@@ -77,26 +75,20 @@ public class TeamImpl implements Team {
     public void addUser(User user) {
         if (getUsers().contains(user)) {
             throw new InvalidUserInput(
-                    String.format(ALREADY_IN_TEAM,
-                            user.getClass().getSimpleName().replace("Impl", " "),
-                            user.getName(),
-                            getName()));
+                    String.format(ALREADY_IN_TEAM, USER, user.getName(), getName()));
         }
-
         users.add(user);
+        history.addEvent(String.format(ADDITION, USER, user.getName()));
     }
 
     @Override
     public void removeUser(User user) {
         if (!getUsers().contains(user)) {
             throw new InvalidUserInput(
-                    String.format(NOT_IN_TEAM,
-                            user.getClass().getSimpleName().replace("Impl", " "),
-                            user.getName(),
-                            getName()));
+                    String.format(NOT_IN_TEAM, USER, user.getName(), getName()));
         }
-
         users.remove(user);
+        history.addEvent(String.format(REMOVAL, USER, user.getName()));
     }
 
     @Override
@@ -110,21 +102,8 @@ public class TeamImpl implements Team {
     }
 
     @Override
-    public String getLog() {
-
-        StringBuilder history = new StringBuilder(String.format(TEAM_HISTORY_HEADER,
-                this.getClass().getSimpleName().replace("Impl", ""), getName()))
-                .append(System.lineSeparator());
-
-        if (getUsers().isEmpty()) {
-            history.append(TEAM_HISTORY_EMPTY).append(System.lineSeparator());
-        } else {
-            history.append(getUsers()
-                    .stream()
-                    .map(Loggable::getLog)
-                    .collect(Collectors.joining(System.lineSeparator())));
-        }
-        return history.toString().trim();
+    public List<Event> getLog() {
+        return new ArrayList<>(history.getEvents());
     }
 
     @Override
