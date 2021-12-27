@@ -1,6 +1,8 @@
 package Task.Management.System.models.tasks.enums;
 
-public enum StoryStatus {
+import Task.Management.System.models.tasks.contracts.TaskStatus;
+
+public enum StoryStatus implements TaskStatus {
     NOT_DONE, IN_PROGRESS, DONE;
 
     @Override

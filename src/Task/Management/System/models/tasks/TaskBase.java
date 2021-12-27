@@ -1,10 +1,11 @@
 package Task.Management.System.models.tasks;
 
+import Task.Management.System.exceptions.InvalidUserInput;
 import Task.Management.System.models.EventLoggerImpl;
 import Task.Management.System.models.contracts.EventLogger;
-import Task.Management.System.exceptions.InvalidUserInput;
 import Task.Management.System.models.tasks.contracts.Comment;
 import Task.Management.System.models.tasks.contracts.Task;
+import Task.Management.System.models.tasks.contracts.TaskStatus;
 import Task.Management.System.models.tasks.enums.Tasks;
 import Task.Management.System.utils.ValidationHelpers;
 
@@ -35,12 +36,13 @@ public abstract class TaskBase implements Task {
     private final EventLogger historyOfChanges;
     private String title;
     private String description;
+    private TaskStatus status;
 
-
-    public TaskBase(long id, Tasks tasksType, String title, String description) {
+    public TaskBase(long id, Tasks tasksType, String title, String description, TaskStatus status) {
         this.id = id;
         setTitle(title);
         setDescription(description);
+        setStatus(status);
         this.comments = new ArrayList<>();
         this.historyOfChanges = new EventLoggerImpl();
 
@@ -93,6 +95,24 @@ public abstract class TaskBase implements Task {
         }
         historyOfChanges.addEvent(String.format(CHANGE_MESSAGE, "Description", this.description, description));
         this.description = description;
+    }
+
+    @Override
+    public String getStatus() {
+        return status.toString();
+    }
+
+    @Override
+    public void setStatus(TaskStatus status) {
+        if (this.status == null) {
+            this.status = status;
+            return;
+        }
+        if (this.status.equals(status)) {
+            throw new InvalidUserInput(String.format(IMPOSSIBLE_CHANGE_MESSAGE, "Status", getStatus()));
+        }
+        historyOfChanges.addEvent(String.format(CHANGE_MESSAGE, "Status", this.status, status));
+        this.status = status;
     }
 
     @Override

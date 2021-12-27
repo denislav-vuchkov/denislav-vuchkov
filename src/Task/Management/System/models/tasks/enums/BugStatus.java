@@ -1,6 +1,8 @@
 package Task.Management.System.models.tasks.enums;
 
-public enum BugStatus {
+import Task.Management.System.models.tasks.contracts.TaskStatus;
+
+public enum BugStatus implements TaskStatus {
     ACTIVE, FIXED;
 
     @Override

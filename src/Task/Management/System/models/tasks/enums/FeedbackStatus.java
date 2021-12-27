@@ -1,6 +1,8 @@
 package Task.Management.System.models.tasks.enums;
 
-public enum FeedbackStatus {
+import Task.Management.System.models.tasks.contracts.TaskStatus;
+
+public enum FeedbackStatus implements TaskStatus {
     NEW, UNSCHEDULED, SCHEDULED, DONE;
 
     @Override

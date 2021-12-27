@@ -16,33 +16,13 @@ import static Task.Management.System.models.contracts.EventLogger.IMPOSSIBLE_CHA
 public class BugImpl extends AssignableTaskImpl implements Bug {
 
     private final List<String> stepsToReproduce;
-    private BugStatus status;
     private Severity severity;
 
     public BugImpl(long id, String title, String description, List<String> stepsToReproduce,
                    Priority priority, Severity severity) {
-        super(id, Tasks.BUG, title, description, priority);
+        super(id, Tasks.BUG, title, description, priority,BugStatus.ACTIVE);
         this.stepsToReproduce = stepsToReproduce;
         setSeverity(severity);
-        setStatus(BugStatus.ACTIVE);
-    }
-
-    @Override
-    public String getStatus() {
-        return status.toString();
-    }
-
-    @Override
-    public void setStatus(BugStatus status) {
-        if (this.status == null) {
-            this.status = status;
-            return;
-        }
-        if (this.status.equals(status)) {
-            throw new InvalidUserInput(String.format(IMPOSSIBLE_CHANGE_MESSAGE, "Status", getStatus()));
-        }
-        addChangeToHistory(String.format(CHANGE_MESSAGE, "Status", this.status, status));
-        this.status = status;
     }
 
     @Override
@@ -69,6 +49,15 @@ public class BugImpl extends AssignableTaskImpl implements Bug {
     }
 
     @Override
+    public String toString() {
+        return String.format("%s ID: %d - Title: %s - Steps: %d - Priority: %s - Severity: %s - " +
+                        "Status: %s - Assignee: %s - Comments: %d",
+                this.getClass().getSimpleName().replace("Impl", ""),
+                getID(), getTitle(), getStepsToReproduce().size(), getPriority(), getSeverity(),
+                getStatus(), getAssignee(), getComments().size());
+    }
+
+    @Override
     public String printDetails() {
         return String.format("Task type: %s%n" +
                         "%s" +
@@ -85,14 +74,5 @@ public class BugImpl extends AssignableTaskImpl implements Bug {
                 getStepsToReproduce(),
                 printComments(),
                 getLog());
-    }
-
-    @Override
-    public String toString() {
-        return String.format("%s ID: %d - Title: %s - Steps: %d - Priority: %s - Severity: %s - " +
-                        "Status: %s - Assignee: %s - Comments: %d",
-                this.getClass().getSimpleName().replace("Impl", ""),
-                getID(), getTitle(), getStepsToReproduce().size(), getPriority(), getSeverity(),
-                getStatus(), getAssignee(), getComments().size());
     }
 }

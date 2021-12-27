@@ -14,4 +14,6 @@ public interface Task extends Identifiable, Loggable, Printable, Commentable, Ti
 
     String getStatus();
 
+    void setStatus(TaskStatus status);
+
 }

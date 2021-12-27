@@ -12,31 +12,11 @@ import static Task.Management.System.models.contracts.EventLogger.IMPOSSIBLE_CHA
 
 public class StoryImpl extends AssignableTaskImpl implements Story {
 
-    private StoryStatus status;
     private Size size;
 
     public StoryImpl(long id, String title, String description, Priority priority, Size size) {
-        super(id, Tasks.STORY, title, description, priority);
+        super(id, Tasks.STORY, title, description, priority,StoryStatus.NOT_DONE);
         setSize(size);
-        setStatus(StoryStatus.NOT_DONE);
-    }
-
-    @Override
-    public String getStatus() {
-        return status.toString();
-    }
-
-    @Override
-    public void setStatus(StoryStatus status) {
-        if (this.status == null) {
-            this.status = status;
-            return;
-        }
-        if (this.status.equals(status)) {
-            throw new InvalidUserInput(String.format(IMPOSSIBLE_CHANGE_MESSAGE, "Status", this.status));
-        }
-        addChangeToHistory(String.format(CHANGE_MESSAGE, "Status", this.status, status));
-        this.status = status;
     }
 
     @Override
@@ -58,6 +38,15 @@ public class StoryImpl extends AssignableTaskImpl implements Story {
     }
 
     @Override
+    public String toString() {
+        return String.format("%s ID: %d - Title: %s - Priority: %s - Size: %s - " +
+                        "Status: %s - Assignee: %s - Comments: %d",
+                this.getClass().getSimpleName().replace("Impl", ""),
+                getID(), getTitle(), getPriority(), getSize(),
+                getStatus(), getAssignee(), getComments().size());
+    }
+
+    @Override
     public String printDetails() {
         return String.format("Task type: %s%n" +
                         "%s" +
@@ -72,14 +61,5 @@ public class StoryImpl extends AssignableTaskImpl implements Story {
                 getPriority(), getSize(), getStatus(), getAssignee(),
                 printComments(),
                 getLog());
-    }
-
-    @Override
-    public String toString() {
-        return String.format("%s ID: %d - Title: %s - Priority: %s - Size: %s - " +
-                        "Status: %s - Assignee: %s - Comments: %d",
-                this.getClass().getSimpleName().replace("Impl", ""),
-                getID(), getTitle(), getPriority(), getSize(),
-                getStatus(), getAssignee(), getComments().size());
     }
 }

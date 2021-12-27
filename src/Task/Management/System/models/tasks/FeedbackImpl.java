@@ -17,33 +17,12 @@ public class FeedbackImpl extends TaskBase implements Feedback {
     public static final String INVALID_RATING_MESSAGE = String.format("Rating cannot be less than %d or more than %d",
             RATING_MIN, RATING_MAX);
 
-    private FeedbackStatus status;
     private int rating = RATING_UNINITIALIZED;
 
     public FeedbackImpl(long id, String title, String description, int rating) {
-        super(id, Tasks.FEEDBACK, title, description);
+        super(id, Tasks.FEEDBACK, title, description,FeedbackStatus.NEW);
         setRating(rating);
-        setStatus(FeedbackStatus.NEW);
     }
-
-    @Override
-    public String getStatus() {
-        return status.toString();
-    }
-
-    @Override
-    public void setStatus(FeedbackStatus status) {
-        if (this.status == null) {
-            this.status = status;
-            return;
-        }
-        if (this.status.equals(status)) {
-            throw new InvalidUserInput(String.format(IMPOSSIBLE_CHANGE_MESSAGE, "Status", this.status));
-        }
-        addChangeToHistory(String.format(CHANGE_MESSAGE, "Status", this.status, status));
-        this.status = status;
-    }
-
 
     @Override
     public int getRating() {
@@ -65,6 +44,13 @@ public class FeedbackImpl extends TaskBase implements Feedback {
     }
 
     @Override
+    public String toString() {
+        return String.format("%s ID: %d - Title: %s - Rating: %s - Status: %s - Comments: %d",
+                this.getClass().getSimpleName().replace("Impl", ""),
+                getID(), getTitle(), getRating(), getStatus(), getComments().size());
+    }
+
+    @Override
     public String printDetails() {
         return String.format("Task type: %s%n" +
                         "%s" +
@@ -78,12 +64,5 @@ public class FeedbackImpl extends TaskBase implements Feedback {
                 getStatus(),
                 printComments(),
                 getLog());
-    }
-
-    @Override
-    public String toString() {
-        return String.format("%s ID: %d - Title: %s - Rating: %s - Status: %s - Comments: %d",
-                this.getClass().getSimpleName().replace("Impl", ""),
-                getID(), getTitle(), getRating(), getStatus(), getComments().size());
     }
 }
