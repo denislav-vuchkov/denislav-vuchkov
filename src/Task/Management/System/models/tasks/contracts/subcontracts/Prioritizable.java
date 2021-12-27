@@ -8,8 +8,4 @@ public interface Prioritizable {
 
     void setPriority(Priority priority);
 
-    void increasePriority();
-
-    void decreasePriority();
-
 }

@@ -84,45 +84,8 @@ public class BugImpl_Tests {
     }
 
     @Test
-    public void increaseSeverity_changesSeverityIfInRange_orElseThrowsException() {
-        myBug.setSeverity(Severity.MINOR);
-        Assertions.assertEquals(Severity.MINOR, myBug.getSeverity());
-        myBug.increaseSeverity();
-        Assertions.assertEquals(Severity.MAJOR, myBug.getSeverity());
-        myBug.increaseSeverity();
-        Assertions.assertEquals(Severity.CRITICAL, myBug.getSeverity());
-        Assertions.assertThrows(InvalidUserInput.class, () -> myBug.increaseSeverity());
-    }
-
-    @Test
-    public void decreaseSeverity_changesSeverityIfInRange_orElseThrowsException() {
-        myBug.setSeverity(Severity.CRITICAL);
-        Assertions.assertEquals(Severity.CRITICAL, myBug.getSeverity());
-        myBug.decreaseSeverity();
-        Assertions.assertEquals(Severity.MAJOR, myBug.getSeverity());
-        myBug.decreaseSeverity();
-        Assertions.assertEquals(Severity.MINOR, myBug.getSeverity());
-        Assertions.assertThrows(InvalidUserInput.class, () -> myBug.decreaseSeverity());
-    }
-
-    @Test
     public void setStatus_throwsException_whenNewOneIsTheSameAsOld() {
         Assertions.assertThrows(InvalidUserInput.class, () -> myBug.setStatus(BugStatus.ACTIVE));
-    }
-
-    @Test
-    public void advanceStatus_changesStatusIfInRange_orElseThrowsException() {
-        myBug.advanceStatus();
-        Assertions.assertEquals(BugStatus.FIXED.toString(), myBug.getStatus());
-        Assertions.assertThrows(InvalidUserInput.class, () -> myBug.advanceStatus());
-    }
-
-    @Test
-    public void retractStatus_changesStatusIfInRange_orElseThrowsException() {
-        myBug.setStatus(BugStatus.FIXED);
-        myBug.retractStatus();
-        Assertions.assertEquals(BugStatus.ACTIVE.toString(), myBug.getStatus());
-        Assertions.assertThrows(InvalidUserInput.class, () -> myBug.retractStatus());
     }
 
     @Test

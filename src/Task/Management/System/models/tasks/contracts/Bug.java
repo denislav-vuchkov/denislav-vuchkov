@@ -11,10 +11,6 @@ public interface Bug extends AssignableTask {
 
     void setSeverity(Severity severity);
 
-    void increaseSeverity();
-
-    void decreaseSeverity();
-
     void setStatus(BugStatus status);
 
 }

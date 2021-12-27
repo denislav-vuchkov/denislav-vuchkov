@@ -43,38 +43,6 @@ public class StoryImpl extends AssignableTaskImpl implements Story {
     }
 
     @Override
-    public void advanceStatus() {
-        switch (this.status) {
-            case NOT_DONE:
-                addChangeToHistory(String.format(CHANGE_MESSAGE, "Status", this.status, StoryStatus.IN_PROGRESS));
-                this.status = StoryStatus.IN_PROGRESS;
-                break;
-            case IN_PROGRESS:
-                addChangeToHistory(String.format(CHANGE_MESSAGE, "Status", this.status, StoryStatus.DONE));
-                this.status = StoryStatus.DONE;
-                break;
-            case DONE:
-                throw new InvalidUserInput(String.format(UPPER_BOUNDARY, "status", StoryStatus.DONE));
-        }
-    }
-
-    @Override
-    public void retractStatus() {
-        switch (this.status) {
-            case NOT_DONE:
-                throw new InvalidUserInput(String.format(LOWER_BOUNDARY, "status", StoryStatus.NOT_DONE));
-            case IN_PROGRESS:
-                addChangeToHistory(String.format(CHANGE_MESSAGE, "Status", this.status, StoryStatus.NOT_DONE));
-                this.status = StoryStatus.NOT_DONE;
-                break;
-            case DONE:
-                addChangeToHistory(String.format(CHANGE_MESSAGE, "Status", this.status, StoryStatus.IN_PROGRESS));
-                this.status = StoryStatus.IN_PROGRESS;
-                break;
-        }
-    }
-
-    @Override
     public Size getSize() {
         return size;
     }

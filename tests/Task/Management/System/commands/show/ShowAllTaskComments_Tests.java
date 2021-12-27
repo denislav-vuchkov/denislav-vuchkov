@@ -30,47 +30,14 @@ import static Task.Management.System.models.tasks.CommentImpl.CONTENT_LEN_MIN;
 
 public class ShowAllTaskComments_Tests {
 
-    static CommandFactory commandFactory;
-    static TaskManagementSystemRepository repository;
-    static Command command;
-    static Command createUser;
-    static Command createTeam;
-    static Command addUserToTeam;
-    static Command createBoard;
-    static Command createFeedback;
-
-    @BeforeAll
-    public static void setup() {
-        commandFactory = new CommandFactoryImpl();
-        repository = new TaskManagementSystemRepositoryImpl();
-        command = commandFactory.createCommandFromCommandName("ShowTaskComments", repository);
-
-        createUser = commandFactory.createCommandFromCommandName("CreateUser", repository);
-        createUser.execute(List.of(VALID_USER_NAME));
-
-        createTeam = commandFactory.createCommandFromCommandName("CreateTeam", repository);
-        createTeam.execute(List.of(VALID_TEAM_NAME));
-
-        addUserToTeam = commandFactory.createCommandFromCommandName("AddUserToTeam", repository);
-        addUserToTeam.execute(List.of(VALID_USER_NAME, VALID_TEAM_NAME));
-
-        createBoard = commandFactory.createCommandFromCommandName("CreateBoard", repository);
-        createBoard.execute(List.of(VALID_BOARD_NAME, VALID_TEAM_NAME));
-
-        createFeedback = commandFactory.createCommandFromCommandName("CreateFeedback", repository);
-        List<String> parameters = new ArrayList<>();
-        parameters.add(VALID_USER_NAME);
-        parameters.add(VALID_TEAM_NAME);
-        parameters.add(VALID_BOARD_NAME);
-        parameters.add(VALID_TITLE);
-        parameters.add(VALID_DESCRIPTION);
-        parameters.add(String.valueOf(VALID_RATING));
-        createFeedback.execute(parameters);
-    }
 
     @ParameterizedTest (name = "with length {0}")
     @ValueSource(ints = {EXPECTED_NUMBER_OF_ARGUMENTS-1, EXPECTED_NUMBER_OF_ARGUMENTS+1})
     public void showTaskComments_Should_throwException_WhenValidArguments(int parametersCount) {
+        CommandFactory commandFactory = new CommandFactoryImpl();
+        TaskManagementSystemRepository repository = new TaskManagementSystemRepositoryImpl();
+        Command command = commandFactory.createCommandFromCommandName("ShowTaskComments", repository);
+
         List<String> parameters = new ArrayList<>();
 
         for (int i = 1; i <= parametersCount; i++) {
@@ -82,11 +49,64 @@ public class ShowAllTaskComments_Tests {
 
     @Test
     public void showTaskComments_Should_Indicate_When_NoCommentsToDisplay() {
+        CommandFactory commandFactory = new CommandFactoryImpl();
+        TaskManagementSystemRepository repository = new TaskManagementSystemRepositoryImpl();
+        Command command = commandFactory.createCommandFromCommandName("ShowTaskComments", repository);
+
+        Command createUser = commandFactory.createCommandFromCommandName("CreateUser", repository);
+        createUser.execute(List.of(VALID_USER_NAME));
+
+        Command createTeam = commandFactory.createCommandFromCommandName("CreateTeam", repository);
+        createTeam.execute(List.of(VALID_TEAM_NAME));
+
+        Command addUserToTeam = commandFactory.createCommandFromCommandName("AddUserToTeam", repository);
+        addUserToTeam.execute(List.of(VALID_USER_NAME, VALID_TEAM_NAME));
+
+        Command createBoard = commandFactory.createCommandFromCommandName("CreateBoard", repository);
+        createBoard.execute(List.of(VALID_BOARD_NAME, VALID_TEAM_NAME));
+
+        Command createFeedback = commandFactory.createCommandFromCommandName("CreateFeedback", repository);
+        List<String> parameters = new ArrayList<>();
+        parameters.add(VALID_USER_NAME);
+        parameters.add(VALID_TEAM_NAME);
+        parameters.add(VALID_BOARD_NAME);
+        parameters.add(VALID_TITLE);
+        parameters.add(VALID_DESCRIPTION);
+        parameters.add(String.valueOf(VALID_RATING));
+        createFeedback.execute(parameters);
+
         Assertions.assertEquals(String.format(NO_ITEMS_TO_DISPLAY, "comments"), command.execute(List.of("1")));
     }
 
     @Test
     public void showTaskComments_Should_Execute_When_ValidInput() {
+        CommandFactory commandFactory = new CommandFactoryImpl();
+        TaskManagementSystemRepository repository = new TaskManagementSystemRepositoryImpl();
+        Command command = commandFactory.createCommandFromCommandName("ShowTaskComments", repository);
+
+        Command createUser = commandFactory.createCommandFromCommandName("CreateUser", repository);
+        createUser.execute(List.of(VALID_USER_NAME));
+
+        Command createTeam = commandFactory.createCommandFromCommandName("CreateTeam", repository);
+        createTeam.execute(List.of(VALID_TEAM_NAME));
+
+        Command addUserToTeam = commandFactory.createCommandFromCommandName("AddUserToTeam", repository);
+        addUserToTeam.execute(List.of(VALID_USER_NAME, VALID_TEAM_NAME));
+
+        Command createBoard = commandFactory.createCommandFromCommandName("CreateBoard", repository);
+        createBoard.execute(List.of(VALID_BOARD_NAME, VALID_TEAM_NAME));
+
+        Command createFeedback = commandFactory.createCommandFromCommandName("CreateFeedback", repository);
+        List<String> parameters = new ArrayList<>();
+        parameters.add(VALID_USER_NAME);
+        parameters.add(VALID_TEAM_NAME);
+        parameters.add(VALID_BOARD_NAME);
+        parameters.add(VALID_TITLE);
+        parameters.add(VALID_DESCRIPTION);
+        parameters.add(String.valueOf(VALID_RATING));
+        createFeedback.execute(parameters);
+
+
         Command addComment = commandFactory.createCommandFromCommandName("AddCommentToTask", repository);
         List<String> commentParameters = new ArrayList<>();
         commentParameters.add(VALID_USER_NAME);

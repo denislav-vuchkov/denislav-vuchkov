@@ -103,27 +103,4 @@ public class Feedback_Tests {
         Assertions.assertThrows(InvalidUserInput.class, () -> myFeedback.setStatus(FeedbackStatus.SCHEDULED));
     }
 
-    @Test
-    public void advanceStatus_changesStatusIfInRange_orElseThrowsException() {
-        Assertions.assertEquals(FeedbackStatus.NEW.toString(), myFeedback.getStatus());
-        myFeedback.advanceStatus();
-        Assertions.assertEquals(FeedbackStatus.UNSCHEDULED.toString(), myFeedback.getStatus());
-        myFeedback.advanceStatus();
-        Assertions.assertEquals(FeedbackStatus.SCHEDULED.toString(), myFeedback.getStatus());
-        myFeedback.advanceStatus();
-        Assertions.assertEquals(FeedbackStatus.DONE.toString(), myFeedback.getStatus());
-        Assertions.assertThrows(InvalidUserInput.class, () -> myFeedback.advanceStatus());
-    }
-
-    @Test
-    public void retractStatus_changesStatusIfInRange_orElseThrowsException() {
-        myFeedback.setStatus(FeedbackStatus.DONE);
-        myFeedback.retractStatus();
-        Assertions.assertEquals(FeedbackStatus.SCHEDULED.toString(), myFeedback.getStatus());
-        myFeedback.retractStatus();
-        Assertions.assertEquals(FeedbackStatus.UNSCHEDULED.toString(), myFeedback.getStatus());
-        myFeedback.retractStatus();
-        Assertions.assertEquals(FeedbackStatus.NEW.toString(), myFeedback.getStatus());
-        Assertions.assertThrows(InvalidUserInput.class, () -> myFeedback.retractStatus());
-    }
 }

@@ -91,50 +91,8 @@ public class StoryImpl_Tests {
     }
 
     @Test
-    public void advanceStatus_changesStatusIfInRange_orElseThrowsException() {
-        Assertions.assertEquals(StoryStatus.NOT_DONE.toString(), myStory.getStatus());
-        myStory.advanceStatus();
-        Assertions.assertEquals(StoryStatus.IN_PROGRESS.toString(), myStory.getStatus());
-        myStory.advanceStatus();
-        Assertions.assertEquals(StoryStatus.DONE.toString(), myStory.getStatus());
-        Assertions.assertThrows(InvalidUserInput.class, () -> myStory.advanceStatus());
-    }
-
-    @Test
-    public void retractStatus_changesStatusIfInRange_orElseThrowsException() {
-        myStory.setStatus(StoryStatus.DONE);
-        myStory.retractStatus();
-        Assertions.assertEquals(StoryStatus.IN_PROGRESS.toString(), myStory.getStatus());
-        myStory.retractStatus();
-        Assertions.assertEquals(StoryStatus.NOT_DONE.toString(), myStory.getStatus());
-        Assertions.assertThrows(InvalidUserInput.class, () -> myStory.retractStatus());
-    }
-
-    @Test
     public void setPriority_throwsException_whenNewOneIsTheSameAsOld() {
         Assertions.assertThrows(InvalidUserInput.class, () -> myStory.setPriority(Priority.MEDIUM));
-    }
-
-    @Test
-    public void increasePriority_changesSeverityIfInRange_orElseThrowsException() {
-        myStory.setPriority(Priority.LOW);
-        Assertions.assertEquals(Priority.LOW, myStory.getPriority());
-        myStory.increasePriority();
-        Assertions.assertEquals(Priority.MEDIUM, myStory.getPriority());
-        myStory.increasePriority();
-        Assertions.assertEquals(Priority.HIGH, myStory.getPriority());
-        Assertions.assertThrows(InvalidUserInput.class, () -> myStory.increasePriority());
-    }
-
-    @Test
-    public void decreasePriority_changesSeverityIfInRange_orElseThrowsException() {
-        myStory.setPriority(Priority.HIGH);
-        Assertions.assertEquals(Priority.HIGH, myStory.getPriority());
-        myStory.decreasePriority();
-        Assertions.assertEquals(Priority.MEDIUM, myStory.getPriority());
-        myStory.decreasePriority();
-        Assertions.assertEquals(Priority.LOW, myStory.getPriority());
-        Assertions.assertThrows(InvalidUserInput.class, () -> myStory.decreasePriority());
     }
 
     @Test

@@ -11,8 +11,6 @@ import static Task.Management.System.models.contracts.EventLogger.IMPOSSIBLE_CHA
 public abstract class AssignableTaskImpl extends TaskBase implements AssignableTask {
 
     public static final String UNASSIGNED = "Unassigned";
-    public static final String LOWER_BOUNDARY = "Cannot decrease %s further than %s.";
-    public static final String UPPER_BOUNDARY = "Cannot increase %s beyond %s.";
     private Priority priority;
     private String assignee;
 
@@ -38,38 +36,6 @@ public abstract class AssignableTaskImpl extends TaskBase implements AssignableT
         }
         addChangeToHistory(String.format(CHANGE_MESSAGE, "Priority", this.priority, priority));
         this.priority = priority;
-    }
-
-    @Override
-    public void increasePriority() {
-        switch (priority) {
-            case LOW:
-                addChangeToHistory(String.format(CHANGE_MESSAGE, "Priority", priority, Priority.MEDIUM));
-                priority = Priority.MEDIUM;
-                break;
-            case MEDIUM:
-                addChangeToHistory(String.format(CHANGE_MESSAGE, "Priority", priority, Priority.HIGH));
-                priority = Priority.HIGH;
-                break;
-            case HIGH:
-                throw new InvalidUserInput(String.format(UPPER_BOUNDARY, "priority", Priority.HIGH));
-        }
-    }
-
-    @Override
-    public void decreasePriority() {
-        switch (priority) {
-            case LOW:
-                throw new InvalidUserInput(String.format(LOWER_BOUNDARY, "priority", Priority.LOW));
-            case MEDIUM:
-                addChangeToHistory(String.format(CHANGE_MESSAGE, "Priority", priority, Priority.LOW));
-                priority = Priority.LOW;
-                break;
-            case HIGH:
-                addChangeToHistory(String.format(CHANGE_MESSAGE, "Priority", priority, Priority.MEDIUM));
-                priority = Priority.MEDIUM;
-                break;
-        }
     }
 
     @Override

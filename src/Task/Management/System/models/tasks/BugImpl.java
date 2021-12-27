@@ -48,30 +48,6 @@ public class BugImpl extends AssignableTaskImpl implements Bug {
     }
 
     @Override
-    public void advanceStatus() {
-        switch (status) {
-            case ACTIVE:
-                addChangeToHistory(String.format(CHANGE_MESSAGE, "Status", status, BugStatus.FIXED));
-                status = BugStatus.FIXED;
-                break;
-            case FIXED:
-                throw new InvalidUserInput(String.format(UPPER_BOUNDARY, "status", BugStatus.FIXED));
-        }
-    }
-
-    @Override
-    public void retractStatus() {
-        switch (status) {
-            case ACTIVE:
-                throw new InvalidUserInput(String.format(LOWER_BOUNDARY, "status", BugStatus.ACTIVE));
-            case FIXED:
-                addChangeToHistory(String.format(CHANGE_MESSAGE, "Status", status, BugStatus.ACTIVE));
-                status = BugStatus.ACTIVE;
-                break;
-        }
-    }
-
-    @Override
     public String getStepsToReproduce() {
         StringBuilder steps = new StringBuilder();
         int[] index = new int[1];
@@ -99,38 +75,6 @@ public class BugImpl extends AssignableTaskImpl implements Bug {
         }
         addChangeToHistory(String.format(CHANGE_MESSAGE, "Severity", this.severity, severity));
         this.severity = severity;
-    }
-
-    @Override
-    public void increaseSeverity() {
-        switch (severity) {
-            case MINOR:
-                addChangeToHistory(String.format(CHANGE_MESSAGE, "Severity", severity, Severity.MAJOR));
-                severity = Severity.MAJOR;
-                break;
-            case MAJOR:
-                addChangeToHistory(String.format(CHANGE_MESSAGE, "Severity", severity, Severity.CRITICAL));
-                severity = Severity.CRITICAL;
-                break;
-            case CRITICAL:
-                throw new InvalidUserInput(String.format(UPPER_BOUNDARY, "severity", Severity.CRITICAL));
-        }
-    }
-
-    @Override
-    public void decreaseSeverity() {
-        switch (severity) {
-            case MINOR:
-                throw new InvalidUserInput(String.format(LOWER_BOUNDARY, "severity", Severity.MINOR));
-            case MAJOR:
-                addChangeToHistory(String.format(CHANGE_MESSAGE, "Severity", severity, Severity.MINOR));
-                severity = Severity.MINOR;
-                break;
-            case CRITICAL:
-                addChangeToHistory(String.format(CHANGE_MESSAGE, "Severity", severity, Severity.MAJOR));
-                severity = Severity.MAJOR;
-                break;
-        }
     }
 
     @Override

@@ -17,9 +17,6 @@ public class FeedbackImpl extends TaskBase implements Feedback {
     public static final String INVALID_RATING_MESSAGE = String.format("Rating cannot be less than %d or more than %d",
             RATING_MIN, RATING_MAX);
 
-    public static final String LOWER_BOUNDARY = "Cannot decrease %s further than %s.";
-    public static final String UPPER_BOUNDARY = "Cannot increase %s beyond %s.";
-
     private FeedbackStatus status;
     private int rating = RATING_UNINITIALIZED;
 
@@ -47,45 +44,6 @@ public class FeedbackImpl extends TaskBase implements Feedback {
         this.status = status;
     }
 
-    @Override
-    public void advanceStatus() {
-        switch (status) {
-            case NEW:
-                addChangeToHistory(String.format(CHANGE_MESSAGE, "Status", status, FeedbackStatus.UNSCHEDULED));
-                this.status = FeedbackStatus.UNSCHEDULED;
-                break;
-            case UNSCHEDULED:
-                addChangeToHistory(String.format(CHANGE_MESSAGE, "Status", status, FeedbackStatus.SCHEDULED));
-                this.status = FeedbackStatus.SCHEDULED;
-                break;
-            case SCHEDULED:
-                addChangeToHistory(String.format(CHANGE_MESSAGE, "Status", status, FeedbackStatus.DONE));
-                this.status = FeedbackStatus.DONE;
-                break;
-            case DONE:
-                throw new InvalidUserInput(String.format(UPPER_BOUNDARY, "status", FeedbackStatus.DONE));
-        }
-    }
-
-    @Override
-    public void retractStatus() {
-        switch (status) {
-            case NEW:
-                throw new InvalidUserInput(String.format(LOWER_BOUNDARY, "status", FeedbackStatus.NEW));
-            case UNSCHEDULED:
-                addChangeToHistory(String.format(CHANGE_MESSAGE, "Status", status, FeedbackStatus.NEW));
-                this.status = FeedbackStatus.NEW;
-                break;
-            case SCHEDULED:
-                addChangeToHistory(String.format(CHANGE_MESSAGE, "Status", status, FeedbackStatus.UNSCHEDULED));
-                this.status = FeedbackStatus.UNSCHEDULED;
-                break;
-            case DONE:
-                addChangeToHistory(String.format(CHANGE_MESSAGE, "Status", status, FeedbackStatus.SCHEDULED));
-                this.status = FeedbackStatus.SCHEDULED;
-                break;
-        }
-    }
 
     @Override
     public int getRating() {
