@@ -51,8 +51,8 @@ public class CommandFactoryImpl implements CommandFactory {
                 return new AddUserToTeam(taskManagementSystemRepository);
             case ADD_COMMENT_TO_TASK:
                 return new AddCommentToTask(taskManagementSystemRepository);
-            case ASSIGN_TASK_TO_USER:
-                return new AssignTaskToUser(taskManagementSystemRepository);
+            case ASSIGN_TASK:
+                return new AssignTask(taskManagementSystemRepository);
             case CREATE_BUG:
                 return new CreateBug(taskManagementSystemRepository);
             case CREATE_STORY:

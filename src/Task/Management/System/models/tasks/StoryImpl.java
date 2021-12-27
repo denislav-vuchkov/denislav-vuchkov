@@ -12,9 +12,6 @@ import static Task.Management.System.models.contracts.EventLogger.IMPOSSIBLE_CHA
 
 public class StoryImpl extends AssignableTaskImpl implements Story {
 
-    public static final String LOWER_BOUNDARY = "Cannot decrease %s further than %s.";
-    public static final String UPPER_BOUNDARY = "Cannot increase %s beyond %s.";
-
     private StoryStatus status;
     private Size size;
 
@@ -79,8 +76,8 @@ public class StoryImpl extends AssignableTaskImpl implements Story {
 
     @Override
     public String toString() {
-        return String.format("%s - ID: %d - Title: %s - Priority: %s - Size: %s - " +
-                        "Status - %s - Assignee - %s - Comments: %d",
+        return String.format("%s ID: %d - Title: %s - Priority: %s - Size: %s - " +
+                        "Status: %s - Assignee: %s - Comments: %d",
                 this.getClass().getSimpleName().replace("Impl", ""),
                 getID(), getTitle(), getPriority(), getSize(),
                 getStatus(), getAssignee(), getComments().size());

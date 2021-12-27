@@ -9,13 +9,13 @@ import Task.Management.System.utils.ValidationHelpers;
 
 import java.util.List;
 
-public class AssignTaskToUser extends BaseCommand {
+public class AssignTask extends BaseCommand {
 
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 3;
     public static final String TASK_REASSIGNED = "Task with ID %d has been assigned to %s.";
     public static final String ASSIGN_EVENT = "User %s assigned task %d to %s.";
 
-    public AssignTaskToUser(TaskManagementSystemRepository repository) {
+    public AssignTask(TaskManagementSystemRepository repository) {
         super(repository);
     }
 

@@ -31,7 +31,10 @@ public class CreateBug extends BaseCommand {
         String boardName = parameters.get(2);
         String title = parameters.get(3);
         String description = parameters.get(4);
-        List<String> steps = Arrays.stream(parameters.get(5).split("[!?;\\.] ")).collect(Collectors.toList());
+        List<String> steps = Arrays
+                .stream(parameters.get(5).split(";"))
+                .map(String::trim)
+                .collect(Collectors.toList());
         Priority priority = ParsingHelpers.tryParseEnum(parameters.get(6), Priority.class);
         Severity severity = ParsingHelpers.tryParseEnum(parameters.get(7), Severity.class);
         String assignee = parameters.get(8);

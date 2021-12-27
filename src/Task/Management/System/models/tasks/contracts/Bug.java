@@ -3,9 +3,11 @@ package Task.Management.System.models.tasks.contracts;
 import Task.Management.System.models.tasks.enums.BugStatus;
 import Task.Management.System.models.tasks.enums.Severity;
 
+import java.util.List;
+
 public interface Bug extends AssignableTask {
 
-    String getStepsToReproduce();
+    List<String> getStepsToReproduce();
 
     Severity getSeverity();
 

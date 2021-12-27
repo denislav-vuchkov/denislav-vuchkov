@@ -7,6 +7,7 @@ import Task.Management.System.models.tasks.enums.Priority;
 import Task.Management.System.models.tasks.enums.Severity;
 import Task.Management.System.models.tasks.enums.Tasks;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static Task.Management.System.models.contracts.EventLogger.CHANGE_MESSAGE;
@@ -14,9 +15,6 @@ import static Task.Management.System.models.contracts.EventLogger.IMPOSSIBLE_CHA
 
 public class BugImpl extends AssignableTaskImpl implements Bug {
 
-    public static final String STEPS_HEADER = "--STEPS TO REPRODUCE--";
-    public static final String LOWER_BOUNDARY = "Cannot decrease %s further than %s.";
-    public static final String UPPER_BOUNDARY = "Cannot increase %s beyond %s.";
     private final List<String> stepsToReproduce;
     private BugStatus status;
     private Severity severity;
@@ -48,15 +46,8 @@ public class BugImpl extends AssignableTaskImpl implements Bug {
     }
 
     @Override
-    public String getStepsToReproduce() {
-        StringBuilder steps = new StringBuilder();
-        int[] index = new int[1];
-
-        steps.append(STEPS_HEADER).append("\n");
-        stepsToReproduce.forEach(step -> steps.append(String.format("%d. %s%n", ++index[0], step)));
-        steps.append(STEPS_HEADER);
-
-        return steps.toString();
+    public List<String> getStepsToReproduce() {
+        return new ArrayList<>(stepsToReproduce);
     }
 
     @Override
@@ -98,10 +89,10 @@ public class BugImpl extends AssignableTaskImpl implements Bug {
 
     @Override
     public String toString() {
-        return String.format("%s - ID: %d - Title: %s - Priority: %s - Severity: %s - " +
-                        "Status - %s - Assignee - %s - Comments: %d",
+        return String.format("%s ID: %d - Title: %s - Steps: %d - Priority: %s - Severity: %s - " +
+                        "Status: %s - Assignee: %s - Comments: %d",
                 this.getClass().getSimpleName().replace("Impl", ""),
-                getID(), getTitle(), getPriority(), getSeverity(),
+                getID(), getTitle(), getStepsToReproduce().size(), getPriority(), getSeverity(),
                 getStatus(), getAssignee(), getComments().size());
     }
 }
