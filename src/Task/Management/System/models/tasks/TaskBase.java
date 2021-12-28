@@ -28,11 +28,11 @@ public abstract class TaskBase implements Task {
             String.format("Description must be between %d and %d symbols.", DESCRIPTION_MIN, DESCRIPTION_MAX);
 
     private final long id;
-    private final List<Comment> comments;
-    private final EventLogger history;
     private String title;
     private String description;
     private TaskStatus status;
+    private final List<Comment> comments;
+    private final EventLogger history;
 
     public TaskBase(long id, Tasks tasksType, String title, String description, TaskStatus status) {
         this.id = id;
