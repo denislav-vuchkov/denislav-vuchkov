@@ -7,6 +7,7 @@ import Task.Management.System.core.contracts.CommandFactory;
 import Task.Management.System.core.contracts.TaskManagementSystemRepository;
 import Task.Management.System.exceptions.InvalidNumberOfArguments;
 import Task.Management.System.exceptions.InvalidUserInput;
+import Task.Management.System.models.tasks.contracts.Bug;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -124,8 +125,13 @@ public class CreateBug_Tests {
 
     @Test
     public void CreateBug_ReturnsCorrectString_WithValidParameters() {
+        Assertions.assertEquals(0, repo.getBugs().size());
         Assertions.assertEquals(
                 "Bug with ID 1 successfully added to board TaskManagement in team Team1.",
                 createBug.execute(parameters));
+        Assertions.assertEquals(1, repo.getBugs().size());
+        Bug bug = repo.findBug(1);
+        Assertions.assertEquals("Activity Log Is Incomplete", bug.getTitle());
+        Assertions.assertEquals("Critical", bug.getSeverity().toString());
     }
 }
