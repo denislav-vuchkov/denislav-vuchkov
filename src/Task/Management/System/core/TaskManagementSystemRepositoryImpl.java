@@ -30,7 +30,7 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
     public static final String USER_NOT_FROM_TEAM = "The user should be a member of the team!";
     public static final String USER_OR_TASK_NOT_FROM_TEAM = "User and task should be from the same team!";
 
-    private static long nextTaskID = 1;
+    private long nextTaskID = 1;
     private final List<Team> teams;
     private final List<User> users;
     private final List<Bug> bugs;
