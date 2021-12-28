@@ -76,7 +76,7 @@ public class ShowAllTasks_Tests {
 
         Feedback task = repository.findFeedback(1);
 
-        String output = String.format("%s - ID: %d - Title: %s - Rating: %s - Status: %s - Comments: %d",
+        String output = String.format("%s ID: %d - Title: %s - Rating: %s - Status: %s - Comments: %d",
                 task.getClass().getSimpleName().replace("Impl", ""),
                 task.getID(), task.getTitle(), task.getRating(), task.getStatus(), task.getComments().size());
 

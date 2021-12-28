@@ -14,11 +14,11 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChangeStory_Tests {
+public class ChangeBug_Tests {
 
     CommandFactory cf;
     TaskManagementSystemRepository repo;
-    Command changeStory;
+    Command changeBug;
     List<String> parameters;
 
     @BeforeEach
@@ -26,7 +26,7 @@ public class ChangeStory_Tests {
 
         cf = new CommandFactoryImpl();
         repo = new TaskManagementSystemRepositoryImpl();
-        changeStory = cf.createCommand("ChangeStory", repo);
+        changeBug = cf.createCommand("ChangeBug", repo);
         parameters = new ArrayList<>();
 
         cf.createCommand("CreateTeam", repo).execute(List.of("Team1"));
@@ -42,16 +42,6 @@ public class ChangeStory_Tests {
         cf.createCommand("AddUserToTeam", repo).execute(List.of("Outsider", "Others"));
         cf.createCommand("CreateBoard", repo).execute(List.of("EvilBoard", "Others"));
 
-        cf.createCommand("CreateStory", repo).execute(List.of(
-                "Denis",
-                "Team1",
-                "TaskManagement",
-                "TestStoryTitle1",
-                "DemoStoryDescription1",
-                "High",
-                "Small",
-                "Tisho"));
-
         cf.createCommand("CreateFeedback", repo).execute(List.of(
                 "Tisho",
                 "Team1",
@@ -60,75 +50,85 @@ public class ChangeStory_Tests {
                 "test feedback description",
                 "5"));
 
-        parameters.add("Tisho");
-        parameters.add("1");
+        cf.createCommand("CreateBug", repo).execute(List.of(
+                "Tisho",
+                "Team1",
+                "TaskManagement",
+                "TestBugTitle1",
+                "DemoBugDescription1",
+                "One;Two;Three",
+                "Low",
+                "Critical",
+                "Denis"));
+
+        parameters.add("Denis");
+        parameters.add("2");
         parameters.add("priority");
-        parameters.add("medium");
+        parameters.add("high");
     }
 
     @Test
-    public void ChangeStory_ShouldThrowException_ifInvalidNumberOfParameters() {
+    public void ChangeBug_ShouldThrowException_ifInvalidNumberOfParameters() {
         parameters.remove(0);
         parameters.remove(1);
-        Assertions.assertThrows(InvalidNumberOfArguments.class, () -> changeStory.execute(parameters));
+        Assertions.assertThrows(InvalidNumberOfArguments.class, () -> changeBug.execute(parameters));
     }
 
     @Test
-    public void ChangeStory_ShouldThrowException_ifCreatorInvalid() {
+    public void ChangeBug_ShouldThrowException_ifCreatorInvalid() {
         parameters.set(0, "Invalid");
-        Assertions.assertThrows(InvalidUserInput.class, () -> changeStory.execute(parameters));
+        Assertions.assertThrows(InvalidUserInput.class, () -> changeBug.execute(parameters));
     }
 
     @Test
-    public void ChangeStory_ShouldThrowException_ifForeignCreator() {
+    public void ChangeBug_ShouldThrowException_ifForeignCreator() {
         parameters.set(0, "Outsider");
-        Assertions.assertThrows(InvalidUserInput.class, () -> changeStory.execute(parameters));
+        Assertions.assertThrows(InvalidUserInput.class, () -> changeBug.execute(parameters));
     }
 
     @Test
-    public void ChangeStory_ShouldThrowException_ifTaskInvalid() {
+    public void ChangeBug_ShouldThrowException_ifTaskInvalid() {
         parameters.set(1, "-2");
-        Assertions.assertThrows(InvalidUserInput.class, () -> changeStory.execute(parameters));
+        Assertions.assertThrows(InvalidUserInput.class, () -> changeBug.execute(parameters));
     }
 
     @Test
-    public void ChangeStory_ShouldThrowException_ifTaskWrong() {
-        parameters.set(1, "2");
-        Assertions.assertThrows(InvalidUserInput.class, () -> changeStory.execute(parameters));
+    public void ChangeBug_ShouldThrowException_ifTaskWrong() {
+        parameters.set(1, "1");
+        Assertions.assertThrows(InvalidUserInput.class, () -> changeBug.execute(parameters));
     }
 
     @Test
-    public void ChangeStory_ShouldThrowException_ifPropertyInvalid() {
+    public void ChangeBug_ShouldThrowException_ifPropertyInvalid() {
         parameters.set(2, "title");
-        Assertions.assertThrows(InvalidUserInput.class, () -> changeStory.execute(parameters));
+        Assertions.assertThrows(InvalidUserInput.class, () -> changeBug.execute(parameters));
     }
 
     @Test
-    public void ChangeStory_ShouldChangePriority_ifNewValueValid() {
+    public void ChangeBug_ShouldChangePriority_ifNewValueValid() {
         Assertions.assertEquals(
-                "User Tisho changed the PRIORITY of Story with ID 1 to MEDIUM.",
-                changeStory.execute(parameters));
-        Assertions.assertEquals("Medium", repo.findStory(1).getPriority().toString());
+                "User Denis changed the PRIORITY of Bug with ID 2 to HIGH.",
+                changeBug.execute(parameters));
+        Assertions.assertEquals("High", repo.findBug(2).getPriority().toString());
     }
 
     @Test
-    public void ChangeStory_ShouldChangeSize_ifNewValueValid() {
-        parameters.set(2, "size");
-        parameters.set(3, "large");
+    public void ChangeBug_ShouldChangeSeverity_ifNewValueValid() {
+        parameters.set(2, "severity");
+        parameters.set(3, "minor");
         Assertions.assertEquals(
-                "User Tisho changed the SIZE of Story with ID 1 to LARGE.",
-                changeStory.execute(parameters));
-        Assertions.assertEquals("Large", repo.findStory(1).getSize().toString());
+                "User Denis changed the SEVERITY of Bug with ID 2 to MINOR.",
+                changeBug.execute(parameters));
+        Assertions.assertEquals("Minor", repo.findBug(2).getSeverity().toString());
     }
 
     @Test
-    public void ChangeStory_ShouldChangeStatus_ifNewValueValid() {
+    public void ChangeBug_ShouldChangeStatus_ifNewValueValid() {
         parameters.set(2, "status");
-        parameters.set(3, "done");
+        parameters.set(3, "fixed");
         Assertions.assertEquals(
-                "User Tisho changed the STATUS of Story with ID 1 to DONE.",
-                changeStory.execute(parameters));
-        Assertions.assertEquals("Done", repo.findStory(1).getStatus());
+                "User Denis changed the STATUS of Bug with ID 2 to FIXED.",
+                changeBug.execute(parameters));
+        Assertions.assertEquals("Fixed", repo.findBug(2).getStatus());
     }
 }
-
