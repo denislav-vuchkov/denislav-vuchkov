@@ -15,7 +15,6 @@ public class StoryImpl_Tests {
 
     @BeforeEach
     public void setup() {
-
         myStory = new StoryImpl(
                 0,
                 "Not Too Short",
@@ -26,58 +25,24 @@ public class StoryImpl_Tests {
 
     @Test
     public void constructor_initiatesObjectCorrectly_withValidParameters() {
-
         Assertions.assertEquals(0, myStory.getID());
         Assertions.assertEquals("Not Too Short", myStory.getTitle());
         Assertions.assertEquals("Just Right Length", myStory.getDescription());
         Assertions.assertEquals(Priority.MEDIUM, myStory.getPriority());
         Assertions.assertEquals(Size.MEDIUM, myStory.getSize());
         Assertions.assertEquals(StoryStatus.NOT_DONE.toString(), myStory.getStatus());
-
-        myStory.setTitle("New Valid Title");
-        Assertions.assertEquals("New Valid Title", myStory.getTitle());
     }
 
     @Test
     public void constructor_throwsException_whenTitleIsInvalid() {
-
         Assertions.assertThrows(InvalidUserInput.class, () -> new StoryImpl(
-                10,
-                "Too Short",
-                "Long Enough Description",
-                Priority.LOW,
-                Size.SMALL));
-
+                10, "Too Short", "Long Enough Description", Priority.LOW, Size.SMALL));
     }
 
     @Test
     public void constructor_throwsException_whenDescriptionIsInvalid() {
-
         Assertions.assertThrows(InvalidUserInput.class, () -> new StoryImpl(
-                30,
-                "Not Too Short",
-                "Too Short",
-                Priority.MEDIUM,
-                Size.MEDIUM));
-
-    }
-
-    @Test
-    public void setName_throwsException_whenNewOneIsTheSameAsOld() {
-        Assertions.assertThrows(InvalidUserInput.class, () -> myStory.setTitle("Not Too Short"));
-    }
-
-    @Test
-    public void setDescription_throwsException_whenNewOneIsTheSameAsOld() {
-        Assertions.assertThrows(InvalidUserInput.class, () -> myStory.setDescription("Just Right Length"));
-    }
-
-    @Test
-    public void setSize_changesSize_whenUsedCorrectly() {
-        myStory.setSize(Size.SMALL);
-        Assertions.assertEquals(Size.SMALL, myStory.getSize());
-        myStory.setSize(Size.LARGE);
-        Assertions.assertEquals(Size.LARGE, myStory.getSize());
+                30, "Not Too Short", "Too Short", Priority.MEDIUM, Size.MEDIUM));
     }
 
     @Test
@@ -96,12 +61,18 @@ public class StoryImpl_Tests {
     }
 
     @Test
-    public void addComment_shouldIncreaseSize_whenGivenValidObject() {
+    public void addComment_shouldIncreaseSize_whenGivenValidComment() {
         Assertions.assertTrue(myStory.getComments().isEmpty());
         myStory.addComment(new CommentImpl("Test1", "Test1"));
         myStory.addComment(new CommentImpl("Test2", "Test2"));
         myStory.getComments().add(new CommentImpl("Test3", "Test3"));
         myStory.getComments().add(new CommentImpl("Test4", "Test4"));
         Assertions.assertEquals(2, myStory.getComments().size());
+    }
+
+    @Test
+    public void toString_shouldReturnString_withCorrectFormat() {
+        Assertions.assertEquals("Story ID: 0 - Title: Not Too Short - Priority: Medium - Size: Medium - " +
+                "Status: Not done - Assignee: Unassigned - Comments: 0", myStory.toString());
     }
 }

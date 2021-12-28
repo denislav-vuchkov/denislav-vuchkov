@@ -75,13 +75,13 @@ public class ChangeBug_Tests {
     }
 
     @Test
-    public void ChangeBug_ShouldThrowException_ifCreatorInvalid() {
+    public void ChangeBug_ShouldThrowException_ifChangerInvalid() {
         parameters.set(0, "Invalid");
         Assertions.assertThrows(InvalidUserInput.class, () -> changeBug.execute(parameters));
     }
 
     @Test
-    public void ChangeBug_ShouldThrowException_ifForeignCreator() {
+    public void ChangeBug_ShouldThrowException_ifForeignChanger() {
         parameters.set(0, "Outsider");
         Assertions.assertThrows(InvalidUserInput.class, () -> changeBug.execute(parameters));
     }

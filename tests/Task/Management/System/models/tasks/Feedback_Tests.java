@@ -13,7 +13,6 @@ public class Feedback_Tests {
 
     @BeforeEach
     public void setup() {
-
         myFeedback = new FeedbackImpl(
                 123456,
                 "Not Too Short",
@@ -23,73 +22,35 @@ public class Feedback_Tests {
 
     @Test
     public void constructor_initiatesObjectCorrectly_withValidParameters() {
-
         Assertions.assertEquals(123456, myFeedback.getID());
         Assertions.assertEquals("Not Too Short", myFeedback.getTitle());
         Assertions.assertEquals("Just Right Length", myFeedback.getDescription());
         Assertions.assertEquals(5, myFeedback.getRating());
         Assertions.assertEquals(FeedbackStatus.NEW.toString(), myFeedback.getStatus());
-
-        myFeedback.setRating(6);
-        Assertions.assertEquals(6, myFeedback.getRating());
     }
 
     @Test
     public void constructor_throwsException_whenTitleIsInvalid() {
-
         Assertions.assertThrows(InvalidUserInput.class, () -> new FeedbackImpl(
-                10,
-                "Too Short",
-                "Long Enough Description",
-                0));
-
+                10, "Too Short", "Long Enough Description", 0));
         Assertions.assertThrows(InvalidUserInput.class, () -> new FeedbackImpl(
-                20,
-                "!".repeat(100),
-                "Long Enough Description",
-                10));
+                20, "!".repeat(100), "Long Enough Description", 10));
     }
 
     @Test
     public void constructor_throwsException_whenDescriptionIsInvalid() {
-
         Assertions.assertThrows(InvalidUserInput.class, () -> new FeedbackImpl(
-                1000,
-                "Not Too Short",
-                "Too Short",
-                1));
-
+                1000, "Not Too Short", "Too Short", 1));
         Assertions.assertThrows(InvalidUserInput.class, () -> new FeedbackImpl(
-                2000,
-                "Not Too Short",
-                "!".repeat(1000),
-                9));
+                2000, "Not Too Short", "!".repeat(1000), 9));
     }
 
     @Test
     public void constructor_throwsException_whenRatingIsInvalid() {
-
         Assertions.assertThrows(InvalidUserInput.class, () -> new FeedbackImpl(
-                111,
-                "Not Too Short",
-                "Just Right Length",
-                -5));
-
+                111, "Not Too Short", "Just Right Length", -5));
         Assertions.assertThrows(InvalidUserInput.class, () -> new FeedbackImpl(
-                222,
-                "Not Too Short",
-                "Just Right Length",
-                50));
-    }
-
-    @Test
-    public void setName_throwsException_whenNewOneIsTheSameAsOld() {
-        Assertions.assertThrows(InvalidUserInput.class, () -> myFeedback.setTitle("Not Too Short"));
-    }
-
-    @Test
-    public void setDescription_throwsException_whenNewOneIsTheSameAsOld() {
-        Assertions.assertThrows(InvalidUserInput.class, () -> myFeedback.setDescription("Just Right Length"));
+                222, "Not Too Short", "Just Right Length", 50));
     }
 
     @Test
@@ -103,4 +64,9 @@ public class Feedback_Tests {
         Assertions.assertThrows(InvalidUserInput.class, () -> myFeedback.setStatus(FeedbackStatus.SCHEDULED));
     }
 
+    @Test
+    public void toString_shouldReturnString_withCorrectFormat() {
+        Assertions.assertEquals("Feedback ID: 123456 - Title: Not Too Short - Rating: 5 - " +
+                "Status: New - Comments: 0", myFeedback.toString());
+    }
 }

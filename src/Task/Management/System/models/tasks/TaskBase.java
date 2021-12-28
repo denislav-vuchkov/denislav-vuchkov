@@ -17,20 +17,15 @@ import static Task.Management.System.models.contracts.EventLogger.*;
 
 public abstract class TaskBase implements Task {
 
-    public static final int TITLE_MIN_LENGTH = 10;
-    public static final int TITLE_MAX_LENGTH = 50;
-    public static final String INVALID_NAME_MESSAGE = String.format("Title must be between %d and %d symbols.",
-            TITLE_MIN_LENGTH, TITLE_MAX_LENGTH);
+    public static final int TITLE_MIN = 10;
+    public static final int TITLE_MAX = 50;
+    public static final String TITLE_ERR =
+            String.format("Title must be between %d and %d symbols.", TITLE_MIN, TITLE_MAX);
 
-    public static final int DESCRIPTION_MIN_LENGTH = 10;
-    public static final int DESCRIPTION_MAX_LENGTH = 500;
-    public static final String INVALID_DESCRIPTION_MESSAGE =
-            String.format("Description must be between %d and %d symbols.",
-                    DESCRIPTION_MIN_LENGTH, DESCRIPTION_MAX_LENGTH);
-
-    public static final String COMMENTS_HEADER = "--COMMENTS--";
-    public static final String HISTORY_HEADER = "--HISTORY--";
-    public static final String NO_COMMENTS_HEADER = "--NO COMMENTS--";
+    public static final int DESCRIPTION_MIN = 10;
+    public static final int DESCRIPTION_MAX = 500;
+    public static final String DESCRIPTION_ERR =
+            String.format("Description must be between %d and %d symbols.", DESCRIPTION_MIN, DESCRIPTION_MAX);
 
     private final long id;
     private final List<Comment> comments;
@@ -46,10 +41,8 @@ public abstract class TaskBase implements Task {
         setStatus(status);
         this.comments = new ArrayList<>();
         this.history = new EventLoggerImpl();
-
         addChangeToHistory(String.format(CREATION,
-                super.getClass().getSimpleName().replace("Base", ""),
-                tasksType.toString()));
+                super.getClass().getSimpleName().replace("Base", ""), tasksType.toString()));
     }
 
     @Override
@@ -62,17 +55,8 @@ public abstract class TaskBase implements Task {
         return title;
     }
 
-    @Override
-    public void setTitle(String title) {
-        ValidationHelpers.validateRange(title.length(), TITLE_MIN_LENGTH, TITLE_MAX_LENGTH, INVALID_NAME_MESSAGE);
-        if (this.title == null) {
-            this.title = title;
-            return;
-        }
-        if (this.title.equals(title)) {
-            throw new InvalidUserInput(String.format(DUPLICATE, "Title", this.title));
-        }
-        history.addEvent(String.format(CHANGE, "Title", this.title, title));
+    private void setTitle(String title) {
+        ValidationHelpers.validateRange(title.length(), TITLE_MIN, TITLE_MAX, TITLE_ERR);
         this.title = title;
     }
 
@@ -81,20 +65,8 @@ public abstract class TaskBase implements Task {
         return description;
     }
 
-    @Override
-    public void setDescription(String description) {
-        ValidationHelpers.validateRange(description.length(),
-                DESCRIPTION_MIN_LENGTH,
-                DESCRIPTION_MAX_LENGTH,
-                INVALID_DESCRIPTION_MESSAGE);
-        if (this.description == null) {
-            this.description = description;
-            return;
-        }
-        if (this.description.equals(description)) {
-            throw new InvalidUserInput(String.format(DUPLICATE, "Description", this.description));
-        }
-        history.addEvent(String.format(CHANGE, "Description", this.description, description));
+    private void setDescription(String description) {
+        ValidationHelpers.validateRange(description.length(), DESCRIPTION_MIN, DESCRIPTION_MAX, DESCRIPTION_ERR);
         this.description = description;
     }
 
@@ -124,21 +96,6 @@ public abstract class TaskBase implements Task {
     @Override
     public void addComment(Comment comment) {
         comments.add(comment);
-    }
-
-    @Override
-    public String printComments() {
-        StringBuilder output = new StringBuilder();
-
-        if (comments.isEmpty()) {
-            output.append(NO_COMMENTS_HEADER);
-        } else {
-            output.append(COMMENTS_HEADER);
-            output.append("\n");
-            comments.forEach(output::append);
-            output.append(COMMENTS_HEADER);
-        }
-        return output.toString();
     }
 
     @Override
