@@ -14,11 +14,11 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChangeStory_Tests {
+public class ChangeFeedback_Tests {
 
     CommandFactory cf;
     TaskManagementSystemRepository repo;
-    Command changeStory;
+    Command changeFeedback;
     List<String> parameters;
 
     @BeforeEach
@@ -26,7 +26,7 @@ public class ChangeStory_Tests {
 
         cf = new CommandFactoryImpl();
         repo = new TaskManagementSystemRepositoryImpl();
-        changeStory = cf.createCommand("ChangeStory", repo);
+        changeFeedback = cf.createCommand("ChangeFeedback", repo);
         parameters = new ArrayList<>();
 
         cf.createCommand("CreateTeam", repo).execute(List.of("Team1"));
@@ -41,6 +41,17 @@ public class ChangeStory_Tests {
         cf.createCommand("CreateUser", repo).execute(List.of("Outsider"));
         cf.createCommand("AddUserToTeam", repo).execute(List.of("Outsider", "Others"));
         cf.createCommand("CreateBoard", repo).execute(List.of("EvilBoard", "Others"));
+
+        cf.createCommand("CreateBug", repo).execute(List.of(
+                "Tisho",
+                "Team1",
+                "TaskManagement",
+                "TestBugTitle1",
+                "DemoBugDescription1",
+                "One;Two;Three",
+                "Low",
+                "Critical",
+                "Denis"));
 
         cf.createCommand("CreateStory", repo).execute(List.of(
                 "Denis",
@@ -60,75 +71,64 @@ public class ChangeStory_Tests {
                 "test feedback description",
                 "5"));
 
-        parameters.add("Tisho");
-        parameters.add("1");
-        parameters.add("priority");
-        parameters.add("medium");
+        parameters.add("Denis");
+        parameters.add("3");
+        parameters.add("status");
+        parameters.add("scheduled");
     }
 
     @Test
-    public void ChangeStory_ShouldThrowException_ifInvalidNumberOfParameters() {
+    public void ChangeFeedback_ShouldThrowException_ifInvalidNumberOfParameters() {
         parameters.remove(0);
         parameters.remove(1);
-        Assertions.assertThrows(InvalidNumberOfArguments.class, () -> changeStory.execute(parameters));
+        Assertions.assertThrows(InvalidNumberOfArguments.class, () -> changeFeedback.execute(parameters));
     }
 
     @Test
-    public void ChangeStory_ShouldThrowException_ifChangerInvalid() {
+    public void ChangeFeedback_ShouldThrowException_ifChangerInvalid() {
         parameters.set(0, "Invalid");
-        Assertions.assertThrows(InvalidUserInput.class, () -> changeStory.execute(parameters));
+        Assertions.assertThrows(InvalidUserInput.class, () -> changeFeedback.execute(parameters));
     }
 
     @Test
-    public void ChangeStory_ShouldThrowException_ifForeignChanger() {
+    public void ChangeFeedback_ShouldThrowException_ifForeignChanger() {
         parameters.set(0, "Outsider");
-        Assertions.assertThrows(InvalidUserInput.class, () -> changeStory.execute(parameters));
+        Assertions.assertThrows(InvalidUserInput.class, () -> changeFeedback.execute(parameters));
     }
 
     @Test
-    public void ChangeStory_ShouldThrowException_ifTaskInvalid() {
+    public void ChangeFeedback_ShouldThrowException_ifTaskInvalid() {
         parameters.set(1, "-2");
-        Assertions.assertThrows(InvalidUserInput.class, () -> changeStory.execute(parameters));
+        Assertions.assertThrows(InvalidUserInput.class, () -> changeFeedback.execute(parameters));
     }
 
     @Test
-    public void ChangeStory_ShouldThrowException_ifTaskWrong() {
+    public void ChangeFeedback_ShouldThrowException_ifTaskWrong() {
         parameters.set(1, "2");
-        Assertions.assertThrows(InvalidUserInput.class, () -> changeStory.execute(parameters));
+        Assertions.assertThrows(InvalidUserInput.class, () -> changeFeedback.execute(parameters));
     }
 
     @Test
-    public void ChangeStory_ShouldThrowException_ifPropertyInvalid() {
+    public void ChangeFeedback_ShouldThrowException_ifPropertyInvalid() {
         parameters.set(2, "title");
-        Assertions.assertThrows(InvalidUserInput.class, () -> changeStory.execute(parameters));
+        Assertions.assertThrows(InvalidUserInput.class, () -> changeFeedback.execute(parameters));
     }
 
     @Test
-    public void ChangeStory_ShouldChangePriority_ifNewValueValid() {
+    public void ChangeFeedback_ShouldChangeStatus_ifNewValueValid() {
         Assertions.assertEquals(
-                "User Tisho changed the PRIORITY of Story with ID 1 to MEDIUM.",
-                changeStory.execute(parameters));
-        Assertions.assertEquals("Medium", repo.findStory(1).getPriority().toString());
+                "User Denis changed the STATUS of Feedback with ID 3 to SCHEDULED.",
+                changeFeedback.execute(parameters));
+        Assertions.assertEquals("Scheduled", repo.findFeedback(3).getStatus());
     }
 
     @Test
-    public void ChangeStory_ShouldChangeSize_ifNewValueValid() {
-        parameters.set(2, "size");
-        parameters.set(3, "large");
+    public void ChangeFeedback_ShouldChangeRating_ifNewValueValid() {
+        parameters.set(2, "rating");
+        parameters.set(3, "10");
         Assertions.assertEquals(
-                "User Tisho changed the SIZE of Story with ID 1 to LARGE.",
-                changeStory.execute(parameters));
-        Assertions.assertEquals("Large", repo.findStory(1).getSize().toString());
-    }
-
-    @Test
-    public void ChangeStory_ShouldChangeStatus_ifNewValueValid() {
-        parameters.set(2, "status");
-        parameters.set(3, "done");
-        Assertions.assertEquals(
-                "User Tisho changed the STATUS of Story with ID 1 to DONE.",
-                changeStory.execute(parameters));
-        Assertions.assertEquals("Done", repo.findStory(1).getStatus());
+                "User Denis changed the RATING of Feedback with ID 3 to 10.",
+                changeFeedback.execute(parameters));
+        Assertions.assertEquals(10, repo.findFeedback(3).getRating());
     }
 }
-
