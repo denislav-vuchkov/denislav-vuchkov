@@ -15,11 +15,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class SortAllTasks_Tests {
+public class SortAssignableTasks_Tests {
 
     CommandFactory cf;
     TaskManagementSystemRepository repo;
-    Command sortAllTasks;
+    Command sortAssignableTasks;
     List<String> parameters;
 
     @BeforeEach
@@ -27,7 +27,7 @@ public class SortAllTasks_Tests {
 
         cf = new CommandFactoryImpl();
         repo = new TaskManagementSystemRepositoryImpl();
-        sortAllTasks = cf.createCommand("SortAllTasks", repo);
+        sortAssignableTasks = cf.createCommand("SortAssignableTasks", repo);
         parameters = new ArrayList<>();
 
         cf.createCommand("CreateTeam", repo).execute(List.of("Team1"));
@@ -79,20 +79,20 @@ public class SortAllTasks_Tests {
     }
 
     @Test
-    public void SortAllTasks_ShouldThrowException_ifInvalidNumberOfParameters() {
+    public void SortAssignableTasks_ShouldThrowException_ifInvalidNumberOfParameters() {
         parameters.add("title");
-        Assertions.assertThrows(InvalidNumberOfArguments.class, () -> sortAllTasks.execute(parameters));
+        Assertions.assertThrows(InvalidNumberOfArguments.class, () -> sortAssignableTasks.execute(parameters));
     }
 
     @Test
-    public void SortAllTasks_ShouldPrintMessage_ifNoStoriesExist() {
-        sortAllTasks = cf.createCommand("SortAllTasks", new TaskManagementSystemRepositoryImpl());
-        Assertions.assertEquals("No tasks to display.", sortAllTasks.execute(parameters));
+    public void SortAssignableTasks_ShouldPrintMessage_ifNoStoriesExist() {
+        sortAssignableTasks = cf.createCommand("SortAssignableTasks", new TaskManagementSystemRepositoryImpl());
+        Assertions.assertEquals("No tasks to display.", sortAssignableTasks.execute(parameters));
     }
 
     @Test
-    public void SortAllTasks_ShouldSortByTitle_regardlessOfTaskType() {
-        List<String> result = Arrays.stream(sortAllTasks.execute(parameters)
+    public void SortAssignableTasks_ShouldSortByTitle_regardlessOfTaskType() {
+        List<String> result = Arrays.stream(sortAssignableTasks.execute(parameters)
                         .split(System.lineSeparator()))
                 .map(task -> task.replaceAll(".*Title: ", ""))
                 .map(bug -> bug.replaceAll(" - Steps.*", ""))
@@ -100,23 +100,18 @@ public class SortAllTasks_Tests {
                 .map(feedback -> feedback.replaceAll(" - Rating.*", ""))
                 .collect(Collectors.toList());
 
-        Assertions.assertEquals("000 000 000", result.get(0));
-        Assertions.assertEquals("111 111 111", result.get(1));
-        Assertions.assertEquals("222 222 222", result.get(2));
-        Assertions.assertEquals("aaa aaa aaa", result.get(3));
-        Assertions.assertEquals("bbb bbb bbb", result.get(4));
-        Assertions.assertEquals("ccc ccc ccc", result.get(5));
-        Assertions.assertEquals("ddd ddd ddd", result.get(6));
-        Assertions.assertEquals("eee eee eee", result.get(7));
-        Assertions.assertEquals("fff fff fff", result.get(8));
-        Assertions.assertEquals("jjj jjj jjj", result.get(9));
-        Assertions.assertEquals("sss sss sss", result.get(10));
-        Assertions.assertEquals("ttt ttt ttt", result.get(11));
-        Assertions.assertEquals("uuu uuu uuu", result.get(12));
-        Assertions.assertEquals("vvv vvv vvv", result.get(13));
-        Assertions.assertEquals("www www www", result.get(14));
-        Assertions.assertEquals("xxx xxx xxx", result.get(15));
-        Assertions.assertEquals("yyy yyy yyy", result.get(16));
-        Assertions.assertEquals("zzz zzz zzz", result.get(17));
+        Assertions.assertEquals(12, result.size());
+        Assertions.assertEquals("aaa aaa aaa", result.get(0));
+        Assertions.assertEquals("bbb bbb bbb", result.get(1));
+        Assertions.assertEquals("ccc ccc ccc", result.get(2));
+        Assertions.assertEquals("ddd ddd ddd", result.get(3));
+        Assertions.assertEquals("eee eee eee", result.get(4));
+        Assertions.assertEquals("fff fff fff", result.get(5));
+        Assertions.assertEquals("uuu uuu uuu", result.get(6));
+        Assertions.assertEquals("vvv vvv vvv", result.get(7));
+        Assertions.assertEquals("www www www", result.get(8));
+        Assertions.assertEquals("xxx xxx xxx", result.get(9));
+        Assertions.assertEquals("yyy yyy yyy", result.get(10));
+        Assertions.assertEquals("zzz zzz zzz", result.get(11));
     }
 }

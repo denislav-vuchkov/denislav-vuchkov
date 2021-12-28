@@ -39,11 +39,6 @@ public class SortStories_Tests {
         cf.createCommand("AddUserToTeam", repo).execute(List.of("Tisho", "Team1"));
         cf.createCommand("CreateBoard", repo).execute(List.of("TaskManagement", "Team1"));
 
-        cf.createCommand("CreateTeam", repo).execute(List.of("Others"));
-        cf.createCommand("CreateUser", repo).execute(List.of("Outsider"));
-        cf.createCommand("AddUserToTeam", repo).execute(List.of("Outsider", "Others"));
-        cf.createCommand("CreateBoard", repo).execute(List.of("EvilBoard", "Others"));
-
         cf.createCommand("CreateStory", repo).execute(List.of("Denis", "Team1", "TaskManagement",
                 "zzz zzz zzz", "Test Story Description", "Medium", "Medium", "Tisho"));
         cf.createCommand("CreateStory", repo).execute(List.of("Tisho", "Team1", "TaskManagement",

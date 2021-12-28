@@ -39,11 +39,6 @@ public class SortFeedbacks_Tests {
         cf.createCommand("AddUserToTeam", repo).execute(List.of("Tisho", "Team1"));
         cf.createCommand("CreateBoard", repo).execute(List.of("TaskManagement", "Team1"));
 
-        cf.createCommand("CreateTeam", repo).execute(List.of("Others"));
-        cf.createCommand("CreateUser", repo).execute(List.of("Outsider"));
-        cf.createCommand("AddUserToTeam", repo).execute(List.of("Outsider", "Others"));
-        cf.createCommand("CreateBoard", repo).execute(List.of("EvilBoard", "Others"));
-
         cf.createCommand("CreateFeedback", repo).execute(List.of("Denis", "Team1", "TaskManagement",
                 "ttt ttt ttt", "Test Feedback Description", "9"));
         cf.createCommand("CreateFeedback", repo).execute(List.of("Tisho", "Team1", "TaskManagement",

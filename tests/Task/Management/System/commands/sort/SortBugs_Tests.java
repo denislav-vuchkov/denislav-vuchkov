@@ -39,11 +39,6 @@ public class SortBugs_Tests {
         cf.createCommand("AddUserToTeam", repo).execute(List.of("Tisho", "Team1"));
         cf.createCommand("CreateBoard", repo).execute(List.of("TaskManagement", "Team1"));
 
-        cf.createCommand("CreateTeam", repo).execute(List.of("Others"));
-        cf.createCommand("CreateUser", repo).execute(List.of("Outsider"));
-        cf.createCommand("AddUserToTeam", repo).execute(List.of("Outsider", "Others"));
-        cf.createCommand("CreateBoard", repo).execute(List.of("EvilBoard", "Others"));
-
         cf.createCommand("CreateBug", repo).execute(List.of("Denis", "Team1", "TaskManagement",
                 "fff fff fff", "Test Bug Description", "One;Two", "Low", "Major", "Tisho"));
         cf.createCommand("CreateBug", repo).execute(List.of("Tisho", "Team1", "TaskManagement",
