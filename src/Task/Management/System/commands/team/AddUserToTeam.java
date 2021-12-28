@@ -2,6 +2,7 @@ package Task.Management.System.commands.team;
 
 import Task.Management.System.commands.BaseCommand;
 import Task.Management.System.core.contracts.TaskManagementSystemRepository;
+import Task.Management.System.exceptions.InvalidUserInput;
 import Task.Management.System.models.teams.contracts.Team;
 import Task.Management.System.models.teams.contracts.User;
 import Task.Management.System.utils.ValidationHelpers;
@@ -28,7 +29,7 @@ public class AddUserToTeam extends BaseCommand {
         Team team = getRepository().findTeam(parameters.get(1));
 
         if (team.getUsers().contains(user)) {
-            throw new IllegalArgumentException(
+            throw new InvalidUserInput(
                     String.format(USER_ALREADY_ON_TEAM, user.getName(), team.getName()));
         }
 

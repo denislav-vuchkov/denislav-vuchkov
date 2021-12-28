@@ -2,6 +2,7 @@ package Task.Management.System.commands.team;
 
 import Task.Management.System.commands.BaseCommand;
 import Task.Management.System.core.contracts.TaskManagementSystemRepository;
+import Task.Management.System.exceptions.InvalidUserInput;
 import Task.Management.System.models.tasks.contracts.AssignableTask;
 import Task.Management.System.models.teams.contracts.User;
 import Task.Management.System.utils.ParsingHelpers;
@@ -14,6 +15,7 @@ public class AssignTask extends BaseCommand {
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 3;
 
     public static final String ASSIGN_EVENT = "User %s assigned %s with ID %d to %s.";
+    public static final String CANNOT_REASSIGN_TO_SAME_USER = "Task is already assigned to %s.";
 
     public AssignTask(TaskManagementSystemRepository repository) {
         super(repository);
@@ -21,15 +23,19 @@ public class AssignTask extends BaseCommand {
 
     @Override
     protected String executeCommand(List<String> parameters) {
-
         ValidationHelpers.validateCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
 
         User assigner = getRepository().findUser(parameters.get(0));
         long ID = ParsingHelpers.tryParseLong(parameters.get(1), INVALID_ID);
         AssignableTask task = getRepository().findAssignableTask(ID);
         User newAssignee = getRepository().findUser(parameters.get(2));
+
         getRepository().validateUserAndTaskFromSameTeam(assigner.getName(), task.getID());
         getRepository().validateUserAndTaskFromSameTeam(newAssignee.getName(), task.getID());
+
+        if (assigner.getName().equals(newAssignee.getName())) {
+            throw new InvalidUserInput(String.format(CANNOT_REASSIGN_TO_SAME_USER, assigner));
+        }
 
         if (!task.getAssignee().equals(UNASSIGNED)) {
             User oldAssignee = getRepository().findUser(task.getAssignee());

@@ -8,6 +8,7 @@ import Task.Management.System.core.contracts.TaskManagementSystemRepository;
 import Task.Management.System.exceptions.InvalidNumberOfArguments;
 import Task.Management.System.models.tasks.contracts.Feedback;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -23,33 +24,15 @@ import static Task.Management.System.models.TestData.UserImpl.VALID_USER_NAME;
 
 public class ShowAllTasks_Tests {
 
-    @Test
-    public void showAllTasks_Should_throwException_WhenValidArguments() {
-        CommandFactory commandFactory = new CommandFactoryImpl();
-        TaskManagementSystemRepository repository = new TaskManagementSystemRepositoryImpl();
-        Command command = commandFactory.createCommand("ShowAllTasks", repository);
+    private static CommandFactory commandFactory;
+    private static TaskManagementSystemRepository repository;
+    private static Command showAllTasks;
 
-        List<String> parameters = new ArrayList<>();
-        parameters.add("Unnecessary parameter");
-
-        Assertions.assertThrows(InvalidNumberOfArguments.class, () -> command.execute(parameters));
-    }
-
-    @Test
-    public void showAllTasks_Should_Indicate_When_NoTasksToDisplay() {
-        CommandFactory commandFactory = new CommandFactoryImpl();
-        TaskManagementSystemRepository repository = new TaskManagementSystemRepositoryImpl();
-        Command command = commandFactory.createCommand("ShowAllTasks", repository);
-
-        Assertions.assertEquals(String.format(NO_ITEMS_TO_DISPLAY, "tasks"), command.execute(List.of()));
-    }
-
-    @Test
-    public void showAllTasks_Should_Execute_When_ValidInput() {
-        CommandFactory commandFactory = new CommandFactoryImpl();
-        TaskManagementSystemRepository repository = new TaskManagementSystemRepositoryImpl();
-
-        Command command = commandFactory.createCommand("ShowAllTasks", repository);
+    @BeforeAll
+    public static void setup() {
+        commandFactory = new CommandFactoryImpl();
+        repository = new TaskManagementSystemRepositoryImpl();
+        showAllTasks = commandFactory.createCommand("ShowAllTasks", repository);
 
         Command createUser = commandFactory.createCommand("CreateUser", repository);
         createUser.execute(List.of(VALID_USER_NAME));
@@ -62,7 +45,26 @@ public class ShowAllTasks_Tests {
 
         Command createBoard = commandFactory.createCommand("CreateBoard", repository);
         createBoard.execute(List.of(VALID_BOARD_NAME, VALID_TEAM_NAME));
+    }
 
+    @Test
+    public void showAllTasks_Should_throwException_WhenValidArguments() {
+        List<String> parameters = new ArrayList<>();
+        parameters.add("Unnecessary parameter");
+
+        Assertions.assertThrows(InvalidNumberOfArguments.class, () -> showAllTasks.execute(parameters));
+    }
+
+    @Test
+    public void showAllTasks_Should_Indicate_When_NoTasksToDisplay() {
+        Command showAllTasks = commandFactory.createCommand("ShowAllTasks",
+                new TaskManagementSystemRepositoryImpl());
+
+        Assertions.assertEquals(String.format(NO_ITEMS_TO_DISPLAY, "tasks"), showAllTasks.execute(List.of()));
+    }
+
+    @Test
+    public void showAllTasks_Should_Execute_When_ValidInput() {
         Command createFeedback = commandFactory.createCommand("CreateFeedback", repository);
         List<String> parameters = new ArrayList<>();
         parameters.add(VALID_USER_NAME);
@@ -71,7 +73,6 @@ public class ShowAllTasks_Tests {
         parameters.add(VALID_TITLE);
         parameters.add(VALID_DESCRIPTION);
         parameters.add(String.valueOf(VALID_RATING));
-
         createFeedback.execute(parameters);
 
         Feedback task = repository.findFeedback(1);
@@ -80,7 +81,7 @@ public class ShowAllTasks_Tests {
                 task.getClass().getSimpleName().replace("Impl", ""),
                 task.getID(), task.getTitle(), task.getRating(), task.getStatus(), task.getComments().size());
 
-        Assertions.assertEquals(output, command.execute(List.of()));
+        Assertions.assertEquals(output, showAllTasks.execute(List.of()));
     }
 
 }

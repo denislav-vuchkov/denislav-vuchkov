@@ -2,6 +2,7 @@ package Task.Management.System.commands.team;
 
 import Task.Management.System.commands.BaseCommand;
 import Task.Management.System.core.contracts.TaskManagementSystemRepository;
+import Task.Management.System.exceptions.InvalidUserInput;
 import Task.Management.System.models.teams.BoardImpl;
 import Task.Management.System.models.teams.contracts.Board;
 import Task.Management.System.models.teams.contracts.Team;
@@ -27,7 +28,7 @@ public class CreateBoard extends BaseCommand {
         Team team = getRepository().findTeam(parameters.get(1));
 
         if (team.getBoards().stream().anyMatch(board -> board.getName().equals(parameters.get(0)))) {
-            throw new IllegalArgumentException(
+            throw new InvalidUserInput(
                     String.format(BOARD_ALREADY_EXISTS, parameters.get(0), team.getName()));
         }
 

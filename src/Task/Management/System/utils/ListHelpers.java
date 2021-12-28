@@ -29,6 +29,7 @@ public class ListHelpers {
         }
     }
 
+
     public static <T extends AssignableTask, E extends Enum<E>> List<T> filterList
             (String criterion, List<T> tasks) {
 
