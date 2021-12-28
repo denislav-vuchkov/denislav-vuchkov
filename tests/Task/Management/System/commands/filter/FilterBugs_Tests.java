@@ -135,6 +135,24 @@ public class FilterBugs_Tests extends FilteringTests_Base {
     }
 
     @Test
+    public void filterBugs_Should_ReturnCollection_WithAssigneeFilter() {
+        List<String> parameters = List.of("Assignee:Den"); //Using shortened version for Denis
+
+        Bug firstBug = repository.findBug(4);
+
+        StringBuilder output = new StringBuilder();
+        output.append(String.format("%s ID: %d - Title: %s - Steps: %d - Priority: %s - Severity: %s - " +
+                        "Status: %s - Assignee: %s - Comments: %d",
+                firstBug.getClass().getSimpleName().replace("Impl", ""),
+                firstBug.getID(), firstBug.getTitle(), firstBug.getStepsToReproduce().size(),
+                firstBug.getPriority(), firstBug.getSeverity(), firstBug.getStatus(),
+                firstBug.getAssignee(), firstBug.getComments().size()));
+
+        Assertions.assertDoesNotThrow(() -> filter.execute(parameters));
+        Assertions.assertEquals(output.toString(), filter.execute(parameters));
+    }
+
+    @Test
     public void filterBugs_Should_ReturnEmptyCollection_WhenNoResults() {
         List<String> parameters = List.of("Status:Fixed");
 

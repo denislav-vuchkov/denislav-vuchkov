@@ -127,6 +127,24 @@ public class FilterStories_Tests extends FilteringTests_Base {
     }
 
     @Test
+    public void filterStories_Should_ReturnCollection_WithAssigneeFilter() {
+        List<String> parameters = List.of("Assignee:Plamenna");
+
+        Story firstStory = repository.findStory(12);
+
+        StringBuilder output = new StringBuilder();
+        output.append(String.format("%s ID: %d - Title: %s - Priority: %s - Size: %s - " +
+                        "Status: %s - Assignee: %s - Comments: %d",
+                firstStory.getClass().getSimpleName().replace("Impl", ""),
+                firstStory.getID(), firstStory.getTitle(), firstStory.getPriority(), firstStory.getSize(),
+                firstStory.getStatus(), firstStory.getAssignee(),
+                firstStory.getComments().size()));
+
+        Assertions.assertDoesNotThrow(() -> filter.execute(parameters));
+        Assertions.assertEquals(output.toString(), filter.execute(parameters));
+    }
+
+    @Test
     public void filterStories_Should_ReturnEmptyCollection_WhenNoResults() {
         List<String> parameters = List.of("Status:Done");
 
