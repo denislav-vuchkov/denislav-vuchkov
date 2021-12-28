@@ -1,11 +1,14 @@
 package Task.Management.System.models.tasks;
 
 import Task.Management.System.exceptions.InvalidUserInput;
+import Task.Management.System.models.tasks.contracts.Comment;
 import Task.Management.System.models.tasks.contracts.Story;
 import Task.Management.System.models.tasks.enums.Priority;
 import Task.Management.System.models.tasks.enums.Size;
 import Task.Management.System.models.tasks.enums.StoryStatus;
 import Task.Management.System.models.tasks.enums.Tasks;
+
+import java.util.stream.Collectors;
 
 import static Task.Management.System.models.contracts.EventLogger.CHANGE;
 import static Task.Management.System.models.contracts.EventLogger.DUPLICATE;
@@ -59,7 +62,7 @@ public class StoryImpl extends AssignableTaskImpl implements Story {
                 this.getClass().getSimpleName().replace("Impl", ""),
                 super.printDetails(),
                 getPriority(), getSize(), getStatus(), getAssignee(),
-                printComments(),
+                getComments().stream().map(Comment::toString).collect(Collectors.joining(System.lineSeparator())),
                 getLog());
     }
 }

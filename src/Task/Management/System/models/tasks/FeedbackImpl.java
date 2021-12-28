@@ -1,10 +1,13 @@
 package Task.Management.System.models.tasks;
 
 import Task.Management.System.exceptions.InvalidUserInput;
+import Task.Management.System.models.tasks.contracts.Comment;
 import Task.Management.System.models.tasks.contracts.Feedback;
 import Task.Management.System.models.tasks.enums.FeedbackStatus;
 import Task.Management.System.models.tasks.enums.Tasks;
 import Task.Management.System.utils.ValidationHelpers;
+
+import java.util.stream.Collectors;
 
 import static Task.Management.System.models.contracts.EventLogger.CHANGE;
 import static Task.Management.System.models.contracts.EventLogger.DUPLICATE;
@@ -20,7 +23,7 @@ public class FeedbackImpl extends TaskBase implements Feedback {
     private int rating = RATING_UNINITIALIZED;
 
     public FeedbackImpl(long id, String title, String description, int rating) {
-        super(id, Tasks.FEEDBACK, title, description,FeedbackStatus.NEW);
+        super(id, Tasks.FEEDBACK, title, description, FeedbackStatus.NEW);
         setRating(rating);
     }
 
@@ -62,7 +65,7 @@ public class FeedbackImpl extends TaskBase implements Feedback {
                 super.printDetails(),
                 getRating(),
                 getStatus(),
-                printComments(),
+                getComments().stream().map(Comment::toString).collect(Collectors.joining(System.lineSeparator())),
                 getLog());
     }
 }

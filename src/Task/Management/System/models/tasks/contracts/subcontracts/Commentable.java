@@ -10,6 +10,4 @@ public interface Commentable {
 
     List<Comment> getComments();
 
-    String printComments();
-
 }

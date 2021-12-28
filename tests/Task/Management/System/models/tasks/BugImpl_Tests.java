@@ -17,7 +17,6 @@ public class BugImpl_Tests {
 
     @BeforeEach
     public void setup() {
-
         myBug = new BugImpl(
                 3,
                 "Not Too Short",
@@ -29,53 +28,36 @@ public class BugImpl_Tests {
 
     @Test
     public void constructor_initiatesObjectCorrectly_withValidParameters() {
-
         Assertions.assertEquals(3, myBug.getID());
         Assertions.assertEquals("Not Too Short", myBug.getTitle());
         Assertions.assertEquals("Just Right Length", myBug.getDescription());
+        Assertions.assertEquals("[Nothing, Works, Help]", myBug.getStepsToReproduce().toString());
         Assertions.assertEquals(Priority.MEDIUM, myBug.getPriority());
         Assertions.assertEquals(Severity.MAJOR, myBug.getSeverity());
         Assertions.assertEquals(BugStatus.ACTIVE.toString(), myBug.getStatus());
-
-        myBug.setDescription("This Is The New Valid Description");
-        Assertions.assertEquals("This Is The New Valid Description", myBug.getDescription());
-
     }
 
     @Test
     public void constructor_throwsException_whenTitleIsInvalid() {
-
-        Assertions.assertThrows(InvalidUserInput.class, () -> new BugImpl(
-                1,
-                "Too Short",
-                "Long Enough Description",
-                List.of("Nothing", "Works", "Help"),
-                Priority.LOW,
-                Severity.MINOR));
-
+        Assertions.assertThrows(InvalidUserInput.class, () ->
+                new BugImpl(1, "Too Short", "Long Enough Description",
+                        List.of("Nothing", "Works", "Help"), Priority.LOW, Severity.MINOR));
     }
 
     @Test
     public void constructor_throwsException_whenDescriptionIsInvalid() {
-
-        Assertions.assertThrows(InvalidUserInput.class, () -> new BugImpl(
-                2,
-                "Not Too Short",
-                "Too Short",
-                List.of("Nothing", "Works", "Help"),
-                Priority.LOW,
-                Severity.MINOR));
-
+        Assertions.assertThrows(InvalidUserInput.class, () ->
+                new BugImpl(2, "Not Too Short", "Too Short",
+                        List.of("Nothing", "Works", "Help"), Priority.LOW, Severity.MINOR));
     }
 
     @Test
-    public void setName_throwsException_whenNewOneIsTheSameAsOld() {
-        Assertions.assertThrows(InvalidUserInput.class, () -> myBug.setTitle("Not Too Short"));
-    }
-
-    @Test
-    public void setDescription_throwsException_whenNewOneIsTheSameAsOld() {
-        Assertions.assertThrows(InvalidUserInput.class, () -> myBug.setDescription("Just Right Length"));
+    public void getStepsToReproduce_shouldReturnList_withoutBreakingEncapsulation() {
+        Assertions.assertEquals(3, myBug.getStepsToReproduce().size());
+        myBug.getStepsToReproduce().add("Test");
+        myBug.getStepsToReproduce().add("Test");
+        myBug.getStepsToReproduce().add("Test");
+        Assertions.assertEquals(3, myBug.getStepsToReproduce().size());
     }
 
     @Test
@@ -107,5 +89,11 @@ public class BugImpl_Tests {
         myBug.getComments().add(new CommentImpl("Test1", "Test1"));
         myBug.getComments().add(new CommentImpl("Test2", "Test2"));
         Assertions.assertTrue(myBug.getComments().isEmpty());
+    }
+
+    @Test
+    public void toString_shouldReturnString_withCorrectFormat() {
+        Assertions.assertEquals("Bug ID: 3 - Title: Not Too Short - Steps: 3 - Priority: Medium - " +
+                "Severity: Major - Status: Active - Assignee: Unassigned - Comments: 0", myBug.toString());
     }
 }

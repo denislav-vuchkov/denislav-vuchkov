@@ -2,6 +2,7 @@ package Task.Management.System.models.tasks;
 
 import Task.Management.System.exceptions.InvalidUserInput;
 import Task.Management.System.models.tasks.contracts.Bug;
+import Task.Management.System.models.tasks.contracts.Comment;
 import Task.Management.System.models.tasks.enums.BugStatus;
 import Task.Management.System.models.tasks.enums.Priority;
 import Task.Management.System.models.tasks.enums.Severity;
@@ -9,6 +10,7 @@ import Task.Management.System.models.tasks.enums.Tasks;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static Task.Management.System.models.contracts.EventLogger.CHANGE;
 import static Task.Management.System.models.contracts.EventLogger.DUPLICATE;
@@ -20,7 +22,7 @@ public class BugImpl extends AssignableTaskImpl implements Bug {
 
     public BugImpl(long id, String title, String description, List<String> stepsToReproduce,
                    Priority priority, Severity severity) {
-        super(id, Tasks.BUG, title, description, priority,BugStatus.ACTIVE);
+        super(id, Tasks.BUG, title, description, priority, BugStatus.ACTIVE);
         this.stepsToReproduce = stepsToReproduce;
         setSeverity(severity);
     }
@@ -72,7 +74,7 @@ public class BugImpl extends AssignableTaskImpl implements Bug {
                 super.printDetails(),
                 getPriority(), getSeverity(), getStatus(), getAssignee(),
                 getStepsToReproduce(),
-                printComments(),
+                getComments().stream().map(Comment::toString).collect(Collectors.joining(System.lineSeparator())),
                 getLog());
     }
 }

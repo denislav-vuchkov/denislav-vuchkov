@@ -14,8 +14,8 @@ import static Task.Management.System.models.teams.contracts.subcontracts.Nameabl
 public class TestData {
 
     public static class TaskBase {
-        public static final String VALID_TITLE = "x".repeat(TITLE_MIN_LENGTH);
-        public static final String VALID_DESCRIPTION = "x".repeat(DESCRIPTION_MAX_LENGTH);
+        public static final String VALID_TITLE = "x".repeat(TITLE_MIN);
+        public static final String VALID_DESCRIPTION = "x".repeat(DESCRIPTION_MAX);
     }
 
     public static class AssignableTask {
