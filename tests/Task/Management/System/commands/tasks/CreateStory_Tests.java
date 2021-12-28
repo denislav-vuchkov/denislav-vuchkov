@@ -43,7 +43,6 @@ public class CreateStory_Tests {
         input.append(" {Tisho}");
 
 
-
     }
 
 }
