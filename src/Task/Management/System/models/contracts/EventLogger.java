@@ -16,7 +16,6 @@ public interface EventLogger {
     String CHANGE = "%s changed from %s to %s.";
     String DUPLICATE = "%s is already %s.";
 
-
     String TASK_ADDED = "%s with ID %d added in board %s.";
     String TASK_REMOVED = "%s with ID %d removed from board %s.";
     String TASK_ASSIGNED = "%s with ID %d assigned to user %s.";

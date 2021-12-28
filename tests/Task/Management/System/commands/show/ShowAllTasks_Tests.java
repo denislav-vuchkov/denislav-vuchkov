@@ -27,7 +27,7 @@ public class ShowAllTasks_Tests {
     public void showAllTasks_Should_throwException_WhenValidArguments() {
         CommandFactory commandFactory = new CommandFactoryImpl();
         TaskManagementSystemRepository repository = new TaskManagementSystemRepositoryImpl();
-        Command command = commandFactory.createCommandFromCommandName("ShowAllTasks", repository);
+        Command command = commandFactory.createCommand("ShowAllTasks", repository);
 
         List<String> parameters = new ArrayList<>();
         parameters.add("Unnecessary parameter");
@@ -39,7 +39,7 @@ public class ShowAllTasks_Tests {
     public void showAllTasks_Should_Indicate_When_NoTasksToDisplay() {
         CommandFactory commandFactory = new CommandFactoryImpl();
         TaskManagementSystemRepository repository = new TaskManagementSystemRepositoryImpl();
-        Command command = commandFactory.createCommandFromCommandName("ShowAllTasks", repository);
+        Command command = commandFactory.createCommand("ShowAllTasks", repository);
 
         Assertions.assertEquals(String.format(NO_ITEMS_TO_DISPLAY, "tasks"), command.execute(List.of()));
     }
@@ -49,21 +49,21 @@ public class ShowAllTasks_Tests {
         CommandFactory commandFactory = new CommandFactoryImpl();
         TaskManagementSystemRepository repository = new TaskManagementSystemRepositoryImpl();
 
-        Command command = commandFactory.createCommandFromCommandName("ShowAllTasks", repository);
+        Command command = commandFactory.createCommand("ShowAllTasks", repository);
 
-        Command createUser = commandFactory.createCommandFromCommandName("CreateUser", repository);
+        Command createUser = commandFactory.createCommand("CreateUser", repository);
         createUser.execute(List.of(VALID_USER_NAME));
 
-        Command createTeam = commandFactory.createCommandFromCommandName("CreateTeam", repository);
+        Command createTeam = commandFactory.createCommand("CreateTeam", repository);
         createTeam.execute(List.of(VALID_TEAM_NAME));
 
-        Command addUserToTeam = commandFactory.createCommandFromCommandName("AddUserToTeam", repository);
+        Command addUserToTeam = commandFactory.createCommand("AddUserToTeam", repository);
         addUserToTeam.execute(List.of(VALID_USER_NAME, VALID_TEAM_NAME));
 
-        Command createBoard = commandFactory.createCommandFromCommandName("CreateBoard", repository);
+        Command createBoard = commandFactory.createCommand("CreateBoard", repository);
         createBoard.execute(List.of(VALID_BOARD_NAME, VALID_TEAM_NAME));
 
-        Command createFeedback = commandFactory.createCommandFromCommandName("CreateFeedback", repository);
+        Command createFeedback = commandFactory.createCommand("CreateFeedback", repository);
         List<String> parameters = new ArrayList<>();
         parameters.add(VALID_USER_NAME);
         parameters.add(VALID_TEAM_NAME);

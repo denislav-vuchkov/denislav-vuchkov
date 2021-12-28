@@ -26,7 +26,7 @@ public class ShowAllUsers_Tests {
     public void setup() {
         commandFactory = new CommandFactoryImpl();
         repository = new TaskManagementSystemRepositoryImpl();
-        command = commandFactory.createCommandFromCommandName("ShowAllUsers", repository);
+        command = commandFactory.createCommand("ShowAllUsers", repository);
     }
 
     @Test
@@ -44,7 +44,7 @@ public class ShowAllUsers_Tests {
 
     @Test
     public void showAllUsers_Should_Execute_When_ValidInput() {
-        Command createUser = commandFactory.createCommandFromCommandName("CreateUser", repository);
+        Command createUser = commandFactory.createCommand("CreateUser", repository);
         List<String> parameters = new ArrayList<>();
         parameters.add(VALID_USER_NAME);
         createUser.execute(parameters);

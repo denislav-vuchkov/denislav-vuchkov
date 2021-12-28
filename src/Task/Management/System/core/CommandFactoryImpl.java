@@ -17,7 +17,7 @@ import Task.Management.System.utils.ParsingHelpers;
 public class CommandFactoryImpl implements CommandFactory {
 
     @Override
-    public Command createCommandFromCommandName(String commandTypeAsString, TaskManagementSystemRepository taskManagementSystemRepository) {
+    public Command createCommand(String commandTypeAsString, TaskManagementSystemRepository taskManagementSystemRepository) {
 
         CommandType commandType = ParsingHelpers.tryParseCommand(commandTypeAsString, CommandType.class);
 

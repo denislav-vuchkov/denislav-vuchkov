@@ -27,7 +27,7 @@ public class ShowAllTeams_Tests {
     public void setup() {
         commandFactory = new CommandFactoryImpl();
         repository = new TaskManagementSystemRepositoryImpl();
-        command = commandFactory.createCommandFromCommandName("ShowAllTeams", repository);
+        command = commandFactory.createCommand("ShowAllTeams", repository);
     }
 
     @Test
@@ -45,7 +45,7 @@ public class ShowAllTeams_Tests {
 
     @Test
     public void showAllTeams_Should_Execute_When_ValidInput() {
-        Command createTeam = commandFactory.createCommandFromCommandName("CreateTeam", repository);
+        Command createTeam = commandFactory.createCommand("CreateTeam", repository);
         List<String> parameters = new ArrayList<>();
         parameters.add(VALID_TEAM_NAME);
         createTeam.execute(parameters);

@@ -32,7 +32,7 @@ public class ShowTeamUsers_Tests {
     public void setup() {
         commandFactory = new CommandFactoryImpl();
         repository = new TaskManagementSystemRepositoryImpl();
-        command = commandFactory.createCommandFromCommandName("ShowTeamUsers", repository);
+        command = commandFactory.createCommand("ShowTeamUsers", repository);
 
     }
 
@@ -50,7 +50,7 @@ public class ShowTeamUsers_Tests {
 
     @Test
     public void showTeamUsers_Should_Indicate_When_NoCommentsToDisplay() {
-        Command createTeam = commandFactory.createCommandFromCommandName("CreateTeam", repository);
+        Command createTeam = commandFactory.createCommand("CreateTeam", repository);
         createTeam.execute(List.of(VALID_TEAM_NAME));
 
         Assertions.assertEquals(String.format(NO_ITEMS_TO_DISPLAY, "users"), command.execute(List.of(VALID_TEAM_NAME)));
@@ -58,13 +58,13 @@ public class ShowTeamUsers_Tests {
 
     @Test
     public void showTeamUsers_Should_Execute_When_ValidInput() {
-        Command createUser = commandFactory.createCommandFromCommandName("CreateUser", repository);
+        Command createUser = commandFactory.createCommand("CreateUser", repository);
         createUser.execute(List.of(VALID_USER_NAME));
 
-        Command createTeam = commandFactory.createCommandFromCommandName("CreateTeam", repository);
+        Command createTeam = commandFactory.createCommand("CreateTeam", repository);
         createTeam.execute(List.of(VALID_TEAM_NAME));
 
-        Command addUserToTeam = commandFactory.createCommandFromCommandName("AddUserToTeam", repository);
+        Command addUserToTeam = commandFactory.createCommand("AddUserToTeam", repository);
         addUserToTeam.execute(List.of(VALID_USER_NAME, VALID_TEAM_NAME));
 
         User user = repository.findUser(VALID_USER_NAME);

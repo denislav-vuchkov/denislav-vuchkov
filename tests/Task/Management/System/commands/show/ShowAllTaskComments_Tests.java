@@ -9,8 +9,6 @@ import Task.Management.System.exceptions.InvalidNumberOfArguments;
 import Task.Management.System.models.tasks.contracts.Comment;
 import Task.Management.System.models.tasks.contracts.Feedback;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -36,7 +34,7 @@ public class ShowAllTaskComments_Tests {
     public void showTaskComments_Should_throwException_WhenValidArguments(int parametersCount) {
         CommandFactory commandFactory = new CommandFactoryImpl();
         TaskManagementSystemRepository repository = new TaskManagementSystemRepositoryImpl();
-        Command command = commandFactory.createCommandFromCommandName("ShowTaskComments", repository);
+        Command command = commandFactory.createCommand("ShowTaskComments", repository);
 
         List<String> parameters = new ArrayList<>();
 
@@ -51,21 +49,21 @@ public class ShowAllTaskComments_Tests {
     public void showTaskComments_Should_Indicate_When_NoCommentsToDisplay() {
         CommandFactory commandFactory = new CommandFactoryImpl();
         TaskManagementSystemRepository repository = new TaskManagementSystemRepositoryImpl();
-        Command command = commandFactory.createCommandFromCommandName("ShowTaskComments", repository);
+        Command command = commandFactory.createCommand("ShowTaskComments", repository);
 
-        Command createUser = commandFactory.createCommandFromCommandName("CreateUser", repository);
+        Command createUser = commandFactory.createCommand("CreateUser", repository);
         createUser.execute(List.of(VALID_USER_NAME));
 
-        Command createTeam = commandFactory.createCommandFromCommandName("CreateTeam", repository);
+        Command createTeam = commandFactory.createCommand("CreateTeam", repository);
         createTeam.execute(List.of(VALID_TEAM_NAME));
 
-        Command addUserToTeam = commandFactory.createCommandFromCommandName("AddUserToTeam", repository);
+        Command addUserToTeam = commandFactory.createCommand("AddUserToTeam", repository);
         addUserToTeam.execute(List.of(VALID_USER_NAME, VALID_TEAM_NAME));
 
-        Command createBoard = commandFactory.createCommandFromCommandName("CreateBoard", repository);
+        Command createBoard = commandFactory.createCommand("CreateBoard", repository);
         createBoard.execute(List.of(VALID_BOARD_NAME, VALID_TEAM_NAME));
 
-        Command createFeedback = commandFactory.createCommandFromCommandName("CreateFeedback", repository);
+        Command createFeedback = commandFactory.createCommand("CreateFeedback", repository);
         List<String> parameters = new ArrayList<>();
         parameters.add(VALID_USER_NAME);
         parameters.add(VALID_TEAM_NAME);
@@ -82,21 +80,21 @@ public class ShowAllTaskComments_Tests {
     public void showTaskComments_Should_Execute_When_ValidInput() {
         CommandFactory commandFactory = new CommandFactoryImpl();
         TaskManagementSystemRepository repository = new TaskManagementSystemRepositoryImpl();
-        Command command = commandFactory.createCommandFromCommandName("ShowTaskComments", repository);
+        Command command = commandFactory.createCommand("ShowTaskComments", repository);
 
-        Command createUser = commandFactory.createCommandFromCommandName("CreateUser", repository);
+        Command createUser = commandFactory.createCommand("CreateUser", repository);
         createUser.execute(List.of(VALID_USER_NAME));
 
-        Command createTeam = commandFactory.createCommandFromCommandName("CreateTeam", repository);
+        Command createTeam = commandFactory.createCommand("CreateTeam", repository);
         createTeam.execute(List.of(VALID_TEAM_NAME));
 
-        Command addUserToTeam = commandFactory.createCommandFromCommandName("AddUserToTeam", repository);
+        Command addUserToTeam = commandFactory.createCommand("AddUserToTeam", repository);
         addUserToTeam.execute(List.of(VALID_USER_NAME, VALID_TEAM_NAME));
 
-        Command createBoard = commandFactory.createCommandFromCommandName("CreateBoard", repository);
+        Command createBoard = commandFactory.createCommand("CreateBoard", repository);
         createBoard.execute(List.of(VALID_BOARD_NAME, VALID_TEAM_NAME));
 
-        Command createFeedback = commandFactory.createCommandFromCommandName("CreateFeedback", repository);
+        Command createFeedback = commandFactory.createCommand("CreateFeedback", repository);
         List<String> parameters = new ArrayList<>();
         parameters.add(VALID_USER_NAME);
         parameters.add(VALID_TEAM_NAME);
@@ -107,7 +105,7 @@ public class ShowAllTaskComments_Tests {
         createFeedback.execute(parameters);
 
 
-        Command addComment = commandFactory.createCommandFromCommandName("AddCommentToTask", repository);
+        Command addComment = commandFactory.createCommand("AddCommentToTask", repository);
         List<String> commentParameters = new ArrayList<>();
         commentParameters.add(VALID_USER_NAME);
         commentParameters.add("1");

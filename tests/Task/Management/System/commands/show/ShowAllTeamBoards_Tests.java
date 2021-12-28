@@ -31,7 +31,7 @@ public class ShowAllTeamBoards_Tests {
     public void setup() {
         commandFactory = new CommandFactoryImpl();
         repository = new TaskManagementSystemRepositoryImpl();
-        command = commandFactory.createCommandFromCommandName("ShowTeamBoards", repository);
+        command = commandFactory.createCommand("ShowTeamBoards", repository);
 
     }
 
@@ -49,7 +49,7 @@ public class ShowAllTeamBoards_Tests {
 
     @Test
     public void showTeamBoards_Should_Indicate_When_NoCommentsToDisplay() {
-        Command createTeam = commandFactory.createCommandFromCommandName("CreateTeam", repository);
+        Command createTeam = commandFactory.createCommand("CreateTeam", repository);
         createTeam.execute(List.of(VALID_TEAM_NAME));
 
         Assertions.assertEquals(String.format(NO_ITEMS_TO_DISPLAY, "boards"), command.execute(List.of(VALID_TEAM_NAME)));
@@ -57,10 +57,10 @@ public class ShowAllTeamBoards_Tests {
 
     @Test
     public void showTeamBoards_Should_Execute_When_ValidInput() {
-        Command createTeam = commandFactory.createCommandFromCommandName("CreateTeam", repository);
+        Command createTeam = commandFactory.createCommand("CreateTeam", repository);
         createTeam.execute(List.of(VALID_TEAM_NAME));
 
-        Command createBoard = commandFactory.createCommandFromCommandName("CreateBoard", repository);
+        Command createBoard = commandFactory.createCommand("CreateBoard", repository);
         createBoard.execute(List.of(VALID_BOARD_NAME, VALID_TEAM_NAME));
 
         Board board = repository.findBoard(VALID_BOARD_NAME, VALID_TEAM_NAME);
