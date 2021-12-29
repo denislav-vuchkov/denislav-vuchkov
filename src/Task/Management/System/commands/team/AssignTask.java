@@ -33,7 +33,7 @@ public class AssignTask extends BaseCommand {
         getRepository().validateUserAndTaskFromSameTeam(assigner.getName(), task.getID());
         getRepository().validateUserAndTaskFromSameTeam(newAssignee.getName(), task.getID());
 
-        if (assigner.getName().equals(newAssignee.getName())) {
+        if (task.getAssignee().equals(newAssignee.getName())) {
             throw new InvalidUserInput(String.format(CANNOT_REASSIGN_TO_SAME_USER, assigner));
         }
 
