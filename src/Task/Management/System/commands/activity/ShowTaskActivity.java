@@ -23,7 +23,6 @@ public class ShowTaskActivity extends BaseCommand {
         ValidationHelpers.validateCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
 
         long ID = ParsingHelpers.tryParseLong(parameters.get(0), INVALID_ID);
-        Task task = getRepository().findTask(ID);
 
         return getRepository()
                 .findTask(ID)
