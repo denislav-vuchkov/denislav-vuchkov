@@ -17,10 +17,10 @@ import static Task.Management.System.models.contracts.EventLogger.*;
 
 public class TeamImpl implements Loggable, Team {
 
+    private String name;
     private final List<Board> boards;
     private final List<User> users;
     private final EventLogger history;
-    private String name;
 
     public TeamImpl(String name) {
         setName(name);

@@ -15,9 +15,9 @@ import static Task.Management.System.models.contracts.EventLogger.*;
 
 public class UserImpl implements User {
 
+    private String name;
     private final List<AssignableTask> tasks;
     private final EventLogger history;
-    private String name;
 
     public UserImpl(String name) {
         setName(name);

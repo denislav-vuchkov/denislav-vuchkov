@@ -15,9 +15,9 @@ import static Task.Management.System.models.contracts.EventLogger.*;
 
 public class BoardImpl implements Board {
 
+    private String name;
     private final List<Task> tasks;
     private final EventLogger history;
-    private String name;
 
     public BoardImpl(String name) {
         setName(name);
