@@ -9,7 +9,9 @@ import Task.Management.System.models.teams.contracts.Board;
 import Task.Management.System.utils.ValidationHelpers;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static Task.Management.System.models.contracts.EventLogger.*;
 
@@ -17,10 +19,9 @@ public class BoardImpl implements Board {
 
     public static final String ALREADY_EXIST = "%s with %d already exists in board %s";
     public static final String NOT_EXISTS = "%s with %d does not exist in board %s";
-
-    private String name;
     private final List<Task> tasks;
     private final EventLogger history;
+    private String name;
 
     public BoardImpl(String name) {
         setName(name);
@@ -71,7 +72,16 @@ public class BoardImpl implements Board {
 
     @Override
     public List<Event> getLog() {
-        return new ArrayList<>(history.getEvents());
+
+        List<Event> tasksHistory = getTasks()
+                .stream()
+                .flatMap(task -> task.getLog().stream())
+                .collect(Collectors.toList());
+
+        List<Event> boardHistory = new ArrayList<>((history.getEvents()));
+        boardHistory.addAll(tasksHistory);
+
+        return boardHistory.stream().sorted(Comparator.comparing(Event::getOccurrence)).collect(Collectors.toList());
     }
 
     @Override

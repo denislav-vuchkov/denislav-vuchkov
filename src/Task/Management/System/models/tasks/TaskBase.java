@@ -86,7 +86,7 @@ public abstract class TaskBase implements Task {
         if (this.status.equals(status)) {
             throw new InvalidUserInput(String.format(DUPLICATE, "Status", getStatus()));
         }
-        history.addEvent(String.format(CHANGE, taskType, getID(), "Status", this.status, status));
+        history.addEvent(String.format(TASK_CHANGE, taskType, getID(), "Status", this.status, status));
         this.status = status;
     }
 

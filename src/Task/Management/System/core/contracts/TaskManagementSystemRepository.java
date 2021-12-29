@@ -37,15 +37,15 @@ public interface TaskManagementSystemRepository {
 
     Board findBoard(String boardName, String teamName);
 
-    String addBug(String teamName, String boardName,
+    String addBug(User user, String teamName, String boardName,
                   String title, String description, List<String> stepsToReproduce,
                   Priority priority, Severity severity, String assignee);
 
-    String addFeedback(String teamName, String boardName,
+    String addFeedback(User user, String teamName, String boardName,
                        String title, String description, int rating);
 
 
-    String addStory(String teamName, String boardName,
+    String addStory(User user, String teamName, String boardName,
                     String title, String description,
                     Priority priority, Size size, String assignee);
 

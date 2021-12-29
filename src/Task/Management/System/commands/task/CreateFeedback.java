@@ -31,7 +31,6 @@ public class CreateFeedback extends BaseCommand {
         int rating = ParsingHelpers.tryParseInt(parameters.get(5), RATING_ERR);
         ValidationHelpers.validateRange(rating, FeedbackImpl.RATING_MIN, FeedbackImpl.RATING_MAX, RATING_ERR);
 
-        creator.log(String.format(USER_CREATED_TASK, creator.getName(), "Feedback", boardName));
-        return getRepository().addFeedback(teamName, boardName, title, description, rating);
+        return getRepository().addFeedback(creator,teamName, boardName, title, description, rating);
     }
 }

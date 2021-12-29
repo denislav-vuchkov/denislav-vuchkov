@@ -51,9 +51,9 @@ public class UserImpl implements User {
             throw new InvalidUserInput(String.format(ALREADY_ASSIGNED, USER, task.getID(), getName()));
         }
 
-        task.setAssignee(getName());
         tasks.add(task);
         history.addEvent(String.format(TASK_ASSIGNED, taskType, task.getID(), getName()));
+        task.setAssignee(getName());
     }
 
     @Override

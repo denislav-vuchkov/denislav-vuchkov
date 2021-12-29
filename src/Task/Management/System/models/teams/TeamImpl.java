@@ -12,7 +12,9 @@ import Task.Management.System.models.teams.contracts.User;
 import Task.Management.System.utils.ValidationHelpers;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static Task.Management.System.models.contracts.EventLogger.*;
 
@@ -103,8 +105,24 @@ public class TeamImpl implements Loggable, Team {
 
     @Override
     public List<Event> getLog() {
-        return new ArrayList<>(history.getEvents());
+
+        List<Event> boardsHistory = getBoards()
+                .stream()
+                .flatMap(board -> board.getLog().stream())
+                .collect(Collectors.toList());
+
+        List<Event> userHistory = getUsers()
+                .stream()
+                .flatMap(user -> user.getLog().stream())
+                .collect(Collectors.toList());
+
+        List<Event> teamHistory = new ArrayList<>((history.getEvents()));
+        teamHistory.addAll(boardsHistory);
+        teamHistory.addAll(userHistory);
+
+        return teamHistory.stream().sorted(Comparator.comparing(Event::getOccurrence)).collect(Collectors.toList());
     }
+
 
     @Override
     public String toString() {

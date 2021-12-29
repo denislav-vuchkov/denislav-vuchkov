@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static Task.Management.System.models.contracts.EventLogger.CHANGE;
+import static Task.Management.System.models.contracts.EventLogger.TASK_CHANGE;
 import static Task.Management.System.models.contracts.EventLogger.DUPLICATE;
 
 public class BugImpl extends AssignableTaskImpl implements Bug {
@@ -46,7 +46,7 @@ public class BugImpl extends AssignableTaskImpl implements Bug {
         if (this.severity.equals(severity)) {
             throw new InvalidUserInput(String.format(DUPLICATE, "Severity", severity));
         }
-        addChangeToHistory(String.format(CHANGE, this.getClass().getSimpleName().replace("Impl", ""),
+        addChangeToHistory(String.format(TASK_CHANGE, this.getClass().getSimpleName().replace("Impl", ""),
                 getID(), "Severity", this.severity, severity));
         this.severity = severity;
     }

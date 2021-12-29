@@ -33,25 +33,28 @@ public class ChangeBug extends BaseCommand {
         String propertyToChange = parameters.get(2).trim().toUpperCase();
         String newValue = parameters.get(3).toUpperCase();
 
+        String event = String.format(RECORD_ACTIVITY, changer.getName(), propertyToChange, "Bug", ID, newValue);
+
         switch (propertyToChange) {
             case "PRIORITY":
                 Priority priority = ParsingHelpers.tryParseEnum(newValue, Priority.class);
+                changer.log(event);
                 bug.setPriority(priority);
                 break;
             case "SEVERITY":
                 Severity severity = ParsingHelpers.tryParseEnum(newValue, Severity.class);
+                changer.log(event);
                 bug.setSeverity(severity);
                 break;
             case "STATUS":
                 BugStatus status = ParsingHelpers.tryParseEnum(newValue, BugStatus.class);
+                changer.log(event);
                 bug.setStatus(status);
                 break;
             default:
                 throw new InvalidUserInput(INVALID_PROPERTY);
         }
 
-        String result = String.format(RECORD_ACTIVITY, changer.getName(), propertyToChange, "Bug", ID, newValue);
-        changer.log(result);
-        return result;
+        return event;
     }
 }

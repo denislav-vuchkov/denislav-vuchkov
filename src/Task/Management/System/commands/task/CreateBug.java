@@ -39,7 +39,6 @@ public class CreateBug extends BaseCommand {
         Severity severity = ParsingHelpers.tryParseEnum(parameters.get(7), Severity.class);
         String assignee = parameters.get(8);
 
-        creator.log(String.format(USER_CREATED_TASK, creator.getName(), "Bug", boardName));
-        return getRepository().addBug(teamName, boardName, title, description, steps, priority, severity, assignee);
+        return getRepository().addBug(creator, teamName, boardName, title, description, steps, priority, severity, assignee);
     }
 }

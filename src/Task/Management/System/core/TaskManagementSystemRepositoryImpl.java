@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static Task.Management.System.commands.BaseCommand.INVALID_ID;
-import static Task.Management.System.commands.BaseCommand.UNASSIGNED;
+import static Task.Management.System.commands.BaseCommand.USER_CREATED_TASK;
 
 public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemRepository {
 
@@ -30,13 +30,12 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
     public static final String TASK_ADDED_TO_BOARD = "%s with ID %d successfully added to board %s in team %s.";
     public static final String USER_NOT_FROM_TEAM = "The user should be a member of the team!";
     public static final String USER_OR_TASK_NOT_FROM_TEAM = "User and task should be from the same team!";
-
-    private long nextTaskID = 1;
     private final List<Team> teams;
     private final List<User> users;
     private final List<Bug> bugs;
     private final List<Feedback> feedbacks;
     private final List<Story> stories;
+    private long nextTaskID = 1;
 
     public TaskManagementSystemRepositoryImpl() {
         teams = new ArrayList<>();
@@ -138,7 +137,7 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
 
     @Override
     public String addBug(
-            String teamName, String boardName, String title, String description,
+            User creator, String teamName, String boardName, String title, String description,
             List<String> stepsToReproduce, Priority priority, Severity severity, String assignee) {
 
         if (!assignee.isEmpty()) {
@@ -146,10 +145,13 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
         }
         Board board = findBoard(boardName, teamName);
 
+        creator.log(String.format(USER_CREATED_TASK, creator.getName(), "Bug", nextTaskID, boardName));
         Bug bug = new BugImpl(nextTaskID, title, description, stepsToReproduce, priority, severity);
+
         if (!assignee.isEmpty()) {
             findUser(assignee).addTask(bug);
         }
+
         board.addTask(bug);
         bugs.add(bug);
 
@@ -157,7 +159,7 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
     }
 
     @Override
-    public String addStory(String teamName, String boardName, String title, String description,
+    public String addStory(User creator, String teamName, String boardName, String title, String description,
                            Priority priority, Size size, String assignee) {
 
         if (!assignee.isEmpty()) {
@@ -165,10 +167,13 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
         }
         Board board = findBoard(boardName, teamName);
 
+        creator.log(String.format(USER_CREATED_TASK, creator.getName(), "Story", nextTaskID, boardName));
         Story story = new StoryImpl(nextTaskID, title, description, priority, size);
+
         if (!assignee.isEmpty()) {
             findUser(assignee).addTask(story);
         }
+
         board.addTask(story);
         stories.add(story);
 
@@ -176,11 +181,14 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
     }
 
     @Override
-    public String addFeedback(String teamName, String boardName, String title, String description, int rating) {
+    public String addFeedback(User creator, String teamName, String boardName, String title, String description, int rating) {
 
+        Board board = findBoard(boardName, teamName);
+
+        creator.log(String.format(USER_CREATED_TASK, creator.getName(), "Feedback", nextTaskID, boardName));
         Feedback feedback = new FeedbackImpl(nextTaskID, title, description, rating);
 
-        findBoard(boardName, teamName).addTask(feedback);
+        board.addTask(feedback);
         feedbacks.add(feedback);
 
         return String.format(TASK_ADDED_TO_BOARD, "Feedback", nextTaskID++, boardName, teamName);
@@ -229,8 +237,6 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
 
     @Override
     public void validateUserAndTaskFromSameTeam(String userName, long taskID) {
-        if (userName.equalsIgnoreCase(UNASSIGNED)) return;
-
         User user = findUser(userName);
         Task task = findTask(taskID);
         for (Team team : teams) {

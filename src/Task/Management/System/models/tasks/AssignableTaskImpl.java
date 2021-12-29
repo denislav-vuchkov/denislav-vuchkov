@@ -6,7 +6,7 @@ import Task.Management.System.models.tasks.contracts.TaskStatus;
 import Task.Management.System.models.tasks.enums.Priority;
 import Task.Management.System.models.tasks.enums.Tasks;
 
-import static Task.Management.System.models.contracts.EventLogger.CHANGE;
+import static Task.Management.System.models.contracts.EventLogger.TASK_CHANGE;
 import static Task.Management.System.models.contracts.EventLogger.DUPLICATE;
 
 public abstract class AssignableTaskImpl extends TaskBase implements AssignableTask {
@@ -38,7 +38,7 @@ public abstract class AssignableTaskImpl extends TaskBase implements AssignableT
         if (this.priority.equals(priority)) {
             throw new InvalidUserInput(String.format(DUPLICATE, "Priority", this.priority));
         }
-        addChangeToHistory(String.format(CHANGE, taskType, getID(), "Priority", this.priority, priority));
+        addChangeToHistory(String.format(TASK_CHANGE, taskType, getID(), "Priority", this.priority, priority));
         this.priority = priority;
     }
 
@@ -56,7 +56,7 @@ public abstract class AssignableTaskImpl extends TaskBase implements AssignableT
         if (this.assignee.equals(assignee)) {
             throw new InvalidUserInput(String.format(DUPLICATE, "Assignee", this.assignee));
         }
-        addChangeToHistory(String.format(CHANGE, taskType, getID(), "Assignee", this.assignee, assignee));
+        addChangeToHistory(String.format(TASK_CHANGE, taskType, getID(), "Assignee", this.assignee, assignee));
         this.assignee = assignee;
     }
 
