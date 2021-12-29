@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static Task.Management.System.commands.BaseCommand.INVALID_ID;
+import static Task.Management.System.commands.BaseCommand.UNASSIGNED;
 
 public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemRepository {
 
@@ -140,17 +141,38 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
             String teamName, String boardName, String title, String description,
             List<String> stepsToReproduce, Priority priority, Severity severity, String assignee) {
 
-        Bug bug = new BugImpl(nextTaskID, title, description, stepsToReproduce, priority, severity);
-
         if (!assignee.isEmpty()) {
             validateUserIsFromTeam(assignee, teamName);
+        }
+        Board board = findBoard(boardName, teamName);
+
+        Bug bug = new BugImpl(nextTaskID, title, description, stepsToReproduce, priority, severity);
+        if (!assignee.isEmpty()) {
             findUser(assignee).addTask(bug);
         }
-
-        findBoard(boardName, teamName).addTask(bug);
+        board.addTask(bug);
         bugs.add(bug);
 
         return String.format(TASK_ADDED_TO_BOARD, "Bug", nextTaskID++, boardName, teamName);
+    }
+
+    @Override
+    public String addStory(String teamName, String boardName, String title, String description,
+                           Priority priority, Size size, String assignee) {
+
+        if (!assignee.isEmpty()) {
+            validateUserIsFromTeam(assignee, teamName);
+        }
+        Board board = findBoard(boardName, teamName);
+
+        Story story = new StoryImpl(nextTaskID, title, description, priority, size);
+        if (!assignee.isEmpty()) {
+            findUser(assignee).addTask(story);
+        }
+        board.addTask(story);
+        stories.add(story);
+
+        return String.format(TASK_ADDED_TO_BOARD, "Story", nextTaskID++, boardName, teamName);
     }
 
     @Override
@@ -162,23 +184,6 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
         feedbacks.add(feedback);
 
         return String.format(TASK_ADDED_TO_BOARD, "Feedback", nextTaskID++, boardName, teamName);
-    }
-
-    @Override
-    public String addStory(String teamName, String boardName, String title, String description,
-                           Priority priority, Size size, String assignee) {
-
-        Story story = new StoryImpl(nextTaskID, title, description, priority, size);
-
-        if (!assignee.isEmpty()) {
-            validateUserIsFromTeam(assignee, teamName);
-            findUser(assignee).addTask(story);
-        }
-
-        findBoard(boardName, teamName).addTask(story);
-        stories.add(story);
-
-        return String.format(TASK_ADDED_TO_BOARD, "Story", nextTaskID++, boardName, teamName);
     }
 
     @Override
@@ -224,6 +229,8 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
 
     @Override
     public void validateUserAndTaskFromSameTeam(String userName, long taskID) {
+        if (userName.equalsIgnoreCase(UNASSIGNED)) return;
+
         User user = findUser(userName);
         Task task = findTask(taskID);
         for (Team team : teams) {
