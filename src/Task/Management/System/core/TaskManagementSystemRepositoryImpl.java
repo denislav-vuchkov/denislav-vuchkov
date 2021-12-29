@@ -143,16 +143,17 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
         if (!assignee.isEmpty()) {
             validateUserIsFromTeam(assignee, teamName);
         }
+
         Board board = findBoard(boardName, teamName);
 
         creator.log(String.format(USER_CREATED_TASK, creator.getName(), "Bug", nextTaskID, boardName));
         Bug bug = new BugImpl(nextTaskID, title, description, stepsToReproduce, priority, severity);
+        board.addTask(bug);
 
         if (!assignee.isEmpty()) {
             findUser(assignee).addTask(bug);
         }
 
-        board.addTask(bug);
         bugs.add(bug);
 
         return String.format(TASK_ADDED_TO_BOARD, "Bug", nextTaskID++, boardName, teamName);
@@ -165,16 +166,17 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
         if (!assignee.isEmpty()) {
             validateUserIsFromTeam(assignee, teamName);
         }
+
         Board board = findBoard(boardName, teamName);
 
         creator.log(String.format(USER_CREATED_TASK, creator.getName(), "Story", nextTaskID, boardName));
         Story story = new StoryImpl(nextTaskID, title, description, priority, size);
+        board.addTask(story);
 
         if (!assignee.isEmpty()) {
             findUser(assignee).addTask(story);
         }
 
-        board.addTask(story);
         stories.add(story);
 
         return String.format(TASK_ADDED_TO_BOARD, "Story", nextTaskID++, boardName, teamName);
@@ -187,8 +189,8 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
 
         creator.log(String.format(USER_CREATED_TASK, creator.getName(), "Feedback", nextTaskID, boardName));
         Feedback feedback = new FeedbackImpl(nextTaskID, title, description, rating);
-
         board.addTask(feedback);
+
         feedbacks.add(feedback);
 
         return String.format(TASK_ADDED_TO_BOARD, "Feedback", nextTaskID++, boardName, teamName);

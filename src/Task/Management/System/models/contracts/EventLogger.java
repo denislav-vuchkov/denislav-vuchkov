@@ -10,18 +10,19 @@ public interface EventLogger {
     String BOARD = "Board";
     String USER = "User";
 
-    String CREATION = "%s %s created.";
+    String CREATION = "%s %s: Created.";
     String ADDITION = "%s %s added.";
     String REMOVAL = "%s %s removed.";
-    String DUPLICATE = "%s is already %s.";
 
-    String TASK_ASSIGNED = "%s with ID %d has been added to the list of tasks for user %s.";
-    String TASK_UNASSIGNED = "%s with ID %d has been removed from the list of tasks for user %s.";
+    String USER_ADD_TASK = "User %s: %s with ID %d added to list of tasks.";
+    String USER_REMOVE_TASK = "User %s: %s with ID %d removed from list of tasks.";
+
+    String BOARD_ADD_TASK = "Board %s: %s with ID %d added.";
+    String BOARD_REMOVE = "Board %s: %s with ID %d removed.";
 
     String TASK_CREATED = "%s with ID %d: Created.";
     String TASK_CHANGE = "%s with ID %d: %s changed from %s to %s.";
-    String TASK_ADDED = "%s with ID %d: Added in board %s.";
-    String TASK_REMOVED = "%s with ID %d: Removed from board %s.";
+    String DUPLICATE = "%s with ID %d: Modification denied. %s is already %s.";
 
     void addEvent(String description);
 

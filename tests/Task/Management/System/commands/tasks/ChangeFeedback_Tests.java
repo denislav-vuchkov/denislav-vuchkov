@@ -117,7 +117,7 @@ public class ChangeFeedback_Tests {
     @Test
     public void ChangeFeedback_ShouldChangeStatus_ifNewValueValid() {
         Assertions.assertEquals(
-                "User Denis changed the STATUS of Feedback with ID 3 to SCHEDULED.",
+                "User Denis: Successfully changed the STATUS of Feedback with ID 3 to SCHEDULED.",
                 changeFeedback.execute(parameters));
         Assertions.assertEquals("Scheduled", repo.findFeedback(3).getStatus());
     }
@@ -127,7 +127,7 @@ public class ChangeFeedback_Tests {
         parameters.set(2, "rating");
         parameters.set(3, "10");
         Assertions.assertEquals(
-                "User Denis changed the RATING of Feedback with ID 3 to 10.",
+                "User Denis: Successfully changed the RATING of Feedback with ID 3 to 10.",
                 changeFeedback.execute(parameters));
         Assertions.assertEquals(10, repo.findFeedback(3).getRating());
     }

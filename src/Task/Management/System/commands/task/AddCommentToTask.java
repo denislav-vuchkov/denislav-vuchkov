@@ -15,7 +15,7 @@ public class AddCommentToTask extends BaseCommand {
 
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 3;
 
-    public static final String COMMENT_EVENT = "User %s added a comment to %s with ID %d.";
+    public static final String COMMENT_EVENT = "User %s: Added a comment to %s with ID %d.";
 
     public AddCommentToTask(TaskManagementSystemRepository repository) {
         super(repository);
@@ -34,10 +34,10 @@ public class AddCommentToTask extends BaseCommand {
 
         Comment comment = new CommentImpl(content, author.getName());
 
-        task.addComment(comment);
-
         String taskType = task.getClass().getSimpleName().replace("Impl", "");
         author.log(String.format(COMMENT_EVENT, author.getName(), taskType, task.getID()));
+        task.addComment(comment);
+
         return String.format(COMMENT_EVENT, author.getName(), taskType, task.getID());
     }
 }

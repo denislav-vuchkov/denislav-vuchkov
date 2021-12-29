@@ -32,24 +32,24 @@ public class ChangeFeedback extends BaseCommand {
         String propertyToChange = parameters.get(2).trim().toUpperCase();
         String newValue = parameters.get(3).toUpperCase();
 
-        String event = String.format(RECORD_ACTIVITY, changer.getName(), propertyToChange, "Feedback", ID, newValue);
+        changer.log(String.format(ATTEMPTED_CHANGE, changer.getName(), propertyToChange, "Feedback", ID, newValue));
 
         switch (propertyToChange) {
             case "RATING":
                 int rating = ParsingHelpers.tryParseInt(newValue, RATING_ERR);
                 ValidationHelpers.validateRange(rating, FeedbackImpl.RATING_MIN, FeedbackImpl.RATING_MAX, RATING_ERR);
-                changer.log(event);
                 feedback.setRating(rating);
                 break;
             case "STATUS":
                 FeedbackStatus status = ParsingHelpers.tryParseEnum(newValue, FeedbackStatus.class);
-                changer.log(event);
                 feedback.setStatus(status);
                 break;
             default:
                 throw new InvalidUserInput(INVALID_PROPERTY);
         }
 
+        String event = String.format(SUCCESSFUL_CHANGE, changer.getName(), propertyToChange, "Feedback", ID, newValue);
+        changer.log(event);
         return event;
     }
 }

@@ -15,8 +15,8 @@ import static Task.Management.System.models.contracts.EventLogger.*;
 
 public class UserImpl implements User {
 
-    public static final String ALREADY_ASSIGNED = "%s with %d is already assigned to user %s";
-    public static final String NOT_ASSIGNED = "%s with %d is not assigned to user %s";
+    public static final String ALREADY_ASSIGNED = "%s with %d is already assigned to user %s.";
+    public static final String NOT_ASSIGNED = "%s with %d is not assigned to user %s.";
     private final List<AssignableTask> tasks;
     private final EventLogger history;
     private String name;
@@ -52,7 +52,7 @@ public class UserImpl implements User {
         }
 
         tasks.add(task);
-        history.addEvent(String.format(TASK_ASSIGNED, taskType, task.getID(), getName()));
+        history.addEvent(String.format(USER_ADD_TASK, getName(), taskType, task.getID()));
         task.setAssignee(getName());
     }
 
@@ -64,9 +64,9 @@ public class UserImpl implements User {
             throw new InvalidUserInput(String.format(NOT_ASSIGNED, taskType, task.getID(), getName()));
         }
 
-        task.unAssign();
         tasks.remove(task);
-        history.addEvent(String.format(TASK_UNASSIGNED, taskType, task.getID(), getName()));
+        history.addEvent(String.format(USER_REMOVE_TASK, getName(), taskType, task.getID()));
+        task.unAssign();
     }
 
     public void log(String description) {

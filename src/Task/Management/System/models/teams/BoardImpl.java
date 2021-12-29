@@ -54,7 +54,7 @@ public class BoardImpl implements Board {
         }
 
         tasks.add(task);
-        history.addEvent(String.format(TASK_ADDED, taskType, task.getID(), getName()));
+        history.addEvent(String.format(BOARD_ADD_TASK, getName(), taskType, task.getID()));
     }
 
     @Override
@@ -67,7 +67,7 @@ public class BoardImpl implements Board {
         }
 
         tasks.remove(task);
-        history.addEvent(String.format(TASK_REMOVED, taskType, task.getID(), getName()));
+        history.addEvent(String.format(BOARD_REMOVE, getName(), taskType, task.getID()));
     }
 
     @Override

@@ -125,7 +125,7 @@ public class AddCommentToTask_Tests {
         parameters.set(1, "1");
         Bug bug = repo.findBug(1);
         Assertions.assertEquals(0, bug.getComments().size());
-        Assertions.assertEquals("User Tisho added a comment to Bug with ID 1.", addComment.execute(parameters));
+        Assertions.assertEquals("User Tisho: Added a comment to Bug with ID 1.", addComment.execute(parameters));
         Assertions.assertEquals(1, bug.getComments().size());
         Assertions.assertEquals("This bug is driving me nuts.", bug.getComments().get(0).getContent());
     }
@@ -136,7 +136,7 @@ public class AddCommentToTask_Tests {
         parameters.set(2, "This story is very interesting.");
         Story story = repo.findStory(2);
         Assertions.assertEquals(0, story.getComments().size());
-        Assertions.assertEquals("User Denis added a comment to Story with ID 2.", addComment.execute(parameters));
+        Assertions.assertEquals("User Denis: Added a comment to Story with ID 2.", addComment.execute(parameters));
         Assertions.assertEquals(1, story.getComments().size());
         Assertions.assertEquals("This story is very interesting.", story.getComments().get(0).getContent());
     }
@@ -147,8 +147,8 @@ public class AddCommentToTask_Tests {
         parameters.set(2, "I also wrote something.");
         Feedback feedback = repo.findFeedback(3);
         Assertions.assertEquals(0, feedback.getComments().size());
-        Assertions.assertEquals("User Denis added a comment to Feedback with ID 3.", addComment.execute(parameters));
-        Assertions.assertEquals("User Denis added a comment to Feedback with ID 3.", addComment.execute(parameters));
+        Assertions.assertEquals("User Denis: Added a comment to Feedback with ID 3.", addComment.execute(parameters));
+        Assertions.assertEquals("User Denis: Added a comment to Feedback with ID 3.", addComment.execute(parameters));
         Assertions.assertEquals(2, feedback.getComments().size());
         Assertions.assertEquals("I also wrote something.", feedback.getComments().get(1).getContent());
     }

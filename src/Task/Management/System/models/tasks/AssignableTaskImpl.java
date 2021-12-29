@@ -6,15 +6,15 @@ import Task.Management.System.models.tasks.contracts.TaskStatus;
 import Task.Management.System.models.tasks.enums.Priority;
 import Task.Management.System.models.tasks.enums.Tasks;
 
-import static Task.Management.System.models.contracts.EventLogger.TASK_CHANGE;
 import static Task.Management.System.models.contracts.EventLogger.DUPLICATE;
+import static Task.Management.System.models.contracts.EventLogger.TASK_CHANGE;
 
 public abstract class AssignableTaskImpl extends TaskBase implements AssignableTask {
 
     public static final String UNASSIGNED = "Unassigned";
+    private final Tasks taskType;
     private Priority priority;
     private String assignee;
-    private Tasks taskType;
 
     public AssignableTaskImpl(long id, Tasks tasksType, String title, String description,
                               Priority priority, TaskStatus status) {
@@ -35,9 +35,13 @@ public abstract class AssignableTaskImpl extends TaskBase implements AssignableT
             this.priority = priority;
             return;
         }
+
         if (this.priority.equals(priority)) {
-            throw new InvalidUserInput(String.format(DUPLICATE, "Priority", this.priority));
+            String event = String.format(DUPLICATE, taskType, getID(), "Priority", this.priority);
+            addChangeToHistory(event);
+            throw new InvalidUserInput(event);
         }
+
         addChangeToHistory(String.format(TASK_CHANGE, taskType, getID(), "Priority", this.priority, priority));
         this.priority = priority;
     }
@@ -53,9 +57,13 @@ public abstract class AssignableTaskImpl extends TaskBase implements AssignableT
             this.assignee = assignee;
             return;
         }
+
         if (this.assignee.equals(assignee)) {
-            throw new InvalidUserInput(String.format(DUPLICATE, "Assignee", this.assignee));
+            String event = String.format(DUPLICATE, taskType, getID(), "Assignee", this.assignee);
+            addChangeToHistory(event);
+            throw new InvalidUserInput(event);
         }
+
         addChangeToHistory(String.format(TASK_CHANGE, taskType, getID(), "Assignee", this.assignee, assignee));
         this.assignee = assignee;
     }

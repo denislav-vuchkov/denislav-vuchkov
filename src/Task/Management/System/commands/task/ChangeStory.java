@@ -33,28 +33,27 @@ public class ChangeStory extends BaseCommand {
         String propertyToChange = parameters.get(2).trim().toUpperCase();
         String newValue = parameters.get(3).toUpperCase();
 
-        String event = String.format(RECORD_ACTIVITY, changer.getName(), propertyToChange, "Story", ID, newValue);
+        changer.log(String.format(ATTEMPTED_CHANGE, changer.getName(), propertyToChange, "Story", ID, newValue));
 
         switch (propertyToChange) {
             case "PRIORITY":
                 Priority priority = ParsingHelpers.tryParseEnum(newValue, Priority.class);
-                changer.log(event);
                 story.setPriority(priority);
                 break;
             case "SIZE":
                 Size size = ParsingHelpers.tryParseEnum(newValue, Size.class);
-                changer.log(event);
                 story.setSize(size);
                 break;
             case "STATUS":
                 StoryStatus status = ParsingHelpers.tryParseEnum(newValue, StoryStatus.class);
-                changer.log(event);
                 story.setStatus(status);
                 break;
             default:
                 throw new InvalidUserInput(INVALID_PROPERTY);
         }
 
+        String event = String.format(SUCCESSFUL_CHANGE, changer.getName(), propertyToChange, "Story", ID, newValue);
+        changer.log(event);
         return event;
     }
 }

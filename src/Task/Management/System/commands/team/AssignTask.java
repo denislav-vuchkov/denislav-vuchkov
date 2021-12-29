@@ -14,7 +14,7 @@ public class AssignTask extends BaseCommand {
 
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 3;
 
-    public static final String ASSIGN_EVENT = "User %s assigned %s with ID %d to %s.";
+    public static final String ASSIGN_EVENT = "User %s: Reassigned %s with ID %d to %s.";
     public static final String CANNOT_REASSIGN_TO_SAME_USER = "Task is already assigned to %s.";
 
     public AssignTask(TaskManagementSystemRepository repository) {
@@ -37,15 +37,17 @@ public class AssignTask extends BaseCommand {
             throw new InvalidUserInput(String.format(CANNOT_REASSIGN_TO_SAME_USER, assigner));
         }
 
-        if (!task.getAssignee().equals(UNASSIGNED)) {
-            User oldAssignee = getRepository().findUser(task.getAssignee());
+        String taskType = task.getClass().getSimpleName().replace("Impl", "");
+
+        assigner.log(String.format(ASSIGN_EVENT, assigner.getName(), taskType, task.getID(), newAssignee.getName()));
+
+        User oldAssignee = getRepository().findUser(task.getAssignee());
+        if (!oldAssignee.getName().equals(UNASSIGNED)) {
             oldAssignee.removeTask(task);
         }
 
         newAssignee.addTask(task);
 
-        String taskType = task.getClass().getSimpleName().replace("Impl", "");
-        assigner.log(String.format(ASSIGN_EVENT, assigner.getName(), taskType, task.getID(), newAssignee.getName()));
         return String.format(ASSIGN_EVENT, assigner.getName(), taskType, task.getID(), newAssignee.getName());
     }
 }

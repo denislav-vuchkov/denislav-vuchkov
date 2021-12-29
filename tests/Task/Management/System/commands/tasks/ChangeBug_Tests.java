@@ -107,7 +107,7 @@ public class ChangeBug_Tests {
     @Test
     public void ChangeBug_ShouldChangePriority_ifNewValueValid() {
         Assertions.assertEquals(
-                "User Denis changed the PRIORITY of Bug with ID 2 to HIGH.",
+                "User Denis: Successfully changed the PRIORITY of Bug with ID 2 to HIGH.",
                 changeBug.execute(parameters));
         Assertions.assertEquals("High", repo.findBug(2).getPriority().toString());
     }
@@ -117,7 +117,7 @@ public class ChangeBug_Tests {
         parameters.set(2, "severity");
         parameters.set(3, "minor");
         Assertions.assertEquals(
-                "User Denis changed the SEVERITY of Bug with ID 2 to MINOR.",
+                "User Denis: Successfully changed the SEVERITY of Bug with ID 2 to MINOR.",
                 changeBug.execute(parameters));
         Assertions.assertEquals("Minor", repo.findBug(2).getSeverity().toString());
     }
@@ -127,7 +127,7 @@ public class ChangeBug_Tests {
         parameters.set(2, "status");
         parameters.set(3, "fixed");
         Assertions.assertEquals(
-                "User Denis changed the STATUS of Bug with ID 2 to FIXED.",
+                "User Denis: Successfully changed the STATUS of Bug with ID 2 to FIXED.",
                 changeBug.execute(parameters));
         Assertions.assertEquals("Fixed", repo.findBug(2).getStatus());
     }

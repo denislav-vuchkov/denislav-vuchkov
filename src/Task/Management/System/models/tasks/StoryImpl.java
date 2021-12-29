@@ -10,15 +10,15 @@ import Task.Management.System.models.tasks.enums.Tasks;
 
 import java.util.stream.Collectors;
 
-import static Task.Management.System.models.contracts.EventLogger.TASK_CHANGE;
 import static Task.Management.System.models.contracts.EventLogger.DUPLICATE;
+import static Task.Management.System.models.contracts.EventLogger.TASK_CHANGE;
 
 public class StoryImpl extends AssignableTaskImpl implements Story {
 
     private Size size;
 
     public StoryImpl(long id, String title, String description, Priority priority, Size size) {
-        super(id, Tasks.STORY, title, description, priority,StoryStatus.NOT_DONE);
+        super(id, Tasks.STORY, title, description, priority, StoryStatus.NOT_DONE);
         setSize(size);
     }
 
@@ -33,11 +33,14 @@ public class StoryImpl extends AssignableTaskImpl implements Story {
             this.size = size;
             return;
         }
+
         if (this.size.equals(size)) {
-            throw new InvalidUserInput(String.format(DUPLICATE, "Size", this.size));
+            String event = String.format(DUPLICATE, Tasks.STORY, getID(), "Size", this.size);
+            addChangeToHistory(event);
+            throw new InvalidUserInput(event);
         }
-        addChangeToHistory(String.format(TASK_CHANGE, this.getClass().getSimpleName().replace("Impl", ""),
-                getID(), "Size", this.size, size));
+
+        addChangeToHistory(String.format(TASK_CHANGE, Tasks.STORY, getID(), "Size", this.size, size));
         this.size = size;
     }
 

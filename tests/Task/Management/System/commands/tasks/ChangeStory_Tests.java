@@ -106,7 +106,7 @@ public class ChangeStory_Tests {
     @Test
     public void ChangeStory_ShouldChangePriority_ifNewValueValid() {
         Assertions.assertEquals(
-                "User Tisho changed the PRIORITY of Story with ID 1 to MEDIUM.",
+                "User Tisho: Successfully changed the PRIORITY of Story with ID 1 to MEDIUM.",
                 changeStory.execute(parameters));
         Assertions.assertEquals("Medium", repo.findStory(1).getPriority().toString());
     }
@@ -116,7 +116,7 @@ public class ChangeStory_Tests {
         parameters.set(2, "size");
         parameters.set(3, "large");
         Assertions.assertEquals(
-                "User Tisho changed the SIZE of Story with ID 1 to LARGE.",
+                "User Tisho: Successfully changed the SIZE of Story with ID 1 to LARGE.",
                 changeStory.execute(parameters));
         Assertions.assertEquals("Large", repo.findStory(1).getSize().toString());
     }
@@ -126,7 +126,7 @@ public class ChangeStory_Tests {
         parameters.set(2, "status");
         parameters.set(3, "done");
         Assertions.assertEquals(
-                "User Tisho changed the STATUS of Story with ID 1 to DONE.",
+                "User Tisho: Successfully changed the STATUS of Story with ID 1 to DONE.",
                 changeStory.execute(parameters));
         Assertions.assertEquals("Done", repo.findStory(1).getStatus());
     }

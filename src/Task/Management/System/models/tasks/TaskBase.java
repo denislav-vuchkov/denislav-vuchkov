@@ -26,15 +26,16 @@ public abstract class TaskBase implements Task {
     public static final int DESCRIPTION_MAX = 500;
     public static final String DESCRIPTION_ERR =
             String.format("Description must be between %d and %d symbols.", DESCRIPTION_MIN, DESCRIPTION_MAX);
-    public static final String COMMENT_ADDED = "%s with ID %d: Comment added with author %s.";
+
+    public static final String COMMENT_ADDED = "%s with ID %d: Comment added by user %s.";
 
     private final long id;
+    private final List<Comment> comments;
+    private final EventLogger history;
+    private final Tasks taskType;
     private String title;
     private String description;
     private TaskStatus status;
-    private final List<Comment> comments;
-    private final EventLogger history;
-    private Tasks taskType;
 
     public TaskBase(long id, Tasks tasksType, String title, String description, TaskStatus status) {
         this.id = id;
@@ -83,9 +84,13 @@ public abstract class TaskBase implements Task {
             this.status = status;
             return;
         }
+
         if (this.status.equals(status)) {
-            throw new InvalidUserInput(String.format(DUPLICATE, "Status", getStatus()));
+            String event = String.format(DUPLICATE, taskType, getID(), "Status", getStatus());
+            history.addEvent(event);
+            throw new InvalidUserInput(event);
         }
+
         history.addEvent(String.format(TASK_CHANGE, taskType, getID(), "Status", this.status, status));
         this.status = status;
     }
@@ -98,8 +103,7 @@ public abstract class TaskBase implements Task {
     @Override
     public void addComment(Comment comment) {
         comments.add(comment);
-        history.addEvent(String.format(COMMENT_ADDED, taskType, getID(),
-                comment.getAuthor()));
+        history.addEvent(String.format(COMMENT_ADDED, taskType, getID(), comment.getAuthor()));
     }
 
     @Override

@@ -9,8 +9,8 @@ import Task.Management.System.utils.ValidationHelpers;
 
 import java.util.stream.Collectors;
 
-import static Task.Management.System.models.contracts.EventLogger.TASK_CHANGE;
 import static Task.Management.System.models.contracts.EventLogger.DUPLICATE;
+import static Task.Management.System.models.contracts.EventLogger.TASK_CHANGE;
 
 public class FeedbackImpl extends TaskBase implements Feedback {
 
@@ -39,11 +39,14 @@ public class FeedbackImpl extends TaskBase implements Feedback {
             this.rating = rating;
             return;
         }
+
         if (this.rating == rating) {
-            throw new InvalidUserInput(String.format(DUPLICATE, "Rating", this.rating));
+            String event = String.format(DUPLICATE, Tasks.FEEDBACK, getID(), "Rating", this.rating);
+            addChangeToHistory(event);
+            throw new InvalidUserInput(event);
         }
-        addChangeToHistory(String.format(TASK_CHANGE, this.getClass().getSimpleName().replace("Impl", ""),
-                getID(), "Rating", this.rating, rating));
+
+        addChangeToHistory(String.format(TASK_CHANGE, Tasks.FEEDBACK, getID(), "Rating", this.rating, rating));
         this.rating = rating;
     }
 
