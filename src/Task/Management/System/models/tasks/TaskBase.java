@@ -26,6 +26,7 @@ public abstract class TaskBase implements Task {
     public static final int DESCRIPTION_MAX = 500;
     public static final String DESCRIPTION_ERR =
             String.format("Description must be between %d and %d symbols.", DESCRIPTION_MIN, DESCRIPTION_MAX);
+    public static final String COMMENT_ADDED = "%s with ID %d: Comment added with author %s.";
 
     private final long id;
     private String title;
@@ -97,6 +98,8 @@ public abstract class TaskBase implements Task {
     @Override
     public void addComment(Comment comment) {
         comments.add(comment);
+        history.addEvent(String.format(COMMENT_ADDED, taskType, getID(),
+                comment.getAuthor()));
     }
 
     @Override
