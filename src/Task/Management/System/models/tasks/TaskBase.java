@@ -1,9 +1,9 @@
 package Task.Management.System.models.tasks;
 
 import Task.Management.System.exceptions.InvalidUserInput;
-import Task.Management.System.models.Event;
-import Task.Management.System.models.EventLoggerImpl;
-import Task.Management.System.models.contracts.EventLogger;
+import Task.Management.System.models.logger.EventImpl;
+import Task.Management.System.models.logger.LoggerImpl;
+import Task.Management.System.models.logger.contracts.Logger;
 import Task.Management.System.models.tasks.contracts.Comment;
 import Task.Management.System.models.tasks.contracts.Task;
 import Task.Management.System.models.tasks.contracts.TaskStatus;
@@ -13,7 +13,7 @@ import Task.Management.System.utils.ValidationHelpers;
 import java.util.ArrayList;
 import java.util.List;
 
-import static Task.Management.System.models.contracts.EventLogger.*;
+import static Task.Management.System.models.logger.contracts.Logger.*;
 
 public abstract class TaskBase implements Task {
 
@@ -28,10 +28,11 @@ public abstract class TaskBase implements Task {
             String.format("Description must be between %d and %d symbols.", DESCRIPTION_MIN, DESCRIPTION_MAX);
 
     public static final String COMMENT_ADDED = "%s with ID %d: Comment added by user %s.";
+    public static final String STATUS_FIELD = "Status";
 
     private final long id;
     private final List<Comment> comments;
-    private final EventLogger history;
+    private final Logger history;
     private final Tasks taskType;
     private String title;
     private String description;
@@ -43,9 +44,9 @@ public abstract class TaskBase implements Task {
         setDescription(description);
         setStatus(status);
         this.comments = new ArrayList<>();
-        this.history = new EventLoggerImpl();
+        this.history = new LoggerImpl();
         this.taskType = tasksType;
-        addChangeToHistory(String.format(TASK_CREATED, tasksType.toString(), getID()));
+        logActivity(String.format(TASK_CREATED, tasksType.toString(), getID()));
     }
 
     @Override
@@ -74,8 +75,8 @@ public abstract class TaskBase implements Task {
     }
 
     @Override
-    public String getStatus() {
-        return status.toString();
+    public TaskStatus getStatus() {
+        return status;
     }
 
     @Override
@@ -84,14 +85,8 @@ public abstract class TaskBase implements Task {
             this.status = status;
             return;
         }
-
-        if (this.status.equals(status)) {
-            String event = String.format(DUPLICATE, taskType, getID(), "Status", getStatus());
-            history.addEvent(event);
-            throw new InvalidUserInput(event);
-        }
-
-        history.addEvent(String.format(TASK_CHANGE, taskType, getID(), "Status", this.status, status));
+        checkForDuplication(getStatus(), status, STATUS_FIELD);
+        history.addEvent(String.format(TASK_CHANGE, taskType, getID(), STATUS_FIELD, this.status, status));
         this.status = status;
     }
 
@@ -107,13 +102,22 @@ public abstract class TaskBase implements Task {
     }
 
     @Override
-    public List<Event> getLog() {
+    public List<EventImpl> getLog() {
         return new ArrayList<>(history.getEvents());
     }
 
-    protected void addChangeToHistory(String description) {
+    protected void logActivity(String description) {
         history.addEvent(description);
     }
+
+    protected <T> void checkForDuplication(T currentValue, T newValue, String property) {
+        if (newValue.equals(currentValue)) {
+            String event = String.format(DUPLICATE, taskType, getID(), property, currentValue);
+            history.addEvent(event);
+            throw new InvalidUserInput(event);
+        }
+    }
+
 
     @Override
     public String printDetails() {

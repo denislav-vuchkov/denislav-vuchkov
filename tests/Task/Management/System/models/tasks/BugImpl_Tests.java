@@ -34,7 +34,7 @@ public class BugImpl_Tests {
         Assertions.assertEquals("[Nothing, Works, Help]", myBug.getStepsToReproduce().toString());
         Assertions.assertEquals(Priority.MEDIUM, myBug.getPriority());
         Assertions.assertEquals(Severity.MAJOR, myBug.getSeverity());
-        Assertions.assertEquals(BugStatus.ACTIVE.toString(), myBug.getStatus());
+        Assertions.assertEquals(BugStatus.ACTIVE, myBug.getStatus());
     }
 
     @Test

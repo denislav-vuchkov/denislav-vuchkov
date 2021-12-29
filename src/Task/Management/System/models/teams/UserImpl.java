@@ -1,8 +1,8 @@
 package Task.Management.System.models.teams;
 
-import Task.Management.System.models.Event;
-import Task.Management.System.models.EventLoggerImpl;
-import Task.Management.System.models.contracts.EventLogger;
+import Task.Management.System.models.logger.EventImpl;
+import Task.Management.System.models.logger.LoggerImpl;
+import Task.Management.System.models.logger.contracts.Logger;
 import Task.Management.System.models.tasks.contracts.AssignableTask;
 import Task.Management.System.models.teams.contracts.User;
 import Task.Management.System.utils.FormatHelpers;
@@ -11,18 +11,18 @@ import Task.Management.System.utils.ValidationHelpers;
 import java.util.ArrayList;
 import java.util.List;
 
-import static Task.Management.System.models.contracts.EventLogger.*;
+import static Task.Management.System.models.logger.contracts.Logger.*;
 
 public class UserImpl implements User {
 
     private String name;
     private final List<AssignableTask> tasks;
-    private final EventLogger history;
+    private final Logger history;
 
     public UserImpl(String name) {
         setName(name);
         tasks = new ArrayList<>();
-        history = new EventLoggerImpl();
+        history = new LoggerImpl();
         history.addEvent(String.format(CREATION, FormatHelpers.getType(this), getName()));
     }
 
@@ -62,8 +62,8 @@ public class UserImpl implements User {
     }
 
     @Override
-    public List<Event> getLog() {
-        return EventLogger.extract(history.getEvents());
+    public List<EventImpl> getLog() {
+        return Logger.extract(history.getEvents());
     }
 
     @Override

@@ -119,7 +119,7 @@ public class ChangeFeedback_Tests {
         Assertions.assertEquals(
                 "User Denis: Successfully changed the STATUS of Feedback with ID 3 to SCHEDULED.",
                 changeFeedback.execute(parameters));
-        Assertions.assertEquals("Scheduled", repo.findFeedback(3).getStatus());
+        Assertions.assertEquals("Scheduled", repo.findFeedback(3).getStatus().toString());
     }
 
     @Test

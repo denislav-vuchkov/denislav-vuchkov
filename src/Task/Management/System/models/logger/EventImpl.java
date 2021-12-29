@@ -1,21 +1,21 @@
-package Task.Management.System.models;
+package Task.Management.System.models.logger;
+
+import Task.Management.System.models.logger.contracts.Event;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public final class Event {
+public class EventImpl implements Event {
 
     private final LocalDateTime occurrence;
     private final String description;
 
-    public Event(String description) {
-
+    public EventImpl(String description) {
         try {
             Thread.sleep(0, 1);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
         this.occurrence = LocalDateTime.now();
         this.description = description;
     }

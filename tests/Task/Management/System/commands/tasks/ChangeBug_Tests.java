@@ -129,6 +129,6 @@ public class ChangeBug_Tests {
         Assertions.assertEquals(
                 "User Denis: Successfully changed the STATUS of Bug with ID 2 to FIXED.",
                 changeBug.execute(parameters));
-        Assertions.assertEquals("Fixed", repo.findBug(2).getStatus());
+        Assertions.assertEquals("Fixed", repo.findBug(2).getStatus().toString());
     }
 }

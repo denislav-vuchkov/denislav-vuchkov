@@ -128,7 +128,7 @@ public class ChangeStory_Tests {
         Assertions.assertEquals(
                 "User Tisho: Successfully changed the STATUS of Story with ID 1 to DONE.",
                 changeStory.execute(parameters));
-        Assertions.assertEquals("Done", repo.findStory(1).getStatus());
+        Assertions.assertEquals("Done", repo.findStory(1).getStatus().toString());
     }
 }
 

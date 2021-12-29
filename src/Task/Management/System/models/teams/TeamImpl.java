@@ -1,9 +1,9 @@
 package Task.Management.System.models.teams;
 
-import Task.Management.System.models.Event;
-import Task.Management.System.models.EventLoggerImpl;
-import Task.Management.System.models.contracts.EventLogger;
-import Task.Management.System.models.contracts.Loggable;
+import Task.Management.System.models.logger.EventImpl;
+import Task.Management.System.models.logger.LoggerImpl;
+import Task.Management.System.models.logger.contracts.Logger;
+import Task.Management.System.models.logger.contracts.Loggable;
 import Task.Management.System.models.tasks.contracts.Task;
 import Task.Management.System.models.teams.contracts.Board;
 import Task.Management.System.models.teams.contracts.Team;
@@ -13,20 +13,20 @@ import Task.Management.System.utils.ValidationHelpers;
 import java.util.ArrayList;
 import java.util.List;
 
-import static Task.Management.System.models.contracts.EventLogger.*;
+import static Task.Management.System.models.logger.contracts.Logger.*;
 
 public class TeamImpl implements Loggable, Team {
 
     private String name;
     private final List<Board> boards;
     private final List<User> users;
-    private final EventLogger history;
+    private final Logger history;
 
     public TeamImpl(String name) {
         setName(name);
         boards = new ArrayList<>();
         users = new ArrayList<>();
-        history = new EventLoggerImpl();
+        history = new LoggerImpl();
         history.addEvent(String.format(CREATION, TEAM, getName()));
     }
 
@@ -89,8 +89,8 @@ public class TeamImpl implements Loggable, Team {
     }
 
     @Override
-    public List<Event> getLog() {
-        return EventLogger.extract(history.getEvents(), getBoards(), getUsers());
+    public List<EventImpl> getLog() {
+        return Logger.extract(history.getEvents(), getBoards(), getUsers());
     }
 
     @Override

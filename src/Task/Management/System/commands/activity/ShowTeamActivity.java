@@ -2,7 +2,7 @@ package Task.Management.System.commands.activity;
 
 import Task.Management.System.commands.BaseCommand;
 import Task.Management.System.core.contracts.TaskManagementSystemRepository;
-import Task.Management.System.models.Event;
+import Task.Management.System.models.logger.EventImpl;
 import Task.Management.System.utils.ValidationHelpers;
 
 import java.util.List;
@@ -24,6 +24,6 @@ public class ShowTeamActivity extends BaseCommand {
                 .findTeam(teamName)
                 .getLog()
                 .stream()
-                .map(Event::toString).collect(Collectors.joining(System.lineSeparator()));
+                .map(EventImpl::toString).collect(Collectors.joining(System.lineSeparator()));
     }
 }

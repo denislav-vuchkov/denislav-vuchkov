@@ -1,16 +1,15 @@
 package Task.Management.System.models.tasks;
 
-import Task.Management.System.exceptions.InvalidUserInput;
 import Task.Management.System.models.tasks.contracts.Comment;
 import Task.Management.System.models.tasks.contracts.Feedback;
 import Task.Management.System.models.tasks.enums.FeedbackStatus;
 import Task.Management.System.models.tasks.enums.Tasks;
+import Task.Management.System.utils.FormatHelpers;
 import Task.Management.System.utils.ValidationHelpers;
 
 import java.util.stream.Collectors;
 
-import static Task.Management.System.models.contracts.EventLogger.DUPLICATE;
-import static Task.Management.System.models.contracts.EventLogger.TASK_CHANGE;
+import static Task.Management.System.models.logger.contracts.Logger.TASK_CHANGE;
 
 public class FeedbackImpl extends TaskBase implements Feedback {
 
@@ -19,6 +18,7 @@ public class FeedbackImpl extends TaskBase implements Feedback {
     public static final int RATING_MAX = 10;
     public static final String INVALID_RATING_MESSAGE = String.format("Rating cannot be less than %d or more than %d",
             RATING_MIN, RATING_MAX);
+    public static final String RATING_FIELD = "Rating";
 
     private int rating = RATING_UNINITIALIZED;
 
@@ -39,22 +39,15 @@ public class FeedbackImpl extends TaskBase implements Feedback {
             this.rating = rating;
             return;
         }
-
-        if (this.rating == rating) {
-            String event = String.format(DUPLICATE, Tasks.FEEDBACK, getID(), "Rating", this.rating);
-            addChangeToHistory(event);
-            throw new InvalidUserInput(event);
-        }
-
-        addChangeToHistory(String.format(TASK_CHANGE, Tasks.FEEDBACK, getID(), "Rating", this.rating, rating));
+        checkForDuplication(getRating(), rating, RATING_FIELD);
+        logActivity(String.format(TASK_CHANGE, Tasks.FEEDBACK, getID(), RATING_FIELD, this.rating, rating));
         this.rating = rating;
     }
 
     @Override
     public String toString() {
         return String.format("%s ID: %d - Title: %s - Rating: %s - Status: %s - Comments: %d",
-                this.getClass().getSimpleName().replace("Impl", ""),
-                getID(), getTitle(), getRating(), getStatus(), getComments().size());
+                FormatHelpers.getType(this), getID(), getTitle(), getRating(), getStatus(), getComments().size());
     }
 
     @Override
@@ -65,7 +58,7 @@ public class FeedbackImpl extends TaskBase implements Feedback {
                         "Status: %s%n" +
                         "%s" +
                         "%s",
-                this.getClass().getSimpleName().replace("Impl", ""),
+                FormatHelpers.getType(this),
                 super.printDetails(),
                 getRating(),
                 getStatus(),

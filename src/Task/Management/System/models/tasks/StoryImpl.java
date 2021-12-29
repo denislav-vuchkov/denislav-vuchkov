@@ -1,20 +1,20 @@
 package Task.Management.System.models.tasks;
 
-import Task.Management.System.exceptions.InvalidUserInput;
 import Task.Management.System.models.tasks.contracts.Comment;
 import Task.Management.System.models.tasks.contracts.Story;
 import Task.Management.System.models.tasks.enums.Priority;
 import Task.Management.System.models.tasks.enums.Size;
 import Task.Management.System.models.tasks.enums.StoryStatus;
 import Task.Management.System.models.tasks.enums.Tasks;
+import Task.Management.System.utils.FormatHelpers;
 
 import java.util.stream.Collectors;
 
-import static Task.Management.System.models.contracts.EventLogger.DUPLICATE;
-import static Task.Management.System.models.contracts.EventLogger.TASK_CHANGE;
+import static Task.Management.System.models.logger.contracts.Logger.TASK_CHANGE;
 
 public class StoryImpl extends AssignableTaskImpl implements Story {
 
+    public static final String SIZE_FIELD = "Size";
     private Size size;
 
     public StoryImpl(long id, String title, String description, Priority priority, Size size) {
@@ -33,14 +33,8 @@ public class StoryImpl extends AssignableTaskImpl implements Story {
             this.size = size;
             return;
         }
-
-        if (this.size.equals(size)) {
-            String event = String.format(DUPLICATE, Tasks.STORY, getID(), "Size", this.size);
-            addChangeToHistory(event);
-            throw new InvalidUserInput(event);
-        }
-
-        addChangeToHistory(String.format(TASK_CHANGE, Tasks.STORY, getID(), "Size", this.size, size));
+        checkForDuplication(getSize(), size, SIZE_FIELD);
+        logActivity(String.format(TASK_CHANGE, Tasks.STORY, getID(), SIZE_FIELD, this.size, size));
         this.size = size;
     }
 
@@ -48,8 +42,7 @@ public class StoryImpl extends AssignableTaskImpl implements Story {
     public String toString() {
         return String.format("%s ID: %d - Title: %s - Priority: %s - Size: %s - " +
                         "Status: %s - Assignee: %s - Comments: %d",
-                this.getClass().getSimpleName().replace("Impl", ""),
-                getID(), getTitle(), getPriority(), getSize(),
+                FormatHelpers.getType(this), getID(), getTitle(), getPriority(), getSize(),
                 getStatus(), getAssignee(), getComments().size());
     }
 
@@ -63,7 +56,7 @@ public class StoryImpl extends AssignableTaskImpl implements Story {
                         "Assignee: %s%n" +
                         "%s" +
                         "%s",
-                this.getClass().getSimpleName().replace("Impl", ""),
+                FormatHelpers.getType(this),
                 super.printDetails(),
                 getPriority(), getSize(), getStatus(), getAssignee(),
                 getComments().stream().map(Comment::toString).collect(Collectors.joining(System.lineSeparator())),

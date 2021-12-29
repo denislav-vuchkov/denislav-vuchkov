@@ -1,22 +1,22 @@
 package Task.Management.System.models.tasks;
 
-import Task.Management.System.exceptions.InvalidUserInput;
 import Task.Management.System.models.tasks.contracts.Bug;
 import Task.Management.System.models.tasks.contracts.Comment;
 import Task.Management.System.models.tasks.enums.BugStatus;
 import Task.Management.System.models.tasks.enums.Priority;
 import Task.Management.System.models.tasks.enums.Severity;
 import Task.Management.System.models.tasks.enums.Tasks;
+import Task.Management.System.utils.FormatHelpers;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static Task.Management.System.models.contracts.EventLogger.DUPLICATE;
-import static Task.Management.System.models.contracts.EventLogger.TASK_CHANGE;
+import static Task.Management.System.models.logger.contracts.Logger.TASK_CHANGE;
 
 public class BugImpl extends AssignableTaskImpl implements Bug {
 
+    public static final String SEVERITY_FIELD = "Severity";
     private final List<String> stepsToReproduce;
     private Severity severity;
 
@@ -43,24 +43,17 @@ public class BugImpl extends AssignableTaskImpl implements Bug {
             this.severity = severity;
             return;
         }
-
-        if (this.severity.equals(severity)) {
-            String event = String.format(DUPLICATE, Tasks.BUG, getID(), "Severity", severity);
-            addChangeToHistory(event);
-            throw new InvalidUserInput(event);
-        }
-
-        addChangeToHistory(String.format(TASK_CHANGE, Tasks.BUG, getID(), "Severity", this.severity, severity));
+        checkForDuplication(getSeverity(), severity, SEVERITY_FIELD);
+        logActivity(String.format(TASK_CHANGE, Tasks.BUG, getID(), SEVERITY_FIELD, this.severity, severity));
         this.severity = severity;
     }
 
     @Override
     public String toString() {
-        return String.format("%s ID: %d - Title: %s - Steps: %d - Priority: %s - Severity: %s - " +
-                        "Status: %s - Assignee: %s - Comments: %d",
-                this.getClass().getSimpleName().replace("Impl", ""),
-                getID(), getTitle(), getStepsToReproduce().size(), getPriority(), getSeverity(),
-                getStatus(), getAssignee(), getComments().size());
+        return String.format("%s ID: %d - Title: %s - Steps: %d - " +
+                        "Priority: %s - Severity: %s - Status: %s - Assignee: %s - Comments: %d",
+                FormatHelpers.getType(this), getID(), getTitle(), getStepsToReproduce().size(),
+                getPriority(), getSeverity(), getStatus(), getAssignee(), getComments().size());
     }
 
     @Override
@@ -74,7 +67,7 @@ public class BugImpl extends AssignableTaskImpl implements Bug {
                         "%s" +
                         "%s" +
                         "%s",
-                this.getClass().getSimpleName().replace("Impl", ""),
+                FormatHelpers.getType(this),
                 super.printDetails(),
                 getPriority(), getSeverity(), getStatus(), getAssignee(),
                 getStepsToReproduce(),

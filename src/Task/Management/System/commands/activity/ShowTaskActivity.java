@@ -2,8 +2,7 @@ package Task.Management.System.commands.activity;
 
 import Task.Management.System.commands.BaseCommand;
 import Task.Management.System.core.contracts.TaskManagementSystemRepository;
-import Task.Management.System.models.Event;
-import Task.Management.System.models.tasks.contracts.Task;
+import Task.Management.System.models.logger.EventImpl;
 import Task.Management.System.utils.ParsingHelpers;
 import Task.Management.System.utils.ValidationHelpers;
 
@@ -28,7 +27,7 @@ public class ShowTaskActivity extends BaseCommand {
                 .findTask(ID)
                 .getLog()
                 .stream()
-                .map(Event::toString)
+                .map(EventImpl::toString)
                 .collect(Collectors.joining(System.lineSeparator()));
     }
 }

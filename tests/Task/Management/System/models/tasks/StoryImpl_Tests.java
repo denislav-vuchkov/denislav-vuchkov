@@ -30,7 +30,7 @@ public class StoryImpl_Tests {
         Assertions.assertEquals("Just Right Length", myStory.getDescription());
         Assertions.assertEquals(Priority.MEDIUM, myStory.getPriority());
         Assertions.assertEquals(Size.MEDIUM, myStory.getSize());
-        Assertions.assertEquals(StoryStatus.NOT_DONE.toString(), myStory.getStatus());
+        Assertions.assertEquals(StoryStatus.NOT_DONE, myStory.getStatus());
     }
 
     @Test

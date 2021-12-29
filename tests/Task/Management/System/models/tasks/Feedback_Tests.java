@@ -26,7 +26,7 @@ public class Feedback_Tests {
         Assertions.assertEquals("Not Too Short", myFeedback.getTitle());
         Assertions.assertEquals("Just Right Length", myFeedback.getDescription());
         Assertions.assertEquals(5, myFeedback.getRating());
-        Assertions.assertEquals(FeedbackStatus.NEW.toString(), myFeedback.getStatus());
+        Assertions.assertEquals(FeedbackStatus.NEW, myFeedback.getStatus());
     }
 
     @Test

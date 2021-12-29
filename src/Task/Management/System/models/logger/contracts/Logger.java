@@ -1,12 +1,12 @@
-package Task.Management.System.models.contracts;
+package Task.Management.System.models.logger.contracts;
 
-import Task.Management.System.models.Event;
+import Task.Management.System.models.logger.EventImpl;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public interface EventLogger {
+public interface Logger {
 
     String TEAM = "Team";
     String BOARD = "Board";
@@ -26,29 +26,29 @@ public interface EventLogger {
     String TASK_CHANGE = "%s with ID %d: %s changed from %s to %s.";
     String DUPLICATE = "%s with ID %d: Modification denied. %s is already %s.";
 
-    static <B extends Loggable, U extends Loggable> List<Event>
-    extract(List<Event> history, List<B> boards, List<U> users) {
+    static <B extends Task.Management.System.models.logger.contracts.Loggable, U extends Task.Management.System.models.logger.contracts.Loggable> List<EventImpl>
+    extract(List<EventImpl> history, List<B> boards, List<U> users) {
         history.addAll(getEvents(boards));
         history.addAll(getEvents(users));
-        return history.stream().sorted(Comparator.comparing(Event::getOccurrence)).collect(Collectors.toList());
+        return history.stream().sorted(Comparator.comparing(EventImpl::getOccurrence)).collect(Collectors.toList());
     }
 
-    static <U extends Loggable> List<Event> extract(List<Event> history, List<U> users) {
+    static <U extends Task.Management.System.models.logger.contracts.Loggable> List<EventImpl> extract(List<EventImpl> history, List<U> users) {
         history.addAll(getEvents(users));
-        return history.stream().sorted(Comparator.comparing(Event::getOccurrence)).collect(Collectors.toList());
+        return history.stream().sorted(Comparator.comparing(EventImpl::getOccurrence)).collect(Collectors.toList());
     }
 
-    static List<Event> extract(List<Event> history) {
-        return history.stream().sorted(Comparator.comparing(Event::getOccurrence)).collect(Collectors.toList());
+    static List<EventImpl> extract(List<EventImpl> history) {
+        return history.stream().sorted(Comparator.comparing(EventImpl::getOccurrence)).collect(Collectors.toList());
     }
 
-    static <T extends Loggable> List<Event> getEvents(List<T> elements) {
+    static <T extends Task.Management.System.models.logger.contracts.Loggable> List<EventImpl> getEvents(List<T> elements) {
         return elements.stream().flatMap(element -> element.getLog().stream()).collect(Collectors.toList());
     }
 
     void addEvent(String description);
 
-    List<Event> getEvents();
+    List<EventImpl> getEvents();
 
     int size();
 
