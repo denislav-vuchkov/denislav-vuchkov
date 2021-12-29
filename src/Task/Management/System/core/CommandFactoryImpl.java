@@ -1,6 +1,7 @@
 package Task.Management.System.core;
 
 import Task.Management.System.commands.activity.ShowBoardActivity;
+import Task.Management.System.commands.activity.ShowTaskActivity;
 import Task.Management.System.commands.activity.ShowTeamActivity;
 import Task.Management.System.commands.activity.ShowUserActivity;
 import Task.Management.System.commands.contracts.Command;
@@ -41,6 +42,8 @@ public class CommandFactoryImpl implements CommandFactory {
                 return new ShowBoardActivity(taskManagementSystemRepository);
             case SHOW_USER_ACTIVITY:
                 return new ShowUserActivity(taskManagementSystemRepository);
+            case SHOW_TASK_ACTIVITY:
+                return new ShowTaskActivity(taskManagementSystemRepository);
             case CREATE_TEAM:
                 return new CreateTeam(taskManagementSystemRepository);
             case CREATE_BOARD:
