@@ -41,9 +41,8 @@ public class AssignTask extends BaseCommand {
 
         assigner.log(String.format(ASSIGN_EVENT, assigner.getName(), taskType, task.getID(), newAssignee.getName()));
 
-        User oldAssignee = getRepository().findUser(task.getAssignee());
-        if (!oldAssignee.getName().equals(UNASSIGNED)) {
-            oldAssignee.removeTask(task);
+        if (!task.getAssignee().equals(UNASSIGNED)) {
+            getRepository().findUser(task.getAssignee()).removeTask(task);
         }
 
         newAssignee.addTask(task);
