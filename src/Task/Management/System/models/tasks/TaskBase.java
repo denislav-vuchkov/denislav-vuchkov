@@ -33,6 +33,7 @@ public abstract class TaskBase implements Task {
     private TaskStatus status;
     private final List<Comment> comments;
     private final EventLogger history;
+    private Tasks taskType;
 
     public TaskBase(long id, Tasks tasksType, String title, String description, TaskStatus status) {
         this.id = id;
@@ -41,8 +42,8 @@ public abstract class TaskBase implements Task {
         setStatus(status);
         this.comments = new ArrayList<>();
         this.history = new EventLoggerImpl();
-        addChangeToHistory(String.format(CREATION,
-                super.getClass().getSimpleName().replace("Base", ""), tasksType.toString()));
+        this.taskType = tasksType;
+        addChangeToHistory(String.format(TASK_CREATED, tasksType.toString(), getID()));
     }
 
     @Override
@@ -84,7 +85,7 @@ public abstract class TaskBase implements Task {
         if (this.status.equals(status)) {
             throw new InvalidUserInput(String.format(DUPLICATE, "Status", getStatus()));
         }
-        history.addEvent(String.format(CHANGE, "Status", this.status, status));
+        history.addEvent(String.format(CHANGE, taskType, getID(), "Status", this.status, status));
         this.status = status;
     }
 

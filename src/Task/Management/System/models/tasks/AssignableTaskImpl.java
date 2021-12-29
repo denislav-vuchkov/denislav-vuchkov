@@ -14,10 +14,12 @@ public abstract class AssignableTaskImpl extends TaskBase implements AssignableT
     public static final String UNASSIGNED = "Unassigned";
     private Priority priority;
     private String assignee;
+    private Tasks taskType;
 
     public AssignableTaskImpl(long id, Tasks tasksType, String title, String description,
                               Priority priority, TaskStatus status) {
         super(id, tasksType, title, description, status);
+        taskType = tasksType;
         setPriority(priority);
         setAssignee(UNASSIGNED);
     }
@@ -36,7 +38,7 @@ public abstract class AssignableTaskImpl extends TaskBase implements AssignableT
         if (this.priority.equals(priority)) {
             throw new InvalidUserInput(String.format(DUPLICATE, "Priority", this.priority));
         }
-        addChangeToHistory(String.format(CHANGE, "Priority", this.priority, priority));
+        addChangeToHistory(String.format(CHANGE, taskType, getID(), "Priority", this.priority, priority));
         this.priority = priority;
     }
 
@@ -54,7 +56,7 @@ public abstract class AssignableTaskImpl extends TaskBase implements AssignableT
         if (this.assignee.equals(assignee)) {
             throw new InvalidUserInput(String.format(DUPLICATE, "Assignee", this.assignee));
         }
-        addChangeToHistory(String.format(CHANGE, "Assignee", this.assignee, assignee));
+        addChangeToHistory(String.format(CHANGE, taskType, getID(), "Assignee", this.assignee, assignee));
         this.assignee = assignee;
     }
 

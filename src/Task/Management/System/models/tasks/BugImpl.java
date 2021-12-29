@@ -46,7 +46,8 @@ public class BugImpl extends AssignableTaskImpl implements Bug {
         if (this.severity.equals(severity)) {
             throw new InvalidUserInput(String.format(DUPLICATE, "Severity", severity));
         }
-        addChangeToHistory(String.format(CHANGE, "Severity", this.severity, severity));
+        addChangeToHistory(String.format(CHANGE, this.getClass().getSimpleName().replace("Impl", ""),
+                getID(), "Severity", this.severity, severity));
         this.severity = severity;
     }
 

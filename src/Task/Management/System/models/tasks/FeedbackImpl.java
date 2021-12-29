@@ -42,7 +42,8 @@ public class FeedbackImpl extends TaskBase implements Feedback {
         if (this.rating == rating) {
             throw new InvalidUserInput(String.format(DUPLICATE, "Rating", this.rating));
         }
-        addChangeToHistory(String.format(CHANGE, "Rating", this.rating, rating));
+        addChangeToHistory(String.format(CHANGE, this.getClass().getSimpleName().replace("Impl", ""),
+                getID(), "Rating", this.rating, rating));
         this.rating = rating;
     }
 

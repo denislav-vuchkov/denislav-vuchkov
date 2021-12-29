@@ -36,7 +36,8 @@ public class StoryImpl extends AssignableTaskImpl implements Story {
         if (this.size.equals(size)) {
             throw new InvalidUserInput(String.format(DUPLICATE, "Size", this.size));
         }
-        addChangeToHistory(String.format(CHANGE, "Size", this.size, size));
+        addChangeToHistory(String.format(CHANGE, this.getClass().getSimpleName().replace("Impl", ""),
+                getID(), "Size", this.size, size));
         this.size = size;
     }
 

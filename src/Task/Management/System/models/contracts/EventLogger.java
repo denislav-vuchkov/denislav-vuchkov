@@ -10,10 +10,11 @@ public interface EventLogger {
     String BOARD = "Board";
     String USER = "User";
 
+    String TASK_CREATED = "%s with ID %d created.";
     String CREATION = "%s %s created.";
     String ADDITION = "%s %s added.";
     String REMOVAL = "%s %s removed.";
-    String CHANGE = "%s changed from %s to %s.";
+    String CHANGE = "%s with ID %d: %s changed from %s to %s.";
     String DUPLICATE = "%s is already %s.";
 
     String TASK_ADDED = "%s with ID %d added in board %s.";
