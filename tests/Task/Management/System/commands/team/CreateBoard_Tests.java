@@ -93,7 +93,7 @@ public class CreateBoard_Tests {
         List<String> boardOneParameters = List.of(VALID_TEAM_NAME, VALID_BOARD_NAME);
         createBoard.execute(boardOneParameters);
 
-        String anotherValidTeamName = "x".repeat(NAME_MAX_LENGTH-1);
+        String anotherValidTeamName = "x".repeat(NAME_MAX_LEN -1);
         List<String> teamTwoParameters = List.of(anotherValidTeamName);
         createTeam.execute(teamTwoParameters);
 
@@ -104,7 +104,7 @@ public class CreateBoard_Tests {
     }
 
     @ParameterizedTest(name = "with length {0}")
-    @ValueSource(ints = {NAME_MIN_LENGTH-1, NAME_MAX_LENGTH+1})
+    @ValueSource(ints = {NAME_MIN_LEN -1, NAME_MAX_LEN +1})
     public void createBoard_Should_throwException_whenInvalidBoardName(int nameLength) {
         Command createTeam = commandFactory.createCommand("CreateTeam", repository);
         List<String> teamParameters = List.of(VALID_TEAM_NAME);

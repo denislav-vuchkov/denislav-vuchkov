@@ -1,6 +1,5 @@
 package Task.Management.System.models.teams;
 
-import Task.Management.System.exceptions.InvalidUserInput;
 import Task.Management.System.models.Event;
 import Task.Management.System.models.EventLoggerImpl;
 import Task.Management.System.models.contracts.EventLogger;
@@ -12,16 +11,12 @@ import Task.Management.System.models.teams.contracts.User;
 import Task.Management.System.utils.ValidationHelpers;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static Task.Management.System.models.contracts.EventLogger.*;
 
 public class TeamImpl implements Loggable, Team {
 
-    public static final String NOT_IN_TEAM = "%s %s is not in team %s";
-    public static final String ALREADY_IN_TEAM = "%s %s is already in team %s";
     private final List<Board> boards;
     private final List<User> users;
     private final EventLogger history;
@@ -41,7 +36,7 @@ public class TeamImpl implements Loggable, Team {
     }
 
     private void setName(String name) {
-        ValidationHelpers.validateRange(name.length(), NAME_MIN_LENGTH, NAME_MAX_LENGTH, INVALID_NAME_MESSAGE);
+        ValidationHelpers.validateRange(name.length(), NAME_MIN_LEN, NAME_MAX_LEN, INVALID_NAME);
         this.name = name;
     }
 
@@ -52,18 +47,14 @@ public class TeamImpl implements Loggable, Team {
 
     @Override
     public void addBoard(Board board) {
-        if (getBoards().contains(board)) {
-            throw new InvalidUserInput(String.format(ALREADY_IN_TEAM, BOARD, board.getName(), getName()));
-        }
+        ValidationHelpers.entryNotAlreadyInList(board, getBoards(), getName());
         boards.add(board);
         history.addEvent(String.format(ADDITION, BOARD, board.getName()));
     }
 
     @Override
     public void removeBoard(Board board) {
-        if (!getBoards().contains(board)) {
-            throw new InvalidUserInput(String.format(NOT_IN_TEAM, BOARD, board.getName(), getName()));
-        }
+        ValidationHelpers.entryExistInList(board, getBoards(), getName());
         boards.remove(board);
         history.addEvent(String.format(REMOVAL, BOARD, board.getName()));
     }
@@ -75,20 +66,14 @@ public class TeamImpl implements Loggable, Team {
 
     @Override
     public void addUser(User user) {
-        if (getUsers().contains(user)) {
-            throw new InvalidUserInput(
-                    String.format(ALREADY_IN_TEAM, USER, user.getName(), getName()));
-        }
+        ValidationHelpers.entryNotAlreadyInList(user, getUsers(), getName());
         users.add(user);
         history.addEvent(String.format(ADDITION, USER, user.getName()));
     }
 
     @Override
     public void removeUser(User user) {
-        if (!getUsers().contains(user)) {
-            throw new InvalidUserInput(
-                    String.format(NOT_IN_TEAM, USER, user.getName(), getName()));
-        }
+        ValidationHelpers.entryExistInList(user, getUsers(), getName());
         users.remove(user);
         history.addEvent(String.format(REMOVAL, USER, user.getName()));
     }
@@ -105,24 +90,8 @@ public class TeamImpl implements Loggable, Team {
 
     @Override
     public List<Event> getLog() {
-
-        List<Event> boardsHistory = getBoards()
-                .stream()
-                .flatMap(board -> board.getLog().stream())
-                .collect(Collectors.toList());
-
-        List<Event> userHistory = getUsers()
-                .stream()
-                .flatMap(user -> user.getLog().stream())
-                .collect(Collectors.toList());
-
-        List<Event> teamHistory = new ArrayList<>((history.getEvents()));
-        teamHistory.addAll(boardsHistory);
-        teamHistory.addAll(userHistory);
-
-        return teamHistory.stream().sorted(Comparator.comparing(Event::getOccurrence)).collect(Collectors.toList());
+        return EventLogger.extract(history.getEvents(), getBoards(), getUsers());
     }
-
 
     @Override
     public String toString() {

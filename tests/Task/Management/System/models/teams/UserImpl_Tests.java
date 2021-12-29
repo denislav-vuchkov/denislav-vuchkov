@@ -15,8 +15,8 @@ import java.util.List;
 import static Task.Management.System.models.Factory.createBug;
 import static Task.Management.System.models.Factory.createStory;
 import static Task.Management.System.models.TestData.UserImpl.VALID_USER_NAME;
-import static Task.Management.System.models.teams.contracts.subcontracts.Nameable.NAME_MAX_LENGTH;
-import static Task.Management.System.models.teams.contracts.subcontracts.Nameable.NAME_MIN_LENGTH;
+import static Task.Management.System.models.teams.contracts.subcontracts.Nameable.NAME_MAX_LEN;
+import static Task.Management.System.models.teams.contracts.subcontracts.Nameable.NAME_MIN_LEN;
 
 public class UserImpl_Tests {
 
@@ -38,7 +38,7 @@ public class UserImpl_Tests {
     }
 
     @ParameterizedTest(name = "with length {0}")
-    @ValueSource(ints = {NAME_MIN_LENGTH - 1, NAME_MAX_LENGTH + 1})
+    @ValueSource(ints = {NAME_MIN_LEN - 1, NAME_MAX_LEN + 1})
     public void constructor_Should_ThrowException_When_InvalidName(int nameLength) {
         Assertions.assertThrows(RuntimeException.class, () -> new UserImpl("x".repeat(nameLength)));
     }

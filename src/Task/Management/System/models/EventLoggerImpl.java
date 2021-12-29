@@ -1,9 +1,12 @@
 package Task.Management.System.models;
 
 import Task.Management.System.models.contracts.EventLogger;
+import Task.Management.System.models.contracts.Loggable;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class EventLoggerImpl implements EventLogger {
 

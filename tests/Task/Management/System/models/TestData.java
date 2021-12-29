@@ -44,15 +44,15 @@ public class TestData {
     }
 
     public static class UserImpl {
-        public static final String VALID_USER_NAME = "x".repeat(NAME_MIN_LENGTH);
+        public static final String VALID_USER_NAME = "x".repeat(NAME_MIN_LEN);
     }
 
     public static class BoardImpl {
-        public static final String VALID_BOARD_NAME = "x".repeat(NAME_MAX_LENGTH);
+        public static final String VALID_BOARD_NAME = "x".repeat(NAME_MAX_LEN);
     }
 
     public static class TeamImpl {
-        public static final String VALID_TEAM_NAME = "x".repeat(NAME_MAX_LENGTH);
+        public static final String VALID_TEAM_NAME = "x".repeat(NAME_MAX_LEN);
     }
 
 }

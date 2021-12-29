@@ -18,8 +18,8 @@ import java.util.List;
 
 import static Task.Management.System.commands.team.CreateUser.EXPECTED_NUMBER_OF_ARGUMENTS;
 import static Task.Management.System.models.TestData.UserImpl.VALID_USER_NAME;
-import static Task.Management.System.models.teams.contracts.subcontracts.Nameable.NAME_MAX_LENGTH;
-import static Task.Management.System.models.teams.contracts.subcontracts.Nameable.NAME_MIN_LENGTH;
+import static Task.Management.System.models.teams.contracts.subcontracts.Nameable.NAME_MAX_LEN;
+import static Task.Management.System.models.teams.contracts.subcontracts.Nameable.NAME_MIN_LEN;
 
 public class CreateUser_Tests {
 
@@ -48,7 +48,7 @@ public class CreateUser_Tests {
     }
 
     @ParameterizedTest(name = "with length {0}")
-    @ValueSource(ints = {NAME_MIN_LENGTH-1, NAME_MAX_LENGTH+1})
+    @ValueSource(ints = {NAME_MIN_LEN -1, NAME_MAX_LEN +1})
     public void createUser_Should_throwException_whenInvalidUserName(int nameLength) {
         List<String> parameters = List.of("x".repeat(nameLength));
 

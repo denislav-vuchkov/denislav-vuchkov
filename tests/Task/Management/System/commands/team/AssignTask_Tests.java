@@ -15,7 +15,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static Task.Management.System.commands.BaseCommand.UNASSIGNED;
 import static Task.Management.System.commands.team.AssignTask.EXPECTED_NUMBER_OF_ARGUMENTS;
@@ -26,7 +25,7 @@ import static Task.Management.System.models.TestData.TaskBase.VALID_DESCRIPTION;
 import static Task.Management.System.models.TestData.TaskBase.VALID_TITLE;
 import static Task.Management.System.models.TestData.TeamImpl.VALID_TEAM_NAME;
 import static Task.Management.System.models.TestData.UserImpl.VALID_USER_NAME;
-import static Task.Management.System.models.teams.contracts.subcontracts.Nameable.NAME_MAX_LENGTH;
+import static Task.Management.System.models.teams.contracts.subcontracts.Nameable.NAME_MAX_LEN;
 
 public class AssignTask_Tests {
 
@@ -34,7 +33,7 @@ public class AssignTask_Tests {
     TaskManagementSystemRepository repository;
     Command assignTask;
     String oldAssignee = VALID_USER_NAME;
-    String newAssignee = "t".repeat(NAME_MAX_LENGTH-1);
+    String newAssignee = "t".repeat(NAME_MAX_LEN -1);
 
     @BeforeEach
     public void setup() {

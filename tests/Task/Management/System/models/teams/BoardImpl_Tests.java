@@ -14,8 +14,8 @@ import java.util.List;
 
 import static Task.Management.System.models.Factory.*;
 import static Task.Management.System.models.TestData.BoardImpl.VALID_BOARD_NAME;
-import static Task.Management.System.models.teams.contracts.subcontracts.Nameable.NAME_MAX_LENGTH;
-import static Task.Management.System.models.teams.contracts.subcontracts.Nameable.NAME_MIN_LENGTH;
+import static Task.Management.System.models.teams.contracts.subcontracts.Nameable.NAME_MAX_LEN;
+import static Task.Management.System.models.teams.contracts.subcontracts.Nameable.NAME_MIN_LEN;
 
 public class BoardImpl_Tests {
 
@@ -42,7 +42,7 @@ public class BoardImpl_Tests {
             "" +
             "" +
             "}")
-    @ValueSource(ints = {NAME_MIN_LENGTH-1, NAME_MAX_LENGTH+1})
+    @ValueSource(ints = {NAME_MIN_LEN -1, NAME_MAX_LEN +1})
     public void constructor_Should_ThrowException_When_InvalidName(int nameLength) {
         Assertions.assertThrows(RuntimeException.class, () -> new BoardImpl("x".repeat(nameLength)));
     }

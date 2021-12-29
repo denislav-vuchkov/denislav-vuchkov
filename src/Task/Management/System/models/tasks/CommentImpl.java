@@ -40,4 +40,6 @@ public class CommentImpl implements Comment {
     public String toString() {
         return String.format("Author: %s - Comment: %s", getAuthor(), getContent());
     }
+
+
 }

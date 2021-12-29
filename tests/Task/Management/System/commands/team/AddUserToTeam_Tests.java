@@ -21,7 +21,7 @@ import static Task.Management.System.commands.team.AddUserToTeam.USER_ADDED_TO_T
 import static Task.Management.System.core.TaskManagementSystemRepositoryImpl.NOT_EXIST;
 import static Task.Management.System.models.TestData.TeamImpl.VALID_TEAM_NAME;
 import static Task.Management.System.models.TestData.UserImpl.VALID_USER_NAME;
-import static Task.Management.System.models.teams.contracts.subcontracts.Nameable.NAME_MIN_LENGTH;
+import static Task.Management.System.models.teams.contracts.subcontracts.Nameable.NAME_MIN_LEN;
 
 public class AddUserToTeam_Tests {
 
@@ -76,7 +76,7 @@ public class AddUserToTeam_Tests {
 
     @Test
     public void addUserToTeam_Should_ThrowException_WhenUserDoesNotExist() {
-        String invalidUserName = "x".repeat(NAME_MIN_LENGTH+1);
+        String invalidUserName = "x".repeat(NAME_MIN_LEN +1);
         List<String> parameters = List.of(invalidUserName, VALID_TEAM_NAME);
 
         String errMessage = String.format(NOT_EXIST, "user", "user");
@@ -87,7 +87,7 @@ public class AddUserToTeam_Tests {
 
     @Test
     public void addUserToTeam_Should_ThrowException_WhenTeamDoesNotExist() {
-        String invalidTeamName = "T".repeat(NAME_MIN_LENGTH+1);
+        String invalidTeamName = "T".repeat(NAME_MIN_LEN +1);
         List<String> parameters = List.of(VALID_USER_NAME, invalidTeamName);
 
         String errMessage = String.format(NOT_EXIST, "team", "team");

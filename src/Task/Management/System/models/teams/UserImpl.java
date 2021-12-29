@@ -1,11 +1,11 @@
 package Task.Management.System.models.teams;
 
-import Task.Management.System.exceptions.InvalidUserInput;
 import Task.Management.System.models.Event;
 import Task.Management.System.models.EventLoggerImpl;
 import Task.Management.System.models.contracts.EventLogger;
 import Task.Management.System.models.tasks.contracts.AssignableTask;
 import Task.Management.System.models.teams.contracts.User;
+import Task.Management.System.utils.FormatHelpers;
 import Task.Management.System.utils.ValidationHelpers;
 
 import java.util.ArrayList;
@@ -15,8 +15,6 @@ import static Task.Management.System.models.contracts.EventLogger.*;
 
 public class UserImpl implements User {
 
-    public static final String ALREADY_ASSIGNED = "%s with %d is already assigned to user %s.";
-    public static final String NOT_ASSIGNED = "%s with %d is not assigned to user %s.";
     private final List<AssignableTask> tasks;
     private final EventLogger history;
     private String name;
@@ -25,7 +23,7 @@ public class UserImpl implements User {
         setName(name);
         tasks = new ArrayList<>();
         history = new EventLoggerImpl();
-        history.addEvent(String.format(CREATION, "User", getName()));
+        history.addEvent(String.format(CREATION, FormatHelpers.getType(this), getName()));
     }
 
     @Override
@@ -34,7 +32,7 @@ public class UserImpl implements User {
     }
 
     private void setName(String name) {
-        ValidationHelpers.validateRange(name.length(), NAME_MIN_LENGTH, NAME_MAX_LENGTH, INVALID_NAME_MESSAGE);
+        ValidationHelpers.validateRange(name.length(), NAME_MIN_LEN, NAME_MAX_LEN, INVALID_NAME);
         this.name = name;
     }
 
@@ -45,27 +43,17 @@ public class UserImpl implements User {
 
     @Override
     public void addTask(AssignableTask task) {
-        String taskType = task.getClass().getSimpleName().replace("Impl", "");
-
-        if (tasks.contains(task)) {
-            throw new InvalidUserInput(String.format(ALREADY_ASSIGNED, USER, task.getID(), getName()));
-        }
-
+        ValidationHelpers.entryNotAlreadyInList(task, getTasks(), getName());
         tasks.add(task);
-        history.addEvent(String.format(USER_ADD_TASK, getName(), taskType, task.getID()));
+        history.addEvent(String.format(USER_ADD_TASK, getName(), FormatHelpers.getType(task), task.getID()));
         task.setAssignee(getName());
     }
 
     @Override
     public void removeTask(AssignableTask task) {
-        String taskType = task.getClass().getSimpleName().replace("Impl", "");
-
-        if (!tasks.contains(task)) {
-            throw new InvalidUserInput(String.format(NOT_ASSIGNED, taskType, task.getID(), getName()));
-        }
-
+        ValidationHelpers.entryExistInList(task, getTasks(), getName());
         tasks.remove(task);
-        history.addEvent(String.format(USER_REMOVE_TASK, getName(), taskType, task.getID()));
+        history.addEvent(String.format(USER_REMOVE_TASK, getName(), FormatHelpers.getType(task), task.getID()));
         task.unAssign();
     }
 
@@ -75,7 +63,7 @@ public class UserImpl implements User {
 
     @Override
     public List<Event> getLog() {
-        return new ArrayList<>(history.getEvents());
+        return EventLogger.extract(history.getEvents());
     }
 
     @Override

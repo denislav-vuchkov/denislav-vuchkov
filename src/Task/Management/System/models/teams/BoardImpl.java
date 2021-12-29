@@ -1,24 +1,20 @@
 package Task.Management.System.models.teams;
 
-import Task.Management.System.exceptions.InvalidUserInput;
 import Task.Management.System.models.Event;
 import Task.Management.System.models.EventLoggerImpl;
 import Task.Management.System.models.contracts.EventLogger;
 import Task.Management.System.models.tasks.contracts.Task;
 import Task.Management.System.models.teams.contracts.Board;
+import Task.Management.System.utils.FormatHelpers;
 import Task.Management.System.utils.ValidationHelpers;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static Task.Management.System.models.contracts.EventLogger.*;
 
 public class BoardImpl implements Board {
 
-    public static final String ALREADY_EXIST = "%s with %d already exists in board %s";
-    public static final String NOT_EXISTS = "%s with %d does not exist in board %s";
     private final List<Task> tasks;
     private final EventLogger history;
     private String name;
@@ -36,7 +32,7 @@ public class BoardImpl implements Board {
     }
 
     private void setName(String name) {
-        ValidationHelpers.validateRange(name.length(), NAME_MIN_LENGTH, NAME_MAX_LENGTH, INVALID_NAME_MESSAGE);
+        ValidationHelpers.validateRange(name.length(), NAME_MIN_LEN, NAME_MAX_LEN, INVALID_NAME);
         this.name = name;
     }
 
@@ -47,41 +43,21 @@ public class BoardImpl implements Board {
 
     @Override
     public void addTask(Task task) {
-        String taskType = task.getClass().getSimpleName().replace("Impl", "");
-
-        if (tasks.contains(task)) {
-            throw new InvalidUserInput(String.format(ALREADY_EXIST, taskType, task.getID(), getName()));
-        }
-
+        ValidationHelpers.entryNotAlreadyInList(task, getTasks(), getName());
         tasks.add(task);
-        history.addEvent(String.format(BOARD_ADD_TASK, getName(), taskType, task.getID()));
+        history.addEvent(String.format(BOARD_ADD_TASK, getName(), FormatHelpers.getType(task), task.getID()));
     }
 
     @Override
     public void removeTask(Task task) {
-        String taskType = task.getClass().getSimpleName().replace("Impl", "");
-
-        if (!tasks.contains(task)) {
-            throw new InvalidUserInput(
-                    String.format(NOT_EXISTS, taskType, task.getID(), getName()));
-        }
-
+        ValidationHelpers.entryExistInList(task, getTasks(), getName());
         tasks.remove(task);
-        history.addEvent(String.format(BOARD_REMOVE, getName(), taskType, task.getID()));
+        history.addEvent(String.format(BOARD_REMOVE, getName(), FormatHelpers.getType(task), task.getID()));
     }
 
     @Override
     public List<Event> getLog() {
-
-        List<Event> tasksHistory = getTasks()
-                .stream()
-                .flatMap(task -> task.getLog().stream())
-                .collect(Collectors.toList());
-
-        List<Event> boardHistory = new ArrayList<>((history.getEvents()));
-        boardHistory.addAll(tasksHistory);
-
-        return boardHistory.stream().sorted(Comparator.comparing(Event::getOccurrence)).collect(Collectors.toList());
+        return EventLogger.extract(history.getEvents(), getTasks());
     }
 
     @Override
