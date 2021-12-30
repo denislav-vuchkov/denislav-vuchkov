@@ -117,12 +117,13 @@ public abstract class TaskBase implements Task {
         if (Objects.isNull(currentValue)) return;
 
         if (newValue.equals(currentValue)) {
-            String event = String.format(DUPLICATE, taskType, getID(), property, currentValue);
-            history.addEvent(event);
-            throw new InvalidUserInput(event);
+            String changeDenied = String.format(DUPLICATE, taskType, getID(), property, currentValue);
+            history.addEvent(changeDenied);
+            throw new InvalidUserInput(changeDenied);
         }
 
-        history.addEvent(String.format(TASK_CHANGE, taskType, getID(), property, currentValue, newValue));
+        String changeSuccessful = String.format(TASK_CHANGE, taskType, getID(), property, currentValue, newValue);
+        history.addEvent(changeSuccessful);
     }
 
 }
