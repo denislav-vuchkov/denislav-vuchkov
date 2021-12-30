@@ -6,4 +6,6 @@ public interface Event {
 
     LocalDateTime getOccurrence();
 
+    String toString();
+
 }

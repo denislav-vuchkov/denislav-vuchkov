@@ -1,11 +1,13 @@
 package Task.Management.System.models.tasks;
 
+import Task.Management.System.models.logger.EventImpl;
 import Task.Management.System.models.tasks.contracts.Comment;
 import Task.Management.System.models.tasks.contracts.Feedback;
 import Task.Management.System.models.tasks.enums.FeedbackStatus;
 import Task.Management.System.models.tasks.enums.Tasks;
 import Task.Management.System.utils.FormatHelpers;
 import Task.Management.System.utils.ValidationHelpers;
+import jdk.jfr.Event;
 
 import java.util.stream.Collectors;
 
@@ -48,13 +50,14 @@ public class FeedbackImpl extends TaskBase implements Feedback {
                         "%s" +
                         "Rating: %d%n" +
                         "Status: %s%n" +
-                        "%s" +
+                        "%s%n" +
                         "%s",
                 FormatHelpers.getType(this),
                 super.printDetails(),
                 getRating(),
                 getStatus(),
-                getComments().stream().map(Comment::toString).collect(Collectors.joining(System.lineSeparator())),
-                getLog());
+                printComments(),
+                CHANGES_HISTORY +
+                        getLog().stream().map(EventImpl::toString).collect(Collectors.joining(System.lineSeparator())));
     }
 }

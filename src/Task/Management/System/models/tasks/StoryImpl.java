@@ -1,5 +1,6 @@
 package Task.Management.System.models.tasks;
 
+import Task.Management.System.models.logger.EventImpl;
 import Task.Management.System.models.tasks.contracts.Comment;
 import Task.Management.System.models.tasks.contracts.Story;
 import Task.Management.System.models.tasks.enums.Priority;
@@ -48,12 +49,13 @@ public class StoryImpl extends AssignableTaskImpl implements Story {
                         "Size: %s%n" +
                         "Status: %s%n" +
                         "Assignee: %s%n" +
-                        "%s" +
+                        "%s%n" +
                         "%s",
                 FormatHelpers.getType(this),
                 super.printDetails(),
                 getPriority(), getSize(), getStatus(), getAssignee(),
-                getComments().stream().map(Comment::toString).collect(Collectors.joining(System.lineSeparator())),
-                getLog());
+                printComments(),
+                CHANGES_HISTORY +
+                        getLog().stream().map(EventImpl::toString).collect(Collectors.joining(System.lineSeparator())));
     }
 }

@@ -1,5 +1,6 @@
 package Task.Management.System.models.tasks;
 
+import Task.Management.System.models.logger.EventImpl;
 import Task.Management.System.models.tasks.contracts.Bug;
 import Task.Management.System.models.tasks.contracts.Comment;
 import Task.Management.System.models.tasks.enums.BugStatus;
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
 public class BugImpl extends AssignableTaskImpl implements Bug {
 
     public static final String SEVERITY_FIELD = "Severity";
+    public static final String STEPPS_HEADER = "Steps to reproduce:";
 
     private final List<String> stepsToReproduce;
     private Severity severity;
@@ -29,6 +31,16 @@ public class BugImpl extends AssignableTaskImpl implements Bug {
     @Override
     public List<String> getStepsToReproduce() {
         return new ArrayList<>(stepsToReproduce);
+    }
+
+    public String printStepsToReproduce() {
+        int[] counter = new int[1];
+
+        StringBuilder output = new StringBuilder();
+        output.append(STEPPS_HEADER);
+        stepsToReproduce.forEach(e -> output.append(String.format("%n%d. %s", ++counter[0], e)));
+
+        return output.toString();
     }
 
     @Override
@@ -58,14 +70,15 @@ public class BugImpl extends AssignableTaskImpl implements Bug {
                         "Severity: %s%n" +
                         "Status: %s%n" +
                         "Assignee: %s%n" +
-                        "%s" +
-                        "%s" +
+                        "%s%n" +
+                        "%s%n" +
                         "%s",
                 FormatHelpers.getType(this),
                 super.printDetails(),
                 getPriority(), getSeverity(), getStatus(), getAssignee(),
-                getStepsToReproduce(),
-                getComments().stream().map(Comment::toString).collect(Collectors.joining(System.lineSeparator())),
-                getLog());
+                printStepsToReproduce(),
+                printComments(),
+                CHANGES_HISTORY +
+                        getLog().stream().map(EventImpl::toString).collect(Collectors.joining(System.lineSeparator())));
     }
 }

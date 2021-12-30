@@ -10,6 +10,7 @@ import Task.Management.System.utils.ValidationHelpers;
 
 import java.util.ArrayList;
 import java.util.List;
+import static Task.Management.System.models.teams.contracts.subcontracts.Nameable.NAME_MIN_LEN;
 
 import static Task.Management.System.models.logger.contracts.Logger.*;
 

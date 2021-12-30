@@ -13,6 +13,7 @@ import Task.Management.System.utils.ValidationHelpers;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static Task.Management.System.models.logger.contracts.Logger.*;
 
@@ -30,6 +31,9 @@ public abstract class TaskBase implements Task {
 
     public static final String COMMENT_ADDED = "%s with ID %d: Comment added by user %s.";
     public static final String STATUS_FIELD = "Status";
+    public static final String NO_COMMENTS_MESSAGE = "Comments: No comments on this task.";
+    public static final String COMMENTS_HEADER = "Comments:\n";
+    public static final String CHANGES_HISTORY = "History of changes:\n";
 
     private final long id;
     private final List<Comment> comments;
@@ -89,6 +93,15 @@ public abstract class TaskBase implements Task {
     @Override
     public List<Comment> getComments() {
         return new ArrayList<>(comments);
+    }
+
+    protected String printComments() {
+        if (comments.isEmpty()) {
+            return NO_COMMENTS_MESSAGE;
+        } else {
+            return COMMENTS_HEADER +
+                    comments.stream().map(Comment::toString).collect(Collectors.joining(System.lineSeparator()));
+        }
     }
 
     @Override
