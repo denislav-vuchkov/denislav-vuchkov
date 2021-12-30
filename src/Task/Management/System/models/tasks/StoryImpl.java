@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 public class StoryImpl extends AssignableTaskImpl implements Story {
 
     public static final String SIZE_FIELD = "Size";
+
     private Size size;
 
     public StoryImpl(long id, String title, String description, Priority priority, Size size) {

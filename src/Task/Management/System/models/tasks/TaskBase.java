@@ -30,6 +30,7 @@ public abstract class TaskBase implements Task {
 
     public static final String COMMENT_ADDED = "%s with ID %d: Comment added by user %s.";
     public static final String STATUS_FIELD = "Status";
+
     private final long id;
     private final List<Comment> comments;
     private final Logger history;
