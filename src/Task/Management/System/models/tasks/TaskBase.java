@@ -12,6 +12,7 @@ import Task.Management.System.utils.ValidationHelpers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static Task.Management.System.models.logger.contracts.Logger.*;
 
@@ -19,17 +20,16 @@ public abstract class TaskBase implements Task {
 
     public static final int TITLE_MIN = 10;
     public static final int TITLE_MAX = 50;
-    public static final String TITLE_ERR =
-            String.format("Title must be between %d and %d symbols.", TITLE_MIN, TITLE_MAX);
+    public static final String TITLE_ERR = String.format(
+            "Title must be between %d and %d symbols.", TITLE_MIN, TITLE_MAX);
 
     public static final int DESCRIPTION_MIN = 10;
     public static final int DESCRIPTION_MAX = 500;
-    public static final String DESCRIPTION_ERR =
-            String.format("Description must be between %d and %d symbols.", DESCRIPTION_MIN, DESCRIPTION_MAX);
+    public static final String DESCRIPTION_ERR = String.format(
+            "Description must be between %d and %d symbols.", DESCRIPTION_MIN, DESCRIPTION_MAX);
 
     public static final String COMMENT_ADDED = "%s with ID %d: Comment added by user %s.";
     public static final String STATUS_FIELD = "Status";
-
     private final long id;
     private final List<Comment> comments;
     private final Logger history;
@@ -81,12 +81,7 @@ public abstract class TaskBase implements Task {
 
     @Override
     public void setStatus(TaskStatus status) {
-        if (this.status == null) {
-            this.status = status;
-            return;
-        }
         checkForDuplication(getStatus(), status, STATUS_FIELD);
-        history.addEvent(String.format(TASK_CHANGE, taskType, getID(), STATUS_FIELD, this.status, status));
         this.status = status;
     }
 
@@ -106,19 +101,6 @@ public abstract class TaskBase implements Task {
         return new ArrayList<>(history.getEvents());
     }
 
-    protected void logActivity(String description) {
-        history.addEvent(description);
-    }
-
-    protected <T> void checkForDuplication(T currentValue, T newValue, String property) {
-        if (newValue.equals(currentValue)) {
-            String event = String.format(DUPLICATE, taskType, getID(), property, currentValue);
-            history.addEvent(event);
-            throw new InvalidUserInput(event);
-        }
-    }
-
-
     @Override
     public String printDetails() {
         return String.format("ID: %d%n" +
@@ -126,4 +108,21 @@ public abstract class TaskBase implements Task {
                         "Description: %s%n",
                 getID(), getTitle(), getDescription());
     }
+
+    protected void logActivity(String description) {
+        history.addEvent(description);
+    }
+
+    protected <T> void checkForDuplication(T currentValue, T newValue, String property) {
+        if (Objects.isNull(currentValue)) return;
+
+        if (newValue.equals(currentValue)) {
+            String event = String.format(DUPLICATE, taskType, getID(), property, currentValue);
+            history.addEvent(event);
+            throw new InvalidUserInput(event);
+        }
+
+        history.addEvent(String.format(TASK_CHANGE, taskType, getID(), property, currentValue, newValue));
+    }
+
 }

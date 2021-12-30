@@ -10,8 +10,6 @@ import Task.Management.System.utils.FormatHelpers;
 
 import java.util.stream.Collectors;
 
-import static Task.Management.System.models.logger.contracts.Logger.TASK_CHANGE;
-
 public class StoryImpl extends AssignableTaskImpl implements Story {
 
     public static final String SIZE_FIELD = "Size";
@@ -29,12 +27,7 @@ public class StoryImpl extends AssignableTaskImpl implements Story {
 
     @Override
     public void setSize(Size size) {
-        if (this.size == null) {
-            this.size = size;
-            return;
-        }
         checkForDuplication(getSize(), size, SIZE_FIELD);
-        logActivity(String.format(TASK_CHANGE, Tasks.STORY, getID(), SIZE_FIELD, this.size, size));
         this.size = size;
     }
 

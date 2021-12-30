@@ -12,11 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static Task.Management.System.models.logger.contracts.Logger.TASK_CHANGE;
-
 public class BugImpl extends AssignableTaskImpl implements Bug {
 
     public static final String SEVERITY_FIELD = "Severity";
+
     private final List<String> stepsToReproduce;
     private Severity severity;
 
@@ -39,12 +38,7 @@ public class BugImpl extends AssignableTaskImpl implements Bug {
 
     @Override
     public void setSeverity(Severity severity) {
-        if (this.severity == null) {
-            this.severity = severity;
-            return;
-        }
         checkForDuplication(getSeverity(), severity, SEVERITY_FIELD);
-        logActivity(String.format(TASK_CHANGE, Tasks.BUG, getID(), SEVERITY_FIELD, this.severity, severity));
         this.severity = severity;
     }
 
