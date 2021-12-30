@@ -26,23 +26,26 @@ public interface Logger {
     String TASK_CHANGE = "%s with ID %d: %s changed from %s to %s.";
     String DUPLICATE = "%s with ID %d: Modification denied. %s is already %s.";
 
-    static <B extends Task.Management.System.models.logger.contracts.Loggable, U extends Task.Management.System.models.logger.contracts.Loggable> List<EventImpl>
-    extract(List<EventImpl> history, List<B> boards, List<U> users) {
+    static <B extends Loggable, U extends Loggable> List<EventImpl> extract
+            (List<EventImpl> history, List<B> boards, List<U> users) {
         history.addAll(getEvents(boards));
         history.addAll(getEvents(users));
         return history.stream().sorted(Comparator.comparing(EventImpl::getOccurrence)).collect(Collectors.toList());
     }
 
-    static <U extends Task.Management.System.models.logger.contracts.Loggable> List<EventImpl> extract(List<EventImpl> history, List<U> users) {
+    static <U extends Loggable> List<EventImpl> extract
+            (List<EventImpl> history, List<U> users) {
         history.addAll(getEvents(users));
         return history.stream().sorted(Comparator.comparing(EventImpl::getOccurrence)).collect(Collectors.toList());
     }
 
-    static List<EventImpl> extract(List<EventImpl> history) {
+    static List<EventImpl> extract
+            (List<EventImpl> history) {
         return history.stream().sorted(Comparator.comparing(EventImpl::getOccurrence)).collect(Collectors.toList());
     }
 
-    static <T extends Task.Management.System.models.logger.contracts.Loggable> List<EventImpl> getEvents(List<T> elements) {
+    static <T extends Loggable> List<EventImpl> getEvents
+            (List<T> elements) {
         return elements.stream().flatMap(element -> element.getLog().stream()).collect(Collectors.toList());
     }
 
