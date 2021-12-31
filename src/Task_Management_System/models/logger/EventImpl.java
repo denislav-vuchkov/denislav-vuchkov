@@ -7,15 +7,17 @@ import java.time.format.DateTimeFormatter;
 
 public class EventImpl implements Event {
 
-    private final LocalDateTime occurrence;
+    private final long occurrence;
+    private final LocalDateTime time;
     private final String description;
 
-    public EventImpl(String description) {
-        this.occurrence = LocalDateTime.now();
-        this.description = description;
+    public EventImpl(String message) {
+        occurrence = System.nanoTime();
+        time = LocalDateTime.now();
+        description = message;
     }
 
-    public LocalDateTime getOccurrence() {
+    public long getOccurrence() {
         return occurrence;
     }
 
@@ -24,6 +26,6 @@ public class EventImpl implements Event {
         return String.format("[%s] %s",
                 DateTimeFormatter.
                         ofPattern("dd/MM/yyyy HH:mm:ss").
-                        format(occurrence), description);
+                        format(time), description);
     }
 }
