@@ -8,12 +8,11 @@ import Task.Management.System.utils.ValidationHelpers;
 
 import java.util.List;
 
-public class ShowAllTaskDetails extends BaseCommand {
+public class ShowTaskDetails extends BaseCommand {
 
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 1;
-    public static final String INVALID_TASK_ID = "Task ID must be a valid number.";
 
-    public ShowAllTaskDetails(TaskManagementSystemRepository repository) {
+    public ShowTaskDetails(TaskManagementSystemRepository repository) {
         super(repository);
     }
 
@@ -21,14 +20,14 @@ public class ShowAllTaskDetails extends BaseCommand {
     protected String executeCommand(List<String> parameters) {
         ValidationHelpers.validateCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
 
-        long taskID = ParsingHelpers.tryParseLong(parameters.get(0), INVALID_TASK_ID);
+        long taskID = ParsingHelpers.tryParseLong(parameters.get(0), INVALID_ID);
 
         if (getRepository().getTasks().isEmpty()) {
             return String.format(NO_ITEMS_TO_DISPLAY, "tasks");
         }
 
-        Task tasks = getRepository().findTask(taskID);
+        Task task = getRepository().findTask(taskID);
 
-        return tasks.printDetails();
+        return task.printDetails();
     }
 }

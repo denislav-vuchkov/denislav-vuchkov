@@ -21,7 +21,7 @@ public class ShowTeamActivity extends BaseCommand {
         ValidationHelpers.validateCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
         String teamName = parameters.get(0);
         return getRepository()
-                .findTeam(teamName)
+                .findByName(getRepository().getTeams(), teamName, TEAM)
                 .getLog()
                 .stream()
                 .map(EventImpl::toString).collect(Collectors.joining(System.lineSeparator()));

@@ -22,7 +22,7 @@ public class ShowTeamBoards extends BaseCommand {
 
         ValidationHelpers.validateCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
 
-        Team team = getRepository().findTeam(parameters.get(0));
+        Team team = getRepository().findByName(getRepository().getTeams(),parameters.get(0), TEAM);
 
         if (team.getBoards().isEmpty()) {
             return String.format(NO_ITEMS_TO_DISPLAY, "boards");

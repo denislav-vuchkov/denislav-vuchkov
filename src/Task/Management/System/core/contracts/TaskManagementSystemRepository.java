@@ -8,6 +8,7 @@ import Task.Management.System.models.tasks.enums.Size;
 import Task.Management.System.models.teams.contracts.Board;
 import Task.Management.System.models.teams.contracts.Team;
 import Task.Management.System.models.teams.contracts.User;
+import Task.Management.System.models.teams.contracts.subcontracts.Nameable;
 
 import java.util.List;
 
@@ -31,11 +32,7 @@ public interface TaskManagementSystemRepository {
 
     String addUser(String userName);
 
-    Team findTeam(String teamName);
-
-    User findUser(String userName);
-
-    Board findBoard(String boardName, String teamName);
+    <T extends Nameable> T findByName(List<T> collection, String targetName, String typeOfCollection);
 
     String addBug(User user, String teamName, String boardName,
                   String title, String description, List<String> stepsToReproduce,

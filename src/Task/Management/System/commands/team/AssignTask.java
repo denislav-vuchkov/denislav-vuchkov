@@ -25,10 +25,10 @@ public class AssignTask extends BaseCommand {
     protected String executeCommand(List<String> parameters) {
         ValidationHelpers.validateCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
 
-        User assigner = getRepository().findUser(parameters.get(0));
+        User assigner = getRepository().findByName(getRepository().getUsers(), parameters.get(0), USER);
         long ID = ParsingHelpers.tryParseLong(parameters.get(1), INVALID_ID);
         AssignableTask task = getRepository().findAssignableTask(ID);
-        User newAssignee = getRepository().findUser(parameters.get(2));
+        User newAssignee = getRepository().findByName(getRepository().getUsers(), parameters.get(2), USER);
 
         getRepository().validateUserAndTaskFromSameTeam(assigner.getName(), task.getID());
         getRepository().validateUserAndTaskFromSameTeam(newAssignee.getName(), task.getID());
@@ -42,7 +42,7 @@ public class AssignTask extends BaseCommand {
         assigner.log(String.format(ASSIGN_EVENT, assigner.getName(), taskType, task.getID(), newAssignee.getName()));
 
         if (!task.getAssignee().equals(UNASSIGNED)) {
-            getRepository().findUser(task.getAssignee()).removeTask(task);
+            getRepository().findByName(getRepository().getUsers(), task.getAssignee(), USER).removeTask(task);
         }
 
         newAssignee.addTask(task);

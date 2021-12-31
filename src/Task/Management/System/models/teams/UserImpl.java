@@ -63,7 +63,8 @@ public class UserImpl implements User {
 
     @Override
     public List<EventImpl> getLog() {
-        return Logger.extract(history.getEvents());
+        //TODO
+        return FormatHelpers.combineLogs(history.getEvents());
     }
 
     @Override

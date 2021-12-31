@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static Task.Management.System.commands.BaseCommand.NO_ITEMS_TO_DISPLAY;
-import static Task.Management.System.commands.show.ShowAllTaskDetails.EXPECTED_NUMBER_OF_ARGUMENTS;
+import static Task.Management.System.commands.show.ShowTaskDetails.EXPECTED_NUMBER_OF_ARGUMENTS;
 import static Task.Management.System.models.TestData.BoardImpl.VALID_BOARD_NAME;
 import static Task.Management.System.models.TestData.FeedbackImpl.VALID_RATING;
 import static Task.Management.System.models.TestData.TaskBase.VALID_DESCRIPTION;
@@ -35,7 +35,7 @@ public class ShowAllTaskDetails_Tests {
     public static void setup() {
         commandFactory = new CommandFactoryImpl();
         repository = new TaskManagementSystemRepositoryImpl();
-        showTasKDetails = commandFactory.createCommand("ShowAllTaskDetails", repository);
+        showTasKDetails = commandFactory.createCommand("ShowTaskDetails", repository);
 
         Command createUser = commandFactory.createCommand("CreateUser", repository);
         createUser.execute(List.of(VALID_USER_NAME));
@@ -64,7 +64,7 @@ public class ShowAllTaskDetails_Tests {
 
     @Test
     public void showAllTaskDetails_Should_Indicate_When_NoTasksToDisplay() {
-        Command showAllTasks = commandFactory.createCommand("ShowAllTaskDetails",
+        Command showAllTasks = commandFactory.createCommand("ShowTaskDetails",
                 new TaskManagementSystemRepositoryImpl());
 
         Assertions.assertEquals(String.format(NO_ITEMS_TO_DISPLAY, "tasks"), showAllTasks.execute(List.of("1")));

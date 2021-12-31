@@ -21,7 +21,7 @@ public class ShowUserActivity extends BaseCommand {
         ValidationHelpers.validateCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
         String userName = parameters.get(0);
         return getRepository()
-                .findUser(userName)
+                .findByName(getRepository().getUsers(), parameters.get(0), USER)
                 .getLog()
                 .stream()
                 .map(EventImpl::toString)

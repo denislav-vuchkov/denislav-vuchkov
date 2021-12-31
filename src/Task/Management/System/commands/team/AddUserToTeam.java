@@ -24,9 +24,9 @@ public class AddUserToTeam extends BaseCommand {
 
         ValidationHelpers.validateCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
 
-        User user = getRepository().findUser(parameters.get(0));
+        User user = getRepository().findByName(getRepository().getUsers(), parameters.get(0), USER);
 
-        Team team = getRepository().findTeam(parameters.get(1));
+        Team team = getRepository().findByName(getRepository().getTeams(), parameters.get(1), TEAM);
 
         if (team.getUsers().contains(user)) {
             throw new InvalidUserInput(

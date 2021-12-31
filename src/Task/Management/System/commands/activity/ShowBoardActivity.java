@@ -3,6 +3,7 @@ package Task.Management.System.commands.activity;
 import Task.Management.System.commands.BaseCommand;
 import Task.Management.System.core.contracts.TaskManagementSystemRepository;
 import Task.Management.System.models.logger.EventImpl;
+import Task.Management.System.models.teams.contracts.Team;
 import Task.Management.System.utils.ValidationHelpers;
 
 import java.util.List;
@@ -19,10 +20,10 @@ public class ShowBoardActivity extends BaseCommand {
     @Override
     protected String executeCommand(List<String> parameters) {
         ValidationHelpers.validateCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
-        String teamName = parameters.get(0);
+        Team team = getRepository().findByName(getRepository().getTeams(), parameters.get(0), TEAM);
         String boardName = parameters.get(1);
         return getRepository()
-                .findBoard(boardName, teamName)
+                .findByName(team.getBoards(), boardName, BOARD)
                 .getLog()
                 .stream()
                 .map(EventImpl::toString)

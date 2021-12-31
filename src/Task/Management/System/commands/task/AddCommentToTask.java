@@ -26,7 +26,7 @@ public class AddCommentToTask extends BaseCommand {
 
         ValidationHelpers.validateCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
 
-        User author = getRepository().findUser(parameters.get(0));
+        User author = getRepository().findByName(getRepository().getUsers(), parameters.get(0), USER);
         long ID = ParsingHelpers.tryParseLong(parameters.get(1), INVALID_ID);
         Task task = getRepository().findTask(ID);
         String content = parameters.get(2);

@@ -25,7 +25,7 @@ public class CreateBoard extends BaseCommand {
 
         ValidationHelpers.validateCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
 
-        Team team = getRepository().findTeam(parameters.get(1));
+        Team team = getRepository().findByName(getRepository().getTeams(), parameters.get(1), TEAM);
 
         if (team.getBoards().stream().anyMatch(board -> board.getName().equals(parameters.get(0)))) {
             throw new InvalidUserInput(

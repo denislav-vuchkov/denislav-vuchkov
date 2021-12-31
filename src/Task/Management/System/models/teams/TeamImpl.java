@@ -8,6 +8,7 @@ import Task.Management.System.models.tasks.contracts.Task;
 import Task.Management.System.models.teams.contracts.Board;
 import Task.Management.System.models.teams.contracts.Team;
 import Task.Management.System.models.teams.contracts.User;
+import Task.Management.System.utils.FormatHelpers;
 import Task.Management.System.utils.ValidationHelpers;
 
 import java.util.ArrayList;
@@ -90,7 +91,8 @@ public class TeamImpl implements Loggable, Team {
 
     @Override
     public List<EventImpl> getLog() {
-        return Logger.extract(history.getEvents(), getBoards(), getUsers());
+        //TODO
+        return FormatHelpers.combineLogs(history.getEvents(), getBoards(), getUsers());
     }
 
     @Override

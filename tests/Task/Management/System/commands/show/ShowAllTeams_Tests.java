@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static Task.Management.System.commands.BaseCommand.NO_ITEMS_TO_DISPLAY;
+import static Task.Management.System.commands.BaseCommand.TEAM;
 import static Task.Management.System.models.TestData.TeamImpl.VALID_TEAM_NAME;
 
 public class ShowAllTeams_Tests {
@@ -50,7 +51,7 @@ public class ShowAllTeams_Tests {
         parameters.add(VALID_TEAM_NAME);
         createTeam.execute(parameters);
 
-        Team team = repository.findTeam(VALID_TEAM_NAME);
+        Team team = repository.findByName(repository.getTeams(), VALID_TEAM_NAME, TEAM);
 
         String output = String.format("Team: %s - Users: %d - Boards: %d - Tasks: %d",
                 team.getName(),

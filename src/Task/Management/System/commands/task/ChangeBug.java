@@ -26,7 +26,7 @@ public class ChangeBug extends BaseCommand {
 
         ValidationHelpers.validateCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
 
-        User changer = getRepository().findUser(parameters.get(0).trim());
+        User changer = getRepository().findByName(getRepository().getUsers(), parameters.get(0), USER);
         long ID = ParsingHelpers.tryParseLong(parameters.get(1), INVALID_ID);
         Bug bug = getRepository().findBug(ID);
         getRepository().validateUserAndTaskFromSameTeam(changer.getName(), bug.getID());

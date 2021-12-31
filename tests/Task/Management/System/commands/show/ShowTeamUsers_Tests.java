@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static Task.Management.System.commands.BaseCommand.NO_ITEMS_TO_DISPLAY;
+import static Task.Management.System.commands.BaseCommand.USER;
 import static Task.Management.System.commands.show.ShowTeamUsers.EXPECTED_NUMBER_OF_ARGUMENTS;
 import static Task.Management.System.models.TestData.BoardImpl.VALID_BOARD_NAME;
 import static Task.Management.System.models.TestData.TeamImpl.VALID_TEAM_NAME;
@@ -67,7 +68,7 @@ public class ShowTeamUsers_Tests {
         Command addUserToTeam = commandFactory.createCommand("AddUserToTeam", repository);
         addUserToTeam.execute(List.of(VALID_USER_NAME, VALID_TEAM_NAME));
 
-        User user = repository.findUser(VALID_USER_NAME);
+        User user = repository.findByName(repository.getUsers(), VALID_USER_NAME, USER);
 
         String output = String.format("User: %s - Tasks: %d",
                 user.getName(),

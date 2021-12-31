@@ -26,7 +26,7 @@ public class ChangeStory extends BaseCommand {
 
         ValidationHelpers.validateCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
 
-        User changer = getRepository().findUser(parameters.get(0).trim());
+        User changer = getRepository().findByName(getRepository().getUsers(), parameters.get(0), USER);
         long ID = ParsingHelpers.tryParseLong(parameters.get(1), INVALID_ID);
         Story story = getRepository().findStory(ID);
         getRepository().validateUserAndTaskFromSameTeam(changer.getName(), story.getID());

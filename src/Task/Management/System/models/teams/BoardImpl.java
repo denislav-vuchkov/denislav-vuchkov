@@ -58,7 +58,8 @@ public class BoardImpl implements Board {
 
     @Override
     public List<EventImpl> getLog() {
-        return Logger.extract(history.getEvents(), getTasks());
+        //TODO
+        return FormatHelpers.combineLogs(history.getEvents(), getTasks());
     }
 
     @Override

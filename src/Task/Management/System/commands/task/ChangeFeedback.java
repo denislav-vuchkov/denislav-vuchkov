@@ -25,7 +25,7 @@ public class ChangeFeedback extends BaseCommand {
 
         ValidationHelpers.validateCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
 
-        User changer = getRepository().findUser(parameters.get(0).trim());
+        User changer = getRepository().findByName(getRepository().getUsers(), parameters.get(0), USER);
         int ID = ParsingHelpers.tryParseInt(parameters.get(1), INVALID_ID);
         Feedback feedback = getRepository().findFeedback(ID);
         getRepository().validateUserAndTaskFromSameTeam(changer.getName(), feedback.getID());

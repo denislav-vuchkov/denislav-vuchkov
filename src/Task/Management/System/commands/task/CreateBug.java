@@ -25,7 +25,7 @@ public class CreateBug extends BaseCommand {
 
         ValidationHelpers.validateCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
 
-        User creator = getRepository().findUser(parameters.get(0));
+        User creator = getRepository().findByName(getRepository().getUsers(), parameters.get(0), USER);
         String teamName = parameters.get(1);
         getRepository().validateUserIsFromTeam(creator.getName(), teamName);
         String boardName = parameters.get(2);

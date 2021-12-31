@@ -17,6 +17,9 @@ public abstract class BaseCommand implements Command {
     public static final String NO_ITEMS_TO_DISPLAY = "No %s to display.";
     public static final String INVALID_FILTER = "%s can only be filtered by %s.";
     public static final String INVALID_SORT_PARAMETER = "%s can only be sorted by %s.";
+    public static final String TEAM = "team";
+    public static final String BOARD = "board";
+    public static final String USER = "user";
 
     private final TaskManagementSystemRepository repository;
 
