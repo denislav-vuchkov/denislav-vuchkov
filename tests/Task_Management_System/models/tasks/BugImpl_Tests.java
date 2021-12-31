@@ -77,9 +77,9 @@ public class BugImpl_Tests {
 
     @Test
     public void unAssign_changesValueToUnassigned_byCallingSetAssignee() {
-   //     myBug.setAssignee("Denis");
-   //     myBug.unAssign();
-     //   Assertions.assertEquals("Unassigned", myBug.getAssignee());
+        myBug.setAssignee("Denis");
+        myBug.unAssign();
+        Assertions.assertEquals("Unassigned", myBug.getAssignee());
         Assertions.assertThrows(InvalidUserInput.class, () -> myBug.unAssign());
     }
 
@@ -95,5 +95,34 @@ public class BugImpl_Tests {
     public void toString_shouldReturnString_withCorrectFormat() {
         Assertions.assertEquals("Bug ID: 3 - Title: Not Too Short - Steps: 3 - Priority: Medium - " +
                 "Severity: Major - Status: Active - Assignee: Unassigned - Comments: 0", myBug.toString());
+    }
+
+    @Test
+    public void printDetails_shouldReturnString_withCorrectFormat() {
+
+        String expectedOutput = String.format("Task type: %s%n" +
+                        "ID: %s%n" +
+                        "Title: %s%n" +
+                        "Description: %s%n" +
+                        "Priority: %s%n" +
+                        "Severity: %s%n" +
+                        "Status: %s%n" +
+                        "Assignee: %s%n" +
+                        "Steps to reproduce:%n" +
+                        "1. Nothing%n" +
+                        "2. Works%n" +
+                        "3. Help%n",
+                "Bug",
+                "3",
+                "Not Too Short",
+                "Just Right Length",
+                "Medium",
+                "Major",
+                "Active",
+                "Unassigned");
+
+        String actualOutput = myBug.printDetails();
+        actualOutput = actualOutput.substring(0, actualOutput.indexOf("Comments"));
+        Assertions.assertEquals(expectedOutput.trim(), actualOutput.trim());
     }
 }

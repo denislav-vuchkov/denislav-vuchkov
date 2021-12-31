@@ -72,7 +72,33 @@ public class StoryImpl_Tests {
 
     @Test
     public void toString_shouldReturnString_withCorrectFormat() {
+        myStory.setStatus(StoryStatus.IN_PROGRESS);
         Assertions.assertEquals("Story ID: 0 - Title: Not Too Short - Priority: Medium - Size: Medium - " +
-                "Status: Not done - Assignee: Unassigned - Comments: 0", myStory.toString());
+                "Status: In progress - Assignee: Unassigned - Comments: 0", myStory.toString());
+    }
+
+    @Test
+    public void printDetails_shouldReturnString_withCorrectFormat() {
+
+        String expectedOutput = String.format("Task type: %s%n" +
+                        "ID: %s%n" +
+                        "Title: %s%n" +
+                        "Description: %s%n" +
+                        "Priority: %s%n" +
+                        "Size: %s%n" +
+                        "Status: %s%n" +
+                        "Assignee: %s%n",
+                "Story",
+                "0",
+                "Not Too Short",
+                "Just Right Length",
+                "Medium",
+                "Medium",
+                "Not done",
+                "Unassigned");
+
+        String actualOutput = myStory.printDetails();
+        actualOutput = actualOutput.substring(0, actualOutput.indexOf("Comments"));
+        Assertions.assertEquals(expectedOutput.trim(), actualOutput.trim());
     }
 }

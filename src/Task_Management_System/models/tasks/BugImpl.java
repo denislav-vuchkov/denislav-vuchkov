@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public class BugImpl extends AssignableTaskImpl implements Bug {
 
     public static final String SEVERITY_FIELD = "Severity";
-    public static final String STEPPS_HEADER = "Steps to reproduce:";
+    public static final String STEPS_HEADER = "Steps to reproduce:";
 
     private final List<String> stepsToReproduce;
     private Severity severity;
@@ -36,7 +36,7 @@ public class BugImpl extends AssignableTaskImpl implements Bug {
         int[] counter = new int[1];
 
         StringBuilder output = new StringBuilder();
-        output.append(STEPPS_HEADER);
+        output.append(STEPS_HEADER);
         stepsToReproduce.forEach(e -> output.append(String.format("%n%d. %s", ++counter[0], e)));
 
         return output.toString();

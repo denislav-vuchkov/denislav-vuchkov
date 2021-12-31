@@ -66,7 +66,30 @@ public class Feedback_Tests {
 
     @Test
     public void toString_shouldReturnString_withCorrectFormat() {
+        myFeedback.setStatus(FeedbackStatus.UNSCHEDULED);
         Assertions.assertEquals("Feedback ID: 123456 - Title: Not Too Short - Rating: 5 - " +
-                "Status: New - Comments: 0", myFeedback.toString());
+                "Status: Unscheduled - Comments: 0", myFeedback.toString());
+    }
+
+    @Test
+    public void printDetails_shouldReturnString_withCorrectFormat() {
+        myFeedback.setStatus(FeedbackStatus.DONE);
+
+        String expectedOutput = String.format("Task type: %s%n" +
+                        "ID: %s%n" +
+                        "Title: %s%n" +
+                        "Description: %s%n" +
+                        "Rating: %s%n" +
+                        "Status: %s%n",
+                "Feedback",
+                "123456",
+                "Not Too Short",
+                "Just Right Length",
+                "5",
+                "Done");
+
+        String actualOutput = myFeedback.printDetails();
+        actualOutput = actualOutput.substring(0, actualOutput.indexOf("Comments"));
+        Assertions.assertEquals(expectedOutput.trim(), actualOutput.trim());
     }
 }
