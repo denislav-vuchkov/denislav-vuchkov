@@ -4,6 +4,8 @@ import Task.Management.System.commands.contracts.Command;
 import Task.Management.System.core.contracts.CommandFactory;
 import Task.Management.System.core.contracts.TaskManagementSystemEngine;
 import Task.Management.System.core.contracts.TaskManagementSystemRepository;
+import Task.Management.System.exceptions.InvalidNumberOfArguments;
+import Task.Management.System.exceptions.InvalidUserInput;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +41,7 @@ public class TaskManagementSystemEngineImpl implements TaskManagementSystemEngin
                     break;
                 }
                 processCommand(inputLine);
-            } catch (Exception ex) {
+            } catch (InvalidUserInput | InvalidNumberOfArguments ex) {
                 if (ex.getMessage() != null && !ex.getMessage().isEmpty()) {
                     print(ex.getMessage());
                 } else {
