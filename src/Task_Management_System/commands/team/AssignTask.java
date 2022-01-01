@@ -8,14 +8,19 @@ import Task_Management_System.models.teams.contracts.User;
 import Task_Management_System.utils.ParsingHelpers;
 import Task_Management_System.utils.ValidationHelpers;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static Task_Management_System.utils.FormatHelpers.getType;
 
 public class AssignTask extends BaseCommand {
 
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 3;
 
-    public static final String ASSIGN_EVENT = "User %s: Reassigned %s with ID %d to %s.";
-    public static final String CANNOT_REASSIGN_TO_SAME_USER = "Task is already assigned to %s.";
+    public static final String REASSIGN = "User %s: Reassigned %s with ID %d to %s.";
+    public static final String UNASSIGN = "User %s: Set %s with ID %d to unassigned.";
+    public static final String SAME_USER = "Task is already assigned to %s.";
 
     public AssignTask(TaskManagementSystemRepository repository) {
         super(repository);
@@ -23,30 +28,54 @@ public class AssignTask extends BaseCommand {
 
     @Override
     protected String executeCommand(List<String> parameters) {
+
         ValidationHelpers.validateCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
 
-        User assigner = getRepository().findByName(getRepository().getUsers(), parameters.get(0), USER);
-        long ID = ParsingHelpers.tryParseLong(parameters.get(1), INVALID_ID);
-        AssignableTask task = getRepository().findAssignableTask(ID);
-        User newAssignee = getRepository().findByName(getRepository().getUsers(), parameters.get(2), USER);
+        String assignerName = parameters.get(0);
+        List<Long> taskIDs = Arrays
+                .stream(parameters.get(1).split(";"))
+                .map(task -> ParsingHelpers.tryParseLong(task, INVALID_ID))
+                .collect(Collectors.toList());
+        String assigneeName = parameters.get(2);
 
-        getRepository().validateUserAndTaskFromSameTeam(assigner.getName(), task.getID());
-        getRepository().validateUserAndTaskFromSameTeam(newAssignee.getName(), task.getID());
-
-        if (task.getAssignee().equals(newAssignee.getName())) {
-            throw new InvalidUserInput(String.format(CANNOT_REASSIGN_TO_SAME_USER, assigner));
+        StringBuilder result = new StringBuilder();
+        for (Long ID : taskIDs) {
+            User assigner = getUserIfValid(assignerName, ID);
+            AssignableTask task = getRepository().findAssignableTask(ID);
+            if (assigneeName.isBlank()) {
+                result.append(unassignTask(assigner, task)).append(System.lineSeparator());
+            } else {
+                result.append(reassignTask(assigner, assigneeName, task)).append(System.lineSeparator());
+            }
         }
+        return result.toString().trim();
+    }
 
-        String taskType = task.getClass().getSimpleName().replace("Impl", "");
-
-        assigner.log(String.format(ASSIGN_EVENT, assigner.getName(), taskType, task.getID(), newAssignee.getName()));
+    private String unassignTask(User assigner, AssignableTask task) {
+        String event = String.format(UNASSIGN, assigner.getName(), getType(task), task.getID());
+        assigner.log(event);
 
         if (!task.getAssignee().equals(UNASSIGNED)) {
             getRepository().findByName(getRepository().getUsers(), task.getAssignee(), USER).removeTask(task);
         }
+        return event;
+    }
 
-        newAssignee.addTask(task);
+    private String reassignTask(User assigner, String assigneeName, AssignableTask task) {
+        if (task.getAssignee().equals(assigneeName)) throw new InvalidUserInput(String.format(SAME_USER, assigner));
+        User assignee = getUserIfValid(assigneeName, task.getID());
 
-        return String.format(ASSIGN_EVENT, assigner.getName(), taskType, task.getID(), newAssignee.getName());
+        String event = String.format(REASSIGN, assigner.getName(), getType(task), task.getID(), assignee.getName());
+        assigner.log(event);
+        if (!task.getAssignee().equals(UNASSIGNED)) {
+            getRepository().findByName(getRepository().getUsers(), task.getAssignee(), USER).removeTask(task);
+        }
+        assignee.addTask(task);
+        return event;
+    }
+
+    private User getUserIfValid(String assignerName, long ID) {
+        getRepository().validateUserAndTaskFromSameTeam(assignerName, ID);
+        return getRepository().findByName(getRepository().getUsers(), assignerName, USER);
     }
 }

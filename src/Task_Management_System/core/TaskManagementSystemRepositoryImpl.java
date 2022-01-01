@@ -129,7 +129,7 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
         Team team = findByName(teams, teamName, TEAM);
         findByName(team.getBoards(), boardName, BOARD).addTask(bug);
 
-        if (!assignee.isEmpty()) {
+        if (!assignee.isBlank()) {
             findByName(users, assignee, USER).addTask(bug);
         }
 
@@ -150,7 +150,7 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
         Team team = findByName(teams, teamName, TEAM);
         findByName(team.getBoards(), boardName, BOARD).addTask(story);
 
-        if (!assignee.isEmpty()) {
+        if (!assignee.isBlank()) {
             findByName(users, assignee, USER).addTask(story);
         }
 
@@ -228,8 +228,8 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
     }
 
     private void validateAssigneeAndBoard(String assignee, String boardName, String teamName) {
-        if (!assignee.isEmpty()) validateUserIsFromTeam(assignee, teamName);
+        if (!assignee.isBlank()) validateUserIsFromTeam(assignee, teamName);
         Team team = findByName(teams, teamName, TEAM);
-        findByName(team.getBoards(), boardName, BOARD); //Validates board is valid
+        findByName(team.getBoards(), boardName, BOARD);
     }
 }

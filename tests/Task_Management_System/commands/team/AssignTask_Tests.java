@@ -27,6 +27,7 @@ import static Task_Management_System.models.TestData.TaskBase.VALID_TITLE;
 import static Task_Management_System.models.TestData.TeamImpl.VALID_TEAM_NAME;
 import static Task_Management_System.models.TestData.UserImpl.VALID_USER_NAME;
 import static Task_Management_System.models.teams.contracts.subcontracts.Nameable.NAME_MAX_LEN;
+import static Task_Management_System.models.TestData.StoryImpl.VALID_SIZE;
 
 public class AssignTask_Tests {
 
@@ -164,6 +165,53 @@ public class AssignTask_Tests {
                 .stream()
                 .filter(e -> e.getAssignee().equals(UNASSIGNED))
                 .count();
+    }
+
+    @Test
+    public void assignTask_Should_Execute_WithMultipleTasks() {
+        //Saving the value under 'assigner' as the role of the user in this test is to be an assigner
+        String assigner = oldAssignee;
+
+        //Creating story without value for assignee which should initiate it with 'Unassigned'
+        Command createStory = commandFactory.createCommand("CreateStory", repository);
+        List<String> storyParameters = new ArrayList<>();
+        storyParameters.add(oldAssignee);
+        storyParameters.add(VALID_TEAM_NAME);
+        storyParameters.add(VALID_BOARD_NAME);
+        storyParameters.add(VALID_TITLE);
+        storyParameters.add(VALID_DESCRIPTION);
+        storyParameters.add(VALID_PRIORITY.toString());
+        storyParameters.add(VALID_SIZE.toString());
+        storyParameters.add(oldAssignee);
+        createStory.execute(storyParameters);
+
+        List<String> parameters = List.of(assigner, "2;1", newAssignee);
+        Assertions.assertDoesNotThrow(() -> assignTask.execute(parameters));
+        Assertions.assertEquals(2, repository.findByName(repository.getUsers(), newAssignee, USER).getTasks().size());
+        Assertions.assertEquals(0, getCountOfUnassignedTasks());
+    }
+
+
+    @Test
+    public void assignTask_Should_Unassign_WithEmptyAsigneeOnMultipleTasks() {
+        //Saving the value under 'assigner' as the role of the user in this test is to be an assigner
+        String assigner = oldAssignee;
+
+        //Creating story without value for assignee which should initiate it with 'Unassigned'
+        Command createStory = commandFactory.createCommand("CreateStory", repository);
+        List<String> storyParameters = new ArrayList<>();
+        storyParameters.add(oldAssignee);
+        storyParameters.add(VALID_TEAM_NAME);
+        storyParameters.add(VALID_BOARD_NAME);
+        storyParameters.add(VALID_TITLE);
+        storyParameters.add(VALID_DESCRIPTION);
+        storyParameters.add(VALID_PRIORITY.toString());
+        storyParameters.add(VALID_SIZE.toString());
+        storyParameters.add(oldAssignee);
+        createStory.execute(storyParameters);
+        List<String> parameters = List.of(assigner, "2;1", "   ");
+        Assertions.assertDoesNotThrow(() -> assignTask.execute(parameters));
+        Assertions.assertEquals(2, getCountOfUnassignedTasks());
     }
 
 
