@@ -184,7 +184,7 @@ public class AssignTask_Tests {
         storyParameters.add(VALID_SIZE.toString());
         storyParameters.add(oldAssignee);
         createStory.execute(storyParameters);
-        storyParameters.set(7," ");
+        storyParameters.set(7,"  ");
         createStory.execute(storyParameters);
 
         List<String> parameters = List.of(assigner, "2;1;3", newAssignee);
