@@ -9,7 +9,9 @@ import java.util.List;
 
 public class ValidationHelpers {
 
-    public static final String ALREADY_EXIST = "%s with %d already exists in %s's list.";
+    public static final String DUPLICATE_NAME = "This %s name already exists! Please choose a unique %s name.";
+
+    public static final String ALREADY_EXISTS = "%s with %d already exists in %s's list.";
     public static final String NOT_EXISTS = "%s with %d does not exist in %s's list.";
 
     public static final String NOT_IN_TEAM = "%s %s is not in team %s";
@@ -37,7 +39,7 @@ public class ValidationHelpers {
     }
 
     public static <T extends Task> void entryNotAlreadyInList(T task, List<T> taskList, String objectName) {
-        String message = String.format(ALREADY_EXIST, FormatHelpers.getType(task), task.getID(), objectName);
+        String message = String.format(ALREADY_EXISTS, FormatHelpers.getType(task), task.getID(), objectName);
         entryNotAlreadyInList(task, taskList, objectName, message);
     }
 
@@ -64,4 +66,9 @@ public class ValidationHelpers {
         }
     }
 
+    public static <T extends Nameable> void validateUniqueName(String name, List<T> elements, String type) {
+        if (elements.stream().anyMatch(element -> element.getName().equals(name))) {
+            throw new InvalidUserInput(String.format(DUPLICATE_NAME, type, type));
+        }
+    }
 }

@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import static Task_Management_System.commands.BaseCommand.INVALID_ID;
+
 public class ListHelpers {
 
     public static final String INVALID_FILTER = "%s can only be filtered by %s.";
@@ -82,6 +84,13 @@ public class ListHelpers {
                 .sorted(criterion)
                 .map(Task::toString)
                 .collect(Collectors.joining(System.lineSeparator()));
+    }
+
+    public static <T extends Task> T find(long taskID, List<T> tasks) {
+        return tasks.stream()
+                .filter(task -> task.getID() == taskID)
+                .findAny()
+                .orElseThrow(() -> new InvalidUserInput(INVALID_ID));
     }
 
 }
