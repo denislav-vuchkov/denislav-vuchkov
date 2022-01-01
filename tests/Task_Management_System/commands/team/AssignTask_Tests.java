@@ -184,10 +184,12 @@ public class AssignTask_Tests {
         storyParameters.add(VALID_SIZE.toString());
         storyParameters.add(oldAssignee);
         createStory.execute(storyParameters);
+        storyParameters.set(7," ");
+        createStory.execute(storyParameters);
 
-        List<String> parameters = List.of(assigner, "2;1", newAssignee);
+        List<String> parameters = List.of(assigner, "2;1;3", newAssignee);
         Assertions.assertDoesNotThrow(() -> assignTask.execute(parameters));
-        Assertions.assertEquals(2, repository.findByName(repository.getUsers(), newAssignee, USER).getTasks().size());
+        Assertions.assertEquals(3, repository.findByName(repository.getUsers(), newAssignee, USER).getTasks().size());
         Assertions.assertEquals(0, getCountOfUnassignedTasks());
     }
 
@@ -209,9 +211,12 @@ public class AssignTask_Tests {
         storyParameters.add(VALID_SIZE.toString());
         storyParameters.add(oldAssignee);
         createStory.execute(storyParameters);
-        List<String> parameters = List.of(assigner, "2;1", "   ");
+        storyParameters.set(7,newAssignee);
+        createStory.execute(storyParameters);
+
+        List<String> parameters = List.of(assigner, "3;1;2", "   ");
         Assertions.assertDoesNotThrow(() -> assignTask.execute(parameters));
-        Assertions.assertEquals(2, getCountOfUnassignedTasks());
+        Assertions.assertEquals(3, getCountOfUnassignedTasks());
     }
 
 
