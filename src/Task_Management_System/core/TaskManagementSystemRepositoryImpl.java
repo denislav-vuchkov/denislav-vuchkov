@@ -158,27 +158,27 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
 
     @Override
     public Bug findBug(long bugID) {
-        return ListHelpers.find(bugID, getBugs());
+        return ListHelpers.findTask(bugID, getBugs());
     }
 
     @Override
     public Feedback findFeedback(long feedbackID) {
-        return ListHelpers.find(feedbackID, getFeedbacks());
+        return ListHelpers.findTask(feedbackID, getFeedbacks());
     }
 
     @Override
     public Story findStory(long storyID) {
-        return ListHelpers.find(storyID, getStories());
+        return ListHelpers.findTask(storyID, getStories());
     }
 
     @Override
     public Task findTask(long taskID) {
-        return ListHelpers.find(taskID, getTasks());
+        return ListHelpers.findTask(taskID, getTasks());
     }
 
     @Override
     public AssignableTask findAssignableTask(long assignableTaskID) {
-        return ListHelpers.find(assignableTaskID, getAssignableTasks());
+        return ListHelpers.findTask(assignableTaskID, getAssignableTasks());
     }
 
     @Override

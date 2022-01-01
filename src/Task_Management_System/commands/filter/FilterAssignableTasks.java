@@ -27,10 +27,10 @@ public class FilterAssignableTasks extends BaseCommand {
                 MIN_ARGUMENTS, MAX_ARGUMENTS, INVALID_FILTERS_COUNT);
 
         List<AssignableTask> result = ListHelpers.
-                filterList(parameters.get(0), getRepository().getAssignableTasks());
+                filterTasks(parameters.get(0), getRepository().getAssignableTasks());
 
         if (parameters.size() == MAX_ARGUMENTS) {
-            result = ListHelpers.filterList(parameters.get(1), result);
+            result = ListHelpers.filterTasks(parameters.get(1), result);
         }
 
         if (result.isEmpty()) {

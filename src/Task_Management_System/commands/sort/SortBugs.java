@@ -33,11 +33,11 @@ public class SortBugs extends BaseCommand {
 
         switch (criterion.toUpperCase()) {
             case "TITLE":
-                return ListHelpers.sort(Comparator.comparing(Bug::getTitle), bugs);
+                return ListHelpers.sortTasks(Comparator.comparing(Bug::getTitle), bugs);
             case "PRIORITY":
-                return ListHelpers.sort(Comparator.comparing(Bug::getPriority), bugs);
+                return ListHelpers.sortTasks(Comparator.comparing(Bug::getPriority), bugs);
             case "SEVERITY":
-                return ListHelpers.sort(Comparator.comparing(Bug::getSeverity), bugs);
+                return ListHelpers.sortTasks(Comparator.comparing(Bug::getSeverity), bugs);
             default:
                 throw new InvalidUserInput(String.format(INVALID_SORT_PARAMETER, "Bugs", "title, priority or severity"));
         }

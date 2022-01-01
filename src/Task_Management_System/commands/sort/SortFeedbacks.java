@@ -33,9 +33,9 @@ public class SortFeedbacks extends BaseCommand {
 
         switch (criterion.toUpperCase()) {
             case "TITLE":
-                return ListHelpers.sort(Comparator.comparing(Feedback::getTitle), feedbacks);
+                return ListHelpers.sortTasks(Comparator.comparing(Feedback::getTitle), feedbacks);
             case "RATING":
-                return ListHelpers.sort((Comparator.comparing(Feedback::getRating).reversed()), feedbacks);
+                return ListHelpers.sortTasks((Comparator.comparing(Feedback::getRating).reversed()), feedbacks);
             default:
                 throw new InvalidUserInput(String.format(INVALID_SORT_PARAMETER, "Feedbacks", "title or rating"));
         }

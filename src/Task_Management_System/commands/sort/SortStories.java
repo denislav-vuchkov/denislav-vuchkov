@@ -33,11 +33,11 @@ public class SortStories extends BaseCommand {
 
         switch (criterion.toUpperCase()) {
             case "TITLE":
-                return ListHelpers.sort(Comparator.comparing(Story::getTitle), stories);
+                return ListHelpers.sortTasks(Comparator.comparing(Story::getTitle), stories);
             case "PRIORITY":
-                return ListHelpers.sort(Comparator.comparing(Story::getPriority), stories);
+                return ListHelpers.sortTasks(Comparator.comparing(Story::getPriority), stories);
             case "SIZE":
-                return ListHelpers.sort(Comparator.comparing(Story::getSize), stories);
+                return ListHelpers.sortTasks(Comparator.comparing(Story::getSize), stories);
             default:
                 throw new InvalidUserInput(String.format(INVALID_SORT_PARAMETER, "Stories", "title, priority or size"));
         }

@@ -28,10 +28,10 @@ public class FilterBugs extends BaseCommand {
                 MIN_ARGUMENTS, MAX_ARGUMENTS, INVALID_FILTERS_COUNT);
 
         List<Bug> result = ListHelpers.
-                filterList(parameters.get(0), getRepository().getBugs(), BugStatus.class);
+                filterTasks(parameters.get(0), getRepository().getBugs(), BugStatus.class);
 
         if (parameters.size() == MAX_ARGUMENTS) {
-            result = ListHelpers.filterList(parameters.get(1), result, BugStatus.class);
+            result = ListHelpers.filterTasks(parameters.get(1), result, BugStatus.class);
         }
 
         if (result.isEmpty()) {

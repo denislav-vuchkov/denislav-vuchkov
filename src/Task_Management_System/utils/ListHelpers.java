@@ -15,7 +15,7 @@ public class ListHelpers {
 
     public static final String INVALID_FILTER = "%s can only be filtered by %s.";
 
-    public static <T extends AssignableTask, E extends Enum<E>> List<T> filterList
+    public static <T extends AssignableTask, E extends Enum<E>> List<T> filterTasks
             (String criterion, List<T> tasks, Class<E> type) {
 
         String filter = criterion.split(":")[0].trim();
@@ -31,8 +31,7 @@ public class ListHelpers {
         }
     }
 
-
-    public static <T extends AssignableTask, E extends Enum<E>> List<T> filterList
+    public static <T extends AssignableTask, E extends Enum<E>> List<T> filterTasks
             (String criterion, List<T> tasks) {
 
         String filter = criterion.split(":")[0].trim();
@@ -78,7 +77,7 @@ public class ListHelpers {
                 .collect(Collectors.toList());
     }
 
-    public static <T extends Task> String sort(Comparator<T> criterion, List<T> tasks) {
+    public static <T extends Task> String sortTasks(Comparator<T> criterion, List<T> tasks) {
         return tasks
                 .stream()
                 .sorted(criterion)
@@ -86,7 +85,7 @@ public class ListHelpers {
                 .collect(Collectors.joining(System.lineSeparator()));
     }
 
-    public static <T extends Task> T find(long taskID, List<T> tasks) {
+    public static <T extends Task> T findTask(long taskID, List<T> tasks) {
         return tasks.stream()
                 .filter(task -> task.getID() == taskID)
                 .findAny()

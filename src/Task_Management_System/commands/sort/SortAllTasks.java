@@ -26,6 +26,6 @@ public class SortAllTasks extends BaseCommand {
             return String.format(NO_ITEMS_TO_DISPLAY, "tasks");
         }
 
-        return ListHelpers.sort(Comparator.comparing(Task::getTitle), getRepository().getTasks());
+        return ListHelpers.sortTasks(Comparator.comparing(Task::getTitle), getRepository().getTasks());
     }
 }
