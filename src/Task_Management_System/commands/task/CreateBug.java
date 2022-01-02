@@ -4,6 +4,8 @@ import Task_Management_System.commands.BaseCommand;
 import Task_Management_System.core.contracts.TaskManagementSystemRepository;
 import Task_Management_System.models.tasks.enums.Priority;
 import Task_Management_System.models.tasks.enums.Severity;
+import Task_Management_System.models.teams.contracts.Board;
+import Task_Management_System.models.teams.contracts.Team;
 import Task_Management_System.models.teams.contracts.User;
 import Task_Management_System.utils.ParsingHelpers;
 import Task_Management_System.utils.ValidationHelpers;
@@ -22,13 +24,11 @@ public class CreateBug extends BaseCommand {
 
     @Override
     protected String executeCommand(List<String> parameters) {
-
         ValidationHelpers.validateCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
-
-        User creator = getRepository().findByName(getRepository().getUsers(), parameters.get(0), USER);
-        String teamName = parameters.get(1);
-        getRepository().validateUserIsFromTeam(creator.getName(), teamName);
-        String boardName = parameters.get(2);
+        User creator = getRepository().findUser(parameters.get(0));
+        Team team = getRepository().findTeam(parameters.get(1));
+        getRepository().validateUserIsFromTeam(creator.getName(), team.getName());
+        Board board = getRepository().findBoard(parameters.get(2), team.getName());
         String title = parameters.get(3);
         String description = parameters.get(4);
         List<String> steps = Arrays
@@ -38,7 +38,7 @@ public class CreateBug extends BaseCommand {
         Priority priority = ParsingHelpers.tryParseEnum(parameters.get(6), Priority.class);
         Severity severity = ParsingHelpers.tryParseEnum(parameters.get(7), Severity.class);
         String assignee = parameters.get(8);
-
-        return getRepository().addBug(creator, teamName, boardName, title, description, steps, priority, severity, assignee);
+        if (!assignee.isBlank()) getRepository().validateUserIsFromTeam(assignee, team.getName());
+        return getRepository().addBug(creator, team, board, title, description, steps, priority, severity, assignee);
     }
 }

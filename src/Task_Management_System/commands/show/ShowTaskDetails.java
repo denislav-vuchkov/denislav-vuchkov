@@ -19,15 +19,11 @@ public class ShowTaskDetails extends BaseCommand {
     @Override
     protected String executeCommand(List<String> parameters) {
         ValidationHelpers.validateCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
-
         long taskID = ParsingHelpers.tryParseLong(parameters.get(0), INVALID_ID);
-
         if (getRepository().getTasks().isEmpty()) {
             return String.format(NO_ITEMS_TO_DISPLAY, "tasks");
         }
 
-        Task task = getRepository().findTask(taskID);
-
-        return task.printDetails();
+        return getRepository().findTask(taskID).printDetails();
     }
 }

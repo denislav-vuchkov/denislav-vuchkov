@@ -51,7 +51,7 @@ public class ShowAllTeams_Tests {
         parameters.add(VALID_TEAM_NAME);
         createTeam.execute(parameters);
 
-        Team team = repository.findByName(repository.getTeams(), VALID_TEAM_NAME, TEAM);
+        Team team = repository.findTeam(VALID_TEAM_NAME);
 
         String output = String.format("Team: %s - Users: %d - Boards: %d - Tasks: %d",
                 team.getName(),

@@ -16,11 +16,9 @@ public class CreateUser extends BaseCommand {
 
     @Override
     protected String executeCommand(List<String> parameters) {
-
         ValidationHelpers.validateCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
-
         String userName = parameters.get(0);
-
+        ValidationHelpers.validateUniqueName(userName, getRepository().getUsers(), USER);
         return getRepository().addUser(userName);
     }
 }

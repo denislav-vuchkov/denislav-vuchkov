@@ -24,10 +24,8 @@ public class ChangeStory extends BaseCommand {
 
     @Override
     protected String executeCommand(List<String> parameters) {
-
         ValidationHelpers.validateCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
-
-        User changer = getRepository().findByName(getRepository().getUsers(), parameters.get(0), USER);
+        User changer = getRepository().findUser(parameters.get(0));
         long ID = ParsingHelpers.tryParseLong(parameters.get(1), INVALID_ID);
         Story story = getRepository().findStory(ID);
         getRepository().validateUserAndTaskFromSameTeam(changer.getName(), story.getID());
@@ -35,8 +33,7 @@ public class ChangeStory extends BaseCommand {
         String newValue = parameters.get(3).toUpperCase();
 
         Team team = getRepository().findTeam(story);
-        changer.log(String.format(ATTEMPTED_CHANGE, changer.getName(), propertyToChange, "Story", ID, newValue),
-                team.getName());
+        changer.log(String.format(TRY, changer.getName(), propertyToChange, "Story", ID, newValue), team.getName());
 
         switch (propertyToChange) {
             case "PRIORITY":

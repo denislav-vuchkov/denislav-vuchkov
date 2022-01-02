@@ -5,6 +5,7 @@ import Task_Management_System.models.tasks.contracts.*;
 import Task_Management_System.models.tasks.enums.Priority;
 import Task_Management_System.models.tasks.enums.Severity;
 import Task_Management_System.models.tasks.enums.Size;
+import Task_Management_System.models.teams.contracts.Board;
 import Task_Management_System.models.teams.contracts.Team;
 import Task_Management_System.models.teams.contracts.User;
 import Task_Management_System.models.teams.contracts.subcontracts.Nameable;
@@ -31,19 +32,22 @@ public interface TaskManagementSystemRepository {
 
     String addUser(String userName);
 
-    <T extends Nameable> T findByName(List<T> collection, String targetName, String typeOfCollection);
+    Team findTeam(String teamName);
+
+    User findUser(String userName);
+
+    Board findBoard(String boardName, String teamName);
 
     Team findTeam(Task task);
 
-    String addBug(User user, String teamName, String boardName,
+    String addBug(User user, Team team, Board board,
                   String title, String description, List<String> stepsToReproduce,
                   Priority priority, Severity severity, String assignee);
 
-    String addFeedback(User user, String teamName, String boardName,
+    String addFeedback(User user, Team team, Board board,
                        String title, String description, int rating);
 
-
-    String addStory(User user, String teamName, String boardName,
+    String addStory(User user, Team team, Board board,
                     String title, String description,
                     Priority priority, Size size, String assignee);
 

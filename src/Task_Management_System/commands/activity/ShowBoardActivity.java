@@ -20,10 +20,9 @@ public class ShowBoardActivity extends BaseCommand {
     @Override
     protected String executeCommand(List<String> parameters) {
         ValidationHelpers.validateCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
-        Team team = getRepository().findByName(getRepository().getTeams(), parameters.get(0), TEAM);
-        String boardName = parameters.get(1);
+        Team team = getRepository().findTeam(parameters.get(0));
         return getRepository()
-                .findByName(team.getBoards(), boardName, BOARD)
+                .findBoard(parameters.get(1), team.getName())
                 .getLog()
                 .stream()
                 .map(EventImpl::toString)

@@ -16,7 +16,6 @@ import Task_Management_System.models.teams.contracts.Team;
 import Task_Management_System.models.teams.contracts.User;
 import Task_Management_System.models.teams.contracts.subcontracts.Nameable;
 import Task_Management_System.utils.ListHelpers;
-import Task_Management_System.utils.ValidationHelpers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,25 +89,30 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
 
     @Override
     public String addTeam(String teamName) {
-        ValidationHelpers.validateUniqueName(teamName, getTeams(), TEAM);
         teams.add(new TeamImpl(teamName));
         return String.format(ADDED_SUCCESSFULLY, TEAM, teamName);
     }
 
     @Override
     public String addUser(String userName) {
-        ValidationHelpers.validateUniqueName(userName, getUsers(), USER);
         users.add(new UserImpl(userName));
         return String.format(ADDED_SUCCESSFULLY, USER, userName);
     }
 
     @Override
-    public <T extends Nameable> T findByName(List<T> collection, String targetName, String typeOfCollection) {
-        return collection
-                .stream()
-                .filter(element -> element.getName().equalsIgnoreCase(targetName))
-                .findAny()
-                .orElseThrow(() -> new InvalidUserInput(String.format(NOT_EXIST, typeOfCollection, typeOfCollection)));
+    public Team findTeam(String teamName) {
+        return findByName(teamName, getTeams(), TEAM);
+    }
+
+    @Override
+    public User findUser(String userName) {
+        return findByName(userName, getUsers(), USER);
+    }
+
+    @Override
+    public Board findBoard(String boardName, String teamName) {
+        Team team = findByName(teamName, getTeams(), TEAM);
+        return findByName(boardName, team.getBoards(), BOARD);
     }
 
     @Override
@@ -120,48 +124,34 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
     }
 
     @Override
-    public String addBug(User creator, String teamName, String boardName, String title, String description,
+    public String addBug(User creator, Team team, Board board, String title, String description,
                          List<String> stepsToReproduce, Priority priority, Severity severity, String assignee) {
-        if (!assignee.isBlank()) validateUserIsFromTeam(assignee, teamName);
-        Team team = findByName(teams, teamName, TEAM);
-        Board board = findByName(team.getBoards(), boardName, BOARD);
-
-        creator.log(String.format(USER_CREATED_TASK, creator.getName(), "Bug", nextTaskID, boardName), teamName);
+        creator.log(String.format(CREATE, creator.getName(), "Bug", nextTaskID, board.getName()), team.getName());
         Bug bug = new BugImpl(nextTaskID, title, description, stepsToReproduce, priority, severity);
         board.addTask(bug);
-        if (!assignee.isBlank()) findByName(users, assignee, USER).addTask(bug);
-
+        if (!assignee.isBlank()) findUser(assignee).addTask(bug);
         bugs.add(bug);
-        return String.format(TASK_ADDED_TO_BOARD, "Bug", nextTaskID++, boardName, teamName);
+        return String.format(TASK_ADDED_TO_BOARD, "Bug", nextTaskID++, board.getName(), team.getName());
     }
 
     @Override
-    public String addStory(User creator, String teamName, String boardName, String title, String description,
+    public String addStory(User creator, Team team, Board board, String title, String description,
                            Priority priority, Size size, String assignee) {
-        if (!assignee.isBlank()) validateUserIsFromTeam(assignee, teamName);
-        Team team = findByName(teams, teamName, TEAM);
-        Board board = findByName(team.getBoards(), boardName, BOARD);
-
-        creator.log(String.format(USER_CREATED_TASK, creator.getName(), "Story", nextTaskID, boardName), teamName);
+        creator.log(String.format(CREATE, creator.getName(), "Story", nextTaskID, board.getName()), team.getName());
         Story story = new StoryImpl(nextTaskID, title, description, priority, size);
         board.addTask(story);
-        if (!assignee.isBlank()) findByName(users, assignee, USER).addTask(story);
-
+        if (!assignee.isBlank()) findUser(assignee).addTask(story);
         stories.add(story);
-        return String.format(TASK_ADDED_TO_BOARD, "Story", nextTaskID++, boardName, teamName);
+        return String.format(TASK_ADDED_TO_BOARD, "Story", nextTaskID++, board.getName(), team.getName());
     }
 
     @Override
-    public String addFeedback(User creator, String teamName, String boardName, String title, String description, int rating) {
-        Team team = findByName(teams, teamName, TEAM);
-        Board board = findByName(team.getBoards(), boardName, BOARD);
-
-        creator.log(String.format(USER_CREATED_TASK, creator.getName(), "Feedback", nextTaskID, boardName), teamName);
+    public String addFeedback(User creator, Team team, Board board, String title, String description, int rating) {
+        creator.log(String.format(CREATE, creator.getName(), "Feedback", nextTaskID, board.getName()), team.getName());
         Feedback feedback = new FeedbackImpl(nextTaskID, title, description, rating);
         board.addTask(feedback);
-
         feedbacks.add(feedback);
-        return String.format(TASK_ADDED_TO_BOARD, "Feedback", nextTaskID++, boardName, teamName);
+        return String.format(TASK_ADDED_TO_BOARD, "Feedback", nextTaskID++, board.getName(), team.getName());
     }
 
     @Override
@@ -189,10 +179,18 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
         return ListHelpers.findTask(assignableTaskID, getAssignableTasks());
     }
 
+    private <T extends Nameable> T findByName(String name, List<T> elements, String type) {
+        return elements
+                .stream()
+                .filter(element -> element.getName().equalsIgnoreCase(name))
+                .findAny()
+                .orElseThrow(() -> new InvalidUserInput(String.format(NOT_EXIST, type, type)));
+    }
+
     @Override
     public void validateUserIsFromTeam(String userName, String teamName) {
-        User user = findByName(users, userName, USER);
-        Team team = findByName(teams, teamName, TEAM);
+        User user = findUser(userName);
+        Team team = findTeam(teamName);
         if (!team.getUsers().contains(user)) {
             throw new InvalidUserInput(USER_NOT_FROM_TEAM);
         }
@@ -200,7 +198,7 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
 
     @Override
     public void validateUserAndTaskFromSameTeam(String userName, long taskID) {
-        User user = findByName(users, userName, USER);
+        User user = findUser(userName);
         Task task = findTask(taskID);
         for (Team team : teams) {
             if (team.getUsers().contains(user) && team.containsTask(task)) {

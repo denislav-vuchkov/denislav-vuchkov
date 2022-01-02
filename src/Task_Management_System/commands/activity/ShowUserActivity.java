@@ -3,6 +3,7 @@ package Task_Management_System.commands.activity;
 import Task_Management_System.commands.BaseCommand;
 import Task_Management_System.core.contracts.TaskManagementSystemRepository;
 import Task_Management_System.models.logger.EventImpl;
+import Task_Management_System.models.teams.contracts.User;
 import Task_Management_System.utils.ValidationHelpers;
 
 import java.util.List;
@@ -19,10 +20,8 @@ public class ShowUserActivity extends BaseCommand {
     @Override
     protected String executeCommand(List<String> parameters) {
         ValidationHelpers.validateCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
-        String userName = parameters.get(0);
-        return getRepository()
-                .findByName(getRepository().getUsers(), parameters.get(0), USER)
-                .getLog()
+        User user = getRepository().findUser(parameters.get(0));
+        return user.getLog()
                 .stream()
                 .map(EventImpl::toString)
                 .collect(Collectors.joining(System.lineSeparator()));

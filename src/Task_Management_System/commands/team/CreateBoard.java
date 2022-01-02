@@ -22,20 +22,14 @@ public class CreateBoard extends BaseCommand {
 
     @Override
     protected String executeCommand(List<String> parameters) {
-
         ValidationHelpers.validateCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
-
-        Team team = getRepository().findByName(getRepository().getTeams(), parameters.get(1), TEAM);
-
+        Team team = getRepository().findTeam(parameters.get(1));
         if (team.getBoards().stream().anyMatch(board -> board.getName().equals(parameters.get(0)))) {
             throw new InvalidUserInput(
                     String.format(BOARD_ALREADY_EXISTS, parameters.get(0), team.getName()));
         }
-
         Board board = new BoardImpl(parameters.get(0));
-
         team.addBoard(board);
-
         return String.format(BOARD_CREATED_IN_TEAM, board.getName(), team.getName());
     }
 }

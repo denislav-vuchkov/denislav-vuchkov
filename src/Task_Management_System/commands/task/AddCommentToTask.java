@@ -25,17 +25,12 @@ public class AddCommentToTask extends BaseCommand {
 
     @Override
     protected String executeCommand(List<String> parameters) {
-
         ValidationHelpers.validateCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
-
-        User author = getRepository().findByName(getRepository().getUsers(), parameters.get(0), USER);
+        User author = getRepository().findUser(parameters.get(0));
         long ID = ParsingHelpers.tryParseLong(parameters.get(1), INVALID_ID);
         Task task = getRepository().findTask(ID);
-        String content = parameters.get(2);
         getRepository().validateUserAndTaskFromSameTeam(author.getName(), task.getID());
-
-        Comment comment = new CommentImpl(content, author.getName());
-
+        Comment comment = new CommentImpl(parameters.get(2), author.getName());
         String event = String.format(COMMENT_EVENT, author.getName(), FormatHelpers.getType(task), task.getID());
         Team team = getRepository().findTeam(task);
         author.log(event, team.getName());

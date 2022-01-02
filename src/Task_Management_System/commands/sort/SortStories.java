@@ -20,17 +20,12 @@ public class SortStories extends BaseCommand {
 
     @Override
     protected String executeCommand(List<String> parameters) {
-
         ValidationHelpers.validateCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
-
         List<Story> stories = getRepository().getStories();
-
         if (stories.isEmpty()) {
             return String.format(NO_ITEMS_TO_DISPLAY, "stories");
         }
-
         String criterion = parameters.get(0);
-
         switch (criterion.toUpperCase()) {
             case "TITLE":
                 return ListHelpers.sortTasks(Comparator.comparing(Story::getTitle), stories);

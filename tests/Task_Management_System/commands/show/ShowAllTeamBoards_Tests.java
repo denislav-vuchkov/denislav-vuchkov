@@ -64,8 +64,8 @@ public class ShowAllTeamBoards_Tests {
         Command createBoard = commandFactory.createCommand("CreateBoard", repository);
         createBoard.execute(List.of(VALID_BOARD_NAME, VALID_TEAM_NAME));
 
-        Team team = repository.findByName(repository.getTeams(), VALID_TEAM_NAME, TEAM);
-        Board board = repository.findByName(team.getBoards(), VALID_BOARD_NAME, BOARD);
+        Team team = repository.findTeam(VALID_TEAM_NAME);
+        Board board = repository.findBoard(VALID_BOARD_NAME, VALID_TEAM_NAME);
 
         String output = String.format("Board name: %s - Board items: %d", board.getName(), board.getTasks().size());
 

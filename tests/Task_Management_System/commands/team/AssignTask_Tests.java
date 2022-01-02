@@ -89,8 +89,8 @@ public class AssignTask_Tests {
         List<String> parameters = List.of(oldAssignee, "1", newAssignee);
 
         Assertions.assertDoesNotThrow(() -> assignTask.execute(parameters));
-        Assertions.assertEquals(0, repository.findByName(repository.getUsers(), oldAssignee, USER).getTasks().size());
-        Assertions.assertEquals(1, repository.findByName(repository.getUsers(), newAssignee, USER).getTasks().size());
+        Assertions.assertEquals(0, repository.findUser(oldAssignee).getTasks().size());
+        Assertions.assertEquals(1, repository.findUser(newAssignee).getTasks().size());
         Assertions.assertEquals(0, getCountOfUnassignedTasks());
     }
 
@@ -103,9 +103,9 @@ public class AssignTask_Tests {
         List<String> parameters = List.of(invalidUser, "1", newAssignee);
 
         Assertions.assertThrows(InvalidUserInput.class, () -> assignTask.execute(parameters));
-        Assertions.assertEquals(1, repository.findByName(repository.getUsers(), oldAssignee, USER).getTasks().size());
-        Assertions.assertEquals(0, repository.findByName(repository.getUsers(), invalidUser, USER).getTasks().size());
-        Assertions.assertEquals(0, repository.findByName(repository.getUsers(), newAssignee, USER).getTasks().size());
+        Assertions.assertEquals(1, repository.findUser(oldAssignee).getTasks().size());
+        Assertions.assertEquals(0, repository.findUser(invalidUser).getTasks().size());
+        Assertions.assertEquals(0, repository.findUser(newAssignee).getTasks().size());
         Assertions.assertEquals(0, getCountOfUnassignedTasks());
     }
 
@@ -118,9 +118,9 @@ public class AssignTask_Tests {
         List<String> parameters = List.of(oldAssignee, "1", invalidUser);
 
         Assertions.assertThrows(InvalidUserInput.class, () -> assignTask.execute(parameters));
-        Assertions.assertEquals(1, repository.findByName(repository.getUsers(), oldAssignee, USER).getTasks().size());
-        Assertions.assertEquals(0, repository.findByName(repository.getUsers(), invalidUser, USER).getTasks().size());
-        Assertions.assertEquals(0, repository.findByName(repository.getUsers(), newAssignee, USER).getTasks().size());
+        Assertions.assertEquals(1, repository.findUser(oldAssignee).getTasks().size());
+        Assertions.assertEquals(0, repository.findUser(invalidUser).getTasks().size());
+        Assertions.assertEquals(0, repository.findUser(newAssignee).getTasks().size());
         Assertions.assertEquals(0, getCountOfUnassignedTasks());
     }
 
@@ -129,8 +129,8 @@ public class AssignTask_Tests {
         List<String> parameters = List.of(oldAssignee, "1", oldAssignee);
 
         Assertions.assertThrows(InvalidUserInput.class, () -> assignTask.execute(parameters));
-        Assertions.assertEquals(1, repository.findByName(repository.getUsers(), oldAssignee, USER).getTasks().size());
-        Assertions.assertEquals(0, repository.findByName(repository.getUsers(), newAssignee, USER).getTasks().size());
+        Assertions.assertEquals(1, repository.findUser(oldAssignee).getTasks().size());
+        Assertions.assertEquals(0, repository.findUser(newAssignee).getTasks().size());
         Assertions.assertEquals(0, getCountOfUnassignedTasks());
     }
 
@@ -156,7 +156,7 @@ public class AssignTask_Tests {
         List<String> parameters = List.of(assigner, "2", newAssignee);
 
         Assertions.assertDoesNotThrow(() -> assignTask.execute(parameters));
-        Assertions.assertEquals(1, repository.findByName(repository.getUsers(), newAssignee, USER).getTasks().size());
+        Assertions.assertEquals(1, repository.findUser(newAssignee).getTasks().size());
         Assertions.assertEquals(0, getCountOfUnassignedTasks());
     }
 
@@ -189,7 +189,7 @@ public class AssignTask_Tests {
 
         List<String> parameters = List.of(assigner, "2;1;3", newAssignee);
         Assertions.assertDoesNotThrow(() -> assignTask.execute(parameters));
-        Assertions.assertEquals(3, repository.findByName(repository.getUsers(), newAssignee, USER).getTasks().size());
+        Assertions.assertEquals(3, repository.findUser(newAssignee).getTasks().size());
         Assertions.assertEquals(0, getCountOfUnassignedTasks());
     }
 

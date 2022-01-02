@@ -21,13 +21,9 @@ public class ShowTaskComments extends BaseCommand {
 
     @Override
     protected String executeCommand(List<String> parameters) {
-
         ValidationHelpers.validateCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
-
         long ID = ParsingHelpers.tryParseLong(parameters.get(0), INVALID_ID);
-
         Task task = getRepository().findTask(ID);
-
         if (task.getComments().isEmpty()) {
             return String.format(NO_ITEMS_TO_DISPLAY, "comments");
         }

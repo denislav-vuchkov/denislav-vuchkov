@@ -3,6 +3,7 @@ package Task_Management_System.commands.activity;
 import Task_Management_System.commands.BaseCommand;
 import Task_Management_System.core.contracts.TaskManagementSystemRepository;
 import Task_Management_System.models.logger.EventImpl;
+import Task_Management_System.models.teams.contracts.Team;
 import Task_Management_System.utils.ValidationHelpers;
 
 import java.util.List;
@@ -19,11 +20,10 @@ public class ShowTeamActivity extends BaseCommand {
     @Override
     protected String executeCommand(List<String> parameters) {
         ValidationHelpers.validateCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
-        String teamName = parameters.get(0);
-        return getRepository()
-                .findByName(getRepository().getTeams(), teamName, TEAM)
-                .getLog()
+        Team team = getRepository().findTeam(parameters.get(0));
+        return team.getLog()
                 .stream()
-                .map(EventImpl::toString).collect(Collectors.joining(System.lineSeparator()));
+                .map(EventImpl::toString)
+                .collect(Collectors.joining(System.lineSeparator()));
     }
 }

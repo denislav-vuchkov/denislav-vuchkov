@@ -20,17 +20,12 @@ public class SortBugs extends BaseCommand {
 
     @Override
     protected String executeCommand(List<String> parameters) {
-
         ValidationHelpers.validateCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
-
         List<Bug> bugs = getRepository().getBugs();
-
         if (bugs.isEmpty()) {
             return String.format(NO_ITEMS_TO_DISPLAY, "bugs");
         }
-
         String criterion = parameters.get(0);
-
         switch (criterion.toUpperCase()) {
             case "TITLE":
                 return ListHelpers.sortTasks(Comparator.comparing(Bug::getTitle), bugs);

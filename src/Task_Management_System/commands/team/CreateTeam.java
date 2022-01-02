@@ -16,11 +16,9 @@ public class CreateTeam extends BaseCommand {
 
     @Override
     protected String executeCommand(List<String> parameters) {
-
         ValidationHelpers.validateCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
-
         String teamName = parameters.get(0);
-
+        ValidationHelpers.validateUniqueName(teamName, getRepository().getTeams(), TEAM);
         return getRepository().addTeam(teamName);
     }
 }

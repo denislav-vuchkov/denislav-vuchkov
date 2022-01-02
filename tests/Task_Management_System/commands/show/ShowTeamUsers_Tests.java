@@ -68,7 +68,7 @@ public class ShowTeamUsers_Tests {
         Command addUserToTeam = commandFactory.createCommand("AddUserToTeam", repository);
         addUserToTeam.execute(List.of(VALID_USER_NAME, VALID_TEAM_NAME));
 
-        User user = repository.findByName(repository.getUsers(), VALID_USER_NAME, USER);
+        User user = repository.findUser(VALID_USER_NAME);
 
         String output = String.format("User: %s - Tasks: %d",
                 user.getName(),

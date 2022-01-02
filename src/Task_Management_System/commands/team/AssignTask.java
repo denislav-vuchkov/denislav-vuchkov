@@ -58,7 +58,7 @@ public class AssignTask extends BaseCommand {
         assigner.log(event, team.getName());
 
         if (!task.getAssignee().equals(UNASSIGNED)) {
-            getRepository().findByName(getRepository().getUsers(), task.getAssignee(), USER).removeTask(task);
+            getRepository().findUser(task.getAssignee()).removeTask(task);
         }
         return event;
     }
@@ -72,7 +72,7 @@ public class AssignTask extends BaseCommand {
         Team team = getRepository().findTeam(task);
         assigner.log(event, team.getName());
         if (!task.getAssignee().equals(UNASSIGNED)) {
-            getRepository().findByName(getRepository().getUsers(), task.getAssignee(), USER).removeTask(task);
+            getRepository().findUser(task.getAssignee()).removeTask(task);
         }
         assignee.addTask(task);
         return event;
@@ -80,6 +80,6 @@ public class AssignTask extends BaseCommand {
 
     private User getUserIfValid(String assignerName, long ID) {
         getRepository().validateUserAndTaskFromSameTeam(assignerName, ID);
-        return getRepository().findByName(getRepository().getUsers(), assignerName, USER);
+        return getRepository().findUser(assignerName);
     }
 }

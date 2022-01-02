@@ -24,10 +24,8 @@ public class ChangeBug extends BaseCommand {
 
     @Override
     protected String executeCommand(List<String> parameters) {
-
         ValidationHelpers.validateCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
-
-        User changer = getRepository().findByName(getRepository().getUsers(), parameters.get(0), USER);
+        User changer = getRepository().findUser(parameters.get(0));
         long ID = ParsingHelpers.tryParseLong(parameters.get(1), INVALID_ID);
         Bug bug = getRepository().findBug(ID);
         getRepository().validateUserAndTaskFromSameTeam(changer.getName(), bug.getID());
@@ -35,8 +33,7 @@ public class ChangeBug extends BaseCommand {
         String newValue = parameters.get(3).toUpperCase();
 
         Team team = getRepository().findTeam(bug);
-        changer.log(String.format(ATTEMPTED_CHANGE, changer.getName(), propertyToChange, "Bug", ID, newValue)
-                , team.getName());
+        changer.log(String.format(TRY, changer.getName(), propertyToChange, "Bug", ID, newValue), team.getName());
 
         switch (propertyToChange) {
             case "PRIORITY":

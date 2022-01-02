@@ -20,17 +20,12 @@ public class SortFeedbacks extends BaseCommand {
 
     @Override
     protected String executeCommand(List<String> parameters) {
-
         ValidationHelpers.validateCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
-
         List<Feedback> feedbacks = getRepository().getFeedbacks();
-
         if (feedbacks.isEmpty()) {
             return String.format(NO_ITEMS_TO_DISPLAY, "feedbacks");
         }
-
         String criterion = parameters.get(0);
-
         switch (criterion.toUpperCase()) {
             case "TITLE":
                 return ListHelpers.sortTasks(Comparator.comparing(Feedback::getTitle), feedbacks);

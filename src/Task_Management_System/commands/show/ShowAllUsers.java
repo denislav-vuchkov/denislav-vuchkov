@@ -18,11 +18,8 @@ public class ShowAllUsers extends BaseCommand {
 
     @Override
     protected String executeCommand(List<String> parameters) {
-
         ValidationHelpers.validateCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
-
         List<User> users = getRepository().getUsers();
-
         if (users.isEmpty()) {
             return String.format(NO_ITEMS_TO_DISPLAY, "users");
         }
