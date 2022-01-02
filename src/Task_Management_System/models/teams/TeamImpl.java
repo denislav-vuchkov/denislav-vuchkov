@@ -91,8 +91,7 @@ public class TeamImpl implements Loggable, Team {
 
     @Override
     public List<EventImpl> getLog() {
-        //TODO
-        return FormatHelpers.combineLogs(history.getEvents(), getBoards(), getUsers());
+        return FormatHelpers.combineLogs(history.getEvents(), getBoards(), getUsers(), this.name);
     }
 
     @Override

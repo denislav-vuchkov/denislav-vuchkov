@@ -112,13 +112,21 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
     }
 
     @Override
+    public Team findTeam(Task task) {
+        return teams.stream()
+                .filter(team -> team.getBoards().stream().anyMatch(board -> board.getTasks().contains(task)))
+                .findAny()
+                .orElseThrow(() -> new InvalidUserInput(String.format(NOT_EXIST, TEAM, TEAM)));
+    }
+
+    @Override
     public String addBug(User creator, String teamName, String boardName, String title, String description,
                          List<String> stepsToReproduce, Priority priority, Severity severity, String assignee) {
         if (!assignee.isBlank()) validateUserIsFromTeam(assignee, teamName);
         Team team = findByName(teams, teamName, TEAM);
         Board board = findByName(team.getBoards(), boardName, BOARD);
 
-        creator.log(String.format(USER_CREATED_TASK, creator.getName(), "Bug", nextTaskID, boardName));
+        creator.log(String.format(USER_CREATED_TASK, creator.getName(), "Bug", nextTaskID, boardName), teamName);
         Bug bug = new BugImpl(nextTaskID, title, description, stepsToReproduce, priority, severity);
         board.addTask(bug);
         if (!assignee.isBlank()) findByName(users, assignee, USER).addTask(bug);
@@ -134,7 +142,7 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
         Team team = findByName(teams, teamName, TEAM);
         Board board = findByName(team.getBoards(), boardName, BOARD);
 
-        creator.log(String.format(USER_CREATED_TASK, creator.getName(), "Story", nextTaskID, boardName));
+        creator.log(String.format(USER_CREATED_TASK, creator.getName(), "Story", nextTaskID, boardName), teamName);
         Story story = new StoryImpl(nextTaskID, title, description, priority, size);
         board.addTask(story);
         if (!assignee.isBlank()) findByName(users, assignee, USER).addTask(story);
@@ -148,7 +156,7 @@ public class TaskManagementSystemRepositoryImpl implements TaskManagementSystemR
         Team team = findByName(teams, teamName, TEAM);
         Board board = findByName(team.getBoards(), boardName, BOARD);
 
-        creator.log(String.format(USER_CREATED_TASK, creator.getName(), "Feedback", nextTaskID, boardName));
+        creator.log(String.format(USER_CREATED_TASK, creator.getName(), "Feedback", nextTaskID, boardName), teamName);
         Feedback feedback = new FeedbackImpl(nextTaskID, title, description, rating);
         board.addTask(feedback);
 

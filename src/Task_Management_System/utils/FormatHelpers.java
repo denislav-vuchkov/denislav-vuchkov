@@ -15,9 +15,9 @@ public class FormatHelpers {
     }
 
     public static <B extends Loggable, U extends Loggable> List<EventImpl> combineLogs
-            (List<EventImpl> history, List<B> boards, List<U> users) {
+            (List<EventImpl> history, List<B> boards, List<U> users, String targetTeam) {
         history.addAll(getEvents(boards));
-        history.addAll(getEvents(users));
+        users.forEach(user -> history.addAll(extractTeamSpecificHistory(user.getLog(), targetTeam)));
 
         history.sort(Comparator.comparing(Event::getOccurrence));
 
@@ -33,9 +33,11 @@ public class FormatHelpers {
         return history;
     }
 
-    public static List<EventImpl> combineLogs
-            (List<EventImpl> history) {
-        return history.stream().sorted(Comparator.comparing(EventImpl::getOccurrence)).collect(Collectors.toList());
+    public static List<EventImpl> extractTeamSpecificHistory
+            (List<EventImpl> history, String targetTeam) {
+        return history.stream()
+                .filter(event -> event.getTeam().equals(targetTeam))
+                .sorted(Comparator.comparing(Event::getOccurrence)).collect(Collectors.toList());
     }
 
     private static <T extends Loggable> List<EventImpl> getEvents

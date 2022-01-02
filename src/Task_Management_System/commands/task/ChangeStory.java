@@ -7,6 +7,7 @@ import Task_Management_System.models.tasks.contracts.Story;
 import Task_Management_System.models.tasks.enums.Priority;
 import Task_Management_System.models.tasks.enums.Size;
 import Task_Management_System.models.tasks.enums.StoryStatus;
+import Task_Management_System.models.teams.contracts.Team;
 import Task_Management_System.models.teams.contracts.User;
 import Task_Management_System.utils.ParsingHelpers;
 import Task_Management_System.utils.ValidationHelpers;
@@ -33,7 +34,9 @@ public class ChangeStory extends BaseCommand {
         String propertyToChange = parameters.get(2).trim().toUpperCase();
         String newValue = parameters.get(3).toUpperCase();
 
-        changer.log(String.format(ATTEMPTED_CHANGE, changer.getName(), propertyToChange, "Story", ID, newValue));
+        Team team = getRepository().findTeam(story);
+        changer.log(String.format(ATTEMPTED_CHANGE, changer.getName(), propertyToChange, "Story", ID, newValue),
+                team.getName());
 
         switch (propertyToChange) {
             case "PRIORITY":
@@ -53,7 +56,7 @@ public class ChangeStory extends BaseCommand {
         }
 
         String event = String.format(SUCCESSFUL_CHANGE, changer.getName(), propertyToChange, "Story", ID, newValue);
-        changer.log(event);
+        changer.log(event, team.getName());
         return event;
     }
 }

@@ -31,7 +31,7 @@ public class ListHelpers {
         }
     }
 
-    public static <T extends AssignableTask, E extends Enum<E>> List<T> filterTasks
+    public static <T extends AssignableTask> List<T> filterTasks
             (String criterion, List<T> tasks) {
 
         String filter = criterion.split(":")[0].trim();

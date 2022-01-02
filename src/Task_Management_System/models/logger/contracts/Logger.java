@@ -26,6 +26,8 @@ public interface Logger {
 
     void addEvent(String description);
 
+    void addEvent(String description, String teamName);
+
     List<EventImpl> getEvents();
 
     int size();

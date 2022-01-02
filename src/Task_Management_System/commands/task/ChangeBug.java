@@ -7,6 +7,7 @@ import Task_Management_System.models.tasks.contracts.Bug;
 import Task_Management_System.models.tasks.enums.BugStatus;
 import Task_Management_System.models.tasks.enums.Priority;
 import Task_Management_System.models.tasks.enums.Severity;
+import Task_Management_System.models.teams.contracts.Team;
 import Task_Management_System.models.teams.contracts.User;
 import Task_Management_System.utils.ParsingHelpers;
 import Task_Management_System.utils.ValidationHelpers;
@@ -33,7 +34,9 @@ public class ChangeBug extends BaseCommand {
         String propertyToChange = parameters.get(2).trim().toUpperCase();
         String newValue = parameters.get(3).toUpperCase();
 
-        changer.log(String.format(ATTEMPTED_CHANGE, changer.getName(), propertyToChange, "Bug", ID, newValue));
+        Team team = getRepository().findTeam(bug);
+        changer.log(String.format(ATTEMPTED_CHANGE, changer.getName(), propertyToChange, "Bug", ID, newValue)
+                , team.getName());
 
         switch (propertyToChange) {
             case "PRIORITY":
@@ -53,7 +56,7 @@ public class ChangeBug extends BaseCommand {
         }
 
         String event = String.format(SUCCESSFUL_CHANGE, changer.getName(), propertyToChange, "Bug", ID, newValue);
-        changer.log(event);
+        changer.log(event, team.getName());
         return event;
     }
 }

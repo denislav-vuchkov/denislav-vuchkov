@@ -4,6 +4,7 @@ import Task_Management_System.commands.BaseCommand;
 import Task_Management_System.core.contracts.TaskManagementSystemRepository;
 import Task_Management_System.exceptions.InvalidUserInput;
 import Task_Management_System.models.tasks.contracts.AssignableTask;
+import Task_Management_System.models.teams.contracts.Team;
 import Task_Management_System.models.teams.contracts.User;
 import Task_Management_System.utils.ParsingHelpers;
 import Task_Management_System.utils.ValidationHelpers;
@@ -52,8 +53,9 @@ public class AssignTask extends BaseCommand {
     }
 
     private String unassignTask(User assigner, AssignableTask task) {
+        Team team = getRepository().findTeam(task);
         String event = String.format(UNASSIGN, assigner.getName(), getType(task), task.getID());
-        assigner.log(event);
+        assigner.log(event, team.getName());
 
         if (!task.getAssignee().equals(UNASSIGNED)) {
             getRepository().findByName(getRepository().getUsers(), task.getAssignee(), USER).removeTask(task);
@@ -61,12 +63,14 @@ public class AssignTask extends BaseCommand {
         return event;
     }
 
+        
     private String reassignTask(User assigner, String assigneeName, AssignableTask task) {
         if (task.getAssignee().equals(assigneeName)) throw new InvalidUserInput(String.format(SAME_USER, assigner));
         User assignee = getUserIfValid(assigneeName, task.getID());
 
         String event = String.format(REASSIGN, assigner.getName(), getType(task), task.getID(), assignee.getName());
-        assigner.log(event);
+        Team team = getRepository().findTeam(task);
+        assigner.log(event, team.getName());
         if (!task.getAssignee().equals(UNASSIGNED)) {
             getRepository().findByName(getRepository().getUsers(), task.getAssignee(), USER).removeTask(task);
         }

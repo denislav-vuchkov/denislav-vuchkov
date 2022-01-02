@@ -57,7 +57,6 @@ public class BoardImpl implements Board {
 
     @Override
     public List<EventImpl> getLog() {
-        //TODO
         return FormatHelpers.combineLogs(history.getEvents(), getTasks());
     }
 

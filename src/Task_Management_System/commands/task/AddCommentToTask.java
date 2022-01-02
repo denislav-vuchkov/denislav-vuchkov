@@ -5,6 +5,7 @@ import Task_Management_System.core.contracts.TaskManagementSystemRepository;
 import Task_Management_System.models.tasks.CommentImpl;
 import Task_Management_System.models.tasks.contracts.Comment;
 import Task_Management_System.models.tasks.contracts.Task;
+import Task_Management_System.models.teams.contracts.Team;
 import Task_Management_System.models.teams.contracts.User;
 import Task_Management_System.utils.FormatHelpers;
 import Task_Management_System.utils.ParsingHelpers;
@@ -32,10 +33,12 @@ public class AddCommentToTask extends BaseCommand {
         Task task = getRepository().findTask(ID);
         String content = parameters.get(2);
         getRepository().validateUserAndTaskFromSameTeam(author.getName(), task.getID());
+
         Comment comment = new CommentImpl(content, author.getName());
 
         String event = String.format(COMMENT_EVENT, author.getName(), FormatHelpers.getType(task), task.getID());
-        author.log(event);
+        Team team = getRepository().findTeam(task);
+        author.log(event, team.getName());
         task.addComment(comment);
         return event;
     }

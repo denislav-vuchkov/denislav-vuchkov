@@ -6,6 +6,7 @@ import Task_Management_System.exceptions.InvalidUserInput;
 import Task_Management_System.models.tasks.FeedbackImpl;
 import Task_Management_System.models.tasks.contracts.Feedback;
 import Task_Management_System.models.tasks.enums.FeedbackStatus;
+import Task_Management_System.models.teams.contracts.Team;
 import Task_Management_System.models.teams.contracts.User;
 import Task_Management_System.utils.ParsingHelpers;
 import Task_Management_System.utils.ValidationHelpers;
@@ -32,7 +33,9 @@ public class ChangeFeedback extends BaseCommand {
         String propertyToChange = parameters.get(2).trim().toUpperCase();
         String newValue = parameters.get(3).toUpperCase();
 
-        changer.log(String.format(ATTEMPTED_CHANGE, changer.getName(), propertyToChange, "Feedback", ID, newValue));
+        Team team = getRepository().findTeam(feedback);
+        changer.log(String.format(ATTEMPTED_CHANGE, changer.getName(), propertyToChange, "Feedback", ID, newValue),
+                team.getName());
 
         switch (propertyToChange) {
             case "RATING":
@@ -49,7 +52,7 @@ public class ChangeFeedback extends BaseCommand {
         }
 
         String event = String.format(SUCCESSFUL_CHANGE, changer.getName(), propertyToChange, "Feedback", ID, newValue);
-        changer.log(event);
+        changer.log(event, team.getName());
         return event;
     }
 }

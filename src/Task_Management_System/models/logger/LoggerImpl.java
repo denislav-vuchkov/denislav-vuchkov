@@ -19,6 +19,11 @@ public class LoggerImpl implements Logger {
     }
 
     @Override
+    public void addEvent(String description, String teamName) {
+        events.add(new EventImpl(description, teamName));
+    }
+
+    @Override
     public int size() {
         return events.size();
     }

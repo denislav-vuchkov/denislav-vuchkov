@@ -33,6 +33,8 @@ public interface TaskManagementSystemRepository {
 
     <T extends Nameable> T findByName(List<T> collection, String targetName, String typeOfCollection);
 
+    Team findTeam(Task task);
+
     String addBug(User user, String teamName, String boardName,
                   String title, String description, List<String> stepsToReproduce,
                   Priority priority, Severity severity, String assignee);
