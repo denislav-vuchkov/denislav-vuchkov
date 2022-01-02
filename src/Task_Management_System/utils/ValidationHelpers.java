@@ -5,6 +5,7 @@ import Task_Management_System.exceptions.InvalidUserInput;
 import Task_Management_System.models.tasks.contracts.Task;
 import Task_Management_System.models.teams.contracts.subcontracts.Nameable;
 
+import java.lang.reflect.Parameter;
 import java.util.List;
 
 public class ValidationHelpers {
@@ -16,6 +17,7 @@ public class ValidationHelpers {
 
     public static final String NOT_IN_TEAM = "%s %s is not in team %s";
     public static final String ALREADY_IN_TEAM = "%s %s is already in team %s";
+    public static final String INVALID_FILTER = "Invalid filter parameters passed!";
 
     private static final String INVALID_NUMBER_OF_ARGUMENTS = "Invalid number of arguments. Expected: %d; received: %d.";
 
@@ -32,6 +34,13 @@ public class ValidationHelpers {
         }
     }
 
+    public static void validateFilterParameters(List<String> parameters) {
+        for (String parameter : parameters){
+            if (parameter.split(":").length !=2){
+                throw new InvalidUserInput(INVALID_FILTER);
+            }
+        }
+    }
 
     public static <T extends Nameable> void entryNotAlreadyInList(T entry, List<T> list, String objectName) {
         String message = String.format(ALREADY_IN_TEAM, FormatHelpers.getType(entry), entry.getName(), objectName);

@@ -24,6 +24,7 @@ public class FilterBugs extends BaseCommand {
     @Override
     protected String executeCommand(List<String> parameters) {
         ValidationHelpers.validateRange(parameters.size(), MIN_ARGUMENTS, MAX_ARGUMENTS, INVALID_FILTERS_COUNT);
+        ValidationHelpers.validateFilterParameters(parameters);
 
         List<Bug> result = ListHelpers.
                 filterTasks(parameters.get(0), getRepository().getBugs(), BugStatus.class);

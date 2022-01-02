@@ -90,7 +90,7 @@ public class TaskManagementSystemEngineImpl implements TaskManagementSystemEngin
         List<String> commandParameters = new ArrayList<>();
         while (matcher.find()) {
             String parameter = matcher.group();
-            commandParameters.add(parameter.substring(1, parameter.length()-1));
+            commandParameters.add(parameter.substring(1, parameter.length() - 1));
         }
 
         return commandParameters;
