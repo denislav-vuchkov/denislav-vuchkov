@@ -35,15 +35,15 @@ public class ValidationHelpers {
 
     public static <T extends Nameable> void entryNotAlreadyInList(T entry, List<T> list, String objectName) {
         String message = String.format(ALREADY_IN_TEAM, FormatHelpers.getType(entry), entry.getName(), objectName);
-        entryNotAlreadyInList(entry, list, objectName, message);
+        checkIfEntryNotAlreadyInList(entry, list, message);
     }
 
     public static <T extends Task> void entryNotAlreadyInList(T task, List<T> taskList, String objectName) {
         String message = String.format(ALREADY_EXISTS, FormatHelpers.getType(task), task.getID(), objectName);
-        entryNotAlreadyInList(task, taskList, objectName, message);
+        checkIfEntryNotAlreadyInList(task, taskList, message);
     }
 
-    public static <T> void entryNotAlreadyInList(T element, List<T> list, String objectName, String message) {
+    public static <T> void checkIfEntryNotAlreadyInList(T element, List<T> list, String message) {
         if (list.contains(element)) {
             throw new InvalidUserInput(message);
         }
@@ -51,15 +51,15 @@ public class ValidationHelpers {
 
     public static <T extends Nameable> void entryExistInList(T entry, List<T> list, String objectName) {
         String message = String.format(NOT_IN_TEAM, FormatHelpers.getType(entry), entry.getName(), objectName);
-        entryExistInList(entry, list, objectName, message);
+        checkIfEntryExists(entry, list, message);
     }
 
     public static <T extends Task> void entryExistInList(T task, List<T> taskList, String objectName) {
         String message = String.format(NOT_EXISTS, FormatHelpers.getType(task), task.getID(), objectName);
-        entryExistInList(task, taskList, objectName, message);
+        checkIfEntryExists(task, taskList, message);
     }
 
-    public static <T> void entryExistInList(T element, List<T> list, String objectName, String message) {
+    public static <T> void checkIfEntryExists(T element, List<T> list, String message) {
         if (!list.contains(element)) {
             throw new InvalidUserInput(message);
 

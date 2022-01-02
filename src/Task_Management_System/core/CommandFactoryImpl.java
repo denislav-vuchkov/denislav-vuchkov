@@ -13,6 +13,7 @@ import Task_Management_System.commands.task.*;
 import Task_Management_System.commands.team.*;
 import Task_Management_System.core.contracts.CommandFactory;
 import Task_Management_System.core.contracts.TaskManagementSystemRepository;
+import Task_Management_System.exceptions.InvalidUserInput;
 import Task_Management_System.utils.ParsingHelpers;
 
 public class CommandFactoryImpl implements CommandFactory {
@@ -91,7 +92,7 @@ public class CommandFactoryImpl implements CommandFactory {
             case SORT_ASSIGNABLE_TASKS:
                 return new SortAssignableTasks(taskManagementSystemRepository);
             default:
-                throw new IllegalArgumentException();
+                throw new InvalidUserInput("Invalid command provided.");
         }
     }
 }
