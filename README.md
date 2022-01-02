@@ -1,93 +1,94 @@
 # Task_Management_System Management System
 
 
+All commands in this system are accepted in the following format:
 
-## Getting started
+CommandName {Parameter 1} {Parameter 2} .....
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+#Additional functionality on top of requirements
 
-## Add your files
+New commands:
+- ShowTaskDetails
+- ShowTaskActivity
+- ShowTaskComments
+- AssignTaskToUser - has extra functionality
+- FilterAssignableTasks - made to filter by Title and Assignee instead of Status and Assignee
+- ShowTeamAcitivity - made to show a user activity specifically in that team
 
-- [ ] [Create](https://gitlab.com/-/experiment/new_project_readme_content:1b103855b6e7d565e8641e8eecd3ee4b?https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://gitlab.com/-/experiment/new_project_readme_content:1b103855b6e7d565e8641e8eecd3ee4b?https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://gitlab.com/-/experiment/new_project_readme_content:1b103855b6e7d565e8641e8eecd3ee4b?https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
 
-```
-cd existing_repo
-git remote add origin https://gitlab.com/tddv/Task_Management_System.git
-git branch -M main
-git push -uf origin main
-```
+##For all use cases start with:
 
-## Integrate with your tools
+1. CreateTeam {Telerik}
+2. CreateUser {Pesho}
+3. AddUserToTeam {Pesho} {Telerik}
+4. CreateUser {Denis}
+5. AddUserToTeam {Denis} {Telerik}
+6. CreateUser {Tisho}
+7. AddUserToTeam {Tisho} {Telerik}
+8. CreateBoard {Alpha} {Telerik}
 
-- [ ] [Set up project integrations](https://gitlab.com/-/experiment/new_project_readme_content:1b103855b6e7d565e8641e8eecd3ee4b?https://gitlab.com/tddv/Task_Management_System/-/settings/integrations)
 
-## Collaborate with your team
+##Use case 1
 
-- [ ] [Invite team members and collaborators](https://gitlab.com/-/experiment/new_project_readme_content:1b103855b6e7d565e8641e8eecd3ee4b?https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://gitlab.com/-/experiment/new_project_readme_content:1b103855b6e7d565e8641e8eecd3ee4b?https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://gitlab.com/-/experiment/new_project_readme_content:1b103855b6e7d565e8641e8eecd3ee4b?https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://gitlab.com/-/experiment/new_project_readme_content:1b103855b6e7d565e8641e8eecd3ee4b?https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Automatically merge when pipeline succeeds](https://gitlab.com/-/experiment/new_project_readme_content:1b103855b6e7d565e8641e8eecd3ee4b?https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+Description: One of the developers has noticed a bug in the company’s product. He starts the application and goes on to create a new Task for it. He creates a new Bug and gives it the title "The program freezes when the Log In button is clicked." For the description he adds "This needs to be fixed quickly!", he marks the Bug as High priority and gives it Critical severity. Since it is a new bug, it gets the Active status. The developer also assigns it to the senior developer in the team. To be able to fix the bug, the senior developer needs to know how to reproduce it, so the developer who logged the bug adds a list of steps to reproduce: "1. Open the application; 2. Click "Log In"; 3. The application freezes!" The bug is saved to the application and is ready to be fixed.
 
-## Test and Deploy
+Commands:
 
-Use the built-in continuous integration in GitLab.
+1. CreateBug {Pesho} {Telerik} {Alpha} {The program freezes when the Log In is clicked!} {This needs to be fixed quickly!} {Open the application; Click "Log In"; The application freezes!} {High} {Critical} {Denis}
 
-- [ ] [Get started with GitLab CI/CD](https://gitlab.com/-/experiment/new_project_readme_content:1b103855b6e7d565e8641e8eecd3ee4b?https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://gitlab.com/-/experiment/new_project_readme_content:1b103855b6e7d565e8641e8eecd3ee4b?https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://gitlab.com/-/experiment/new_project_readme_content:1b103855b6e7d565e8641e8eecd3ee4b?https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://gitlab.com/-/experiment/new_project_readme_content:1b103855b6e7d565e8641e8eecd3ee4b?https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://gitlab.com/-/experiment/new_project_readme_content:1b103855b6e7d565e8641e8eecd3ee4b?https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
 
-***
+##Use case 3 (continues case 1)
 
-# Editing this README
+Description: One of the developers has fixed a bug that was assigned to him. He adds a comment to that bug, saying "This one took me a while, but it is fixed now!", and then changes the status of the bug to Done. Just to be sure, he checks the changes history list of the bug and sees that the last entry in the list says, "The status of item with ID 42 was changed from Active to Done."
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!).  Thank you to [makeareadme.com](https://gitlab.com/-/experiment/new_project_readme_content:1b103855b6e7d565e8641e8eecd3ee4b?https://www.makeareadme.com/) for this template.
+Commands:
 
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+1. AddCommentToTask {Denis} {1} {This one took me a while, but it is fixed now!}
+2. ShowTaskComments {1}
+3. ChangeBug {Denis} {1} {status} {fixed}
+4. ShowTaskActivity {1}
+5. ShowUserActivity {Denis}
+6. ShowTeamActivity {Teletik}
 
-## Name
-Choose a self-explaining name for your project.
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+##Use case 2
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+Description: A new developer has joined the team. One of the other developers starts the application and creates a new team member. After that, he adds the new team member to one of the existing teams and assigns all Critical bugs to him.
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+Commands:
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+1. CreateUser {Toshko}
+2. AddUserToTeam {Toshko} {Telerik}
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+3. CreateBug {Pesho} {Telerik} {Alpha} {Test Bug 1 - Important} {This needs to be fixed quickly!} {1. Open the application;2. Click "Log In";3. The application freezes!} {High} {Critical} {Tisho}
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+3. CreateBug {Pesho} {Telerik} {Alpha} {Test Bug 2 - So-So} {Fix it at some point.} {1. Open the application;2. Click "Log In";3. The application freezes!} {Low} {Major} {Denis}
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+4. CreateBug {Pesho} {Telerik} {Alpha} {Test Bug 3 - Important} {This needs to be fixed quickly!} {1. Open the application;2. Click "Log In";3. The application freezes!} {Medium} {Critical} {Denis}
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+5. CreateBug {Pesho} {Telerik} {Alpha} {Test Bug 4 - Meh} {This needs to be fixed last!} {1. Open the application;2. Click "Log In";3. The application freezes!} {Low} {Minor} {Denis}
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+6. CreateBug {Pesho} {Telerik} {Alpha} {Test Bug 5 - Important} {This needs to be fixed quickly!} {1. Open the application;2. Click "Log In";3. The application freezes!} {High} {Critical} {Tisho}
 
-## License
-For open source projects, say how it is licensed.
+6. ShowAllTasks
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+7. SortBugs {Severity}
+
+8. AssignTask {Pesho} {1;3;5} {Toshko}
+
+9. ShowUserActivity {Pesho}
+
+10. ShowUserActivity {Toshko}
+
+11. ShowTaskActivity {1}
+
+12. ShowTaskActivity {2}
+
+13. ShowTeamActivity {Telerik}
+
+
+
 
