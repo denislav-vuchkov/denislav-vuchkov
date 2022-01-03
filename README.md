@@ -4,7 +4,7 @@
 All commands in this system are accepted in the following format:
 
 CommandName {Parameter 1} {Parameter 2} .....
-
+[Scroll to the bottom for a list of all commands and their possible parameters.]
 
 #Additional functionality on top of requirements
 
