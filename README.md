@@ -31,7 +31,7 @@ New commands:
 
 ##Use case 1
 
-Description: One of the developers has noticed a bug in the company’s product. He starts the application and goes on to create a new Task for it. He creates a new Bug and gives it the title "The program freezes when the Log In button is clicked." For the description he adds "This needs to be fixed quickly!", he marks the Bug as High priority and gives it Critical severity. Since it is a new bug, it gets the Active status. The developer also assigns it to the senior developer in the team. To be able to fix the bug, the senior developer needs to know how to reproduce it, so the developer who logged the bug adds a list of steps to reproduce: "1. Open the application; 2. Click "Log In"; 3. The application freezes!" The bug is saved to the application and is ready to be fixed.
+Description: One of the developers has noticed a bug in the companyï¿½s product. He starts the application and goes on to create a new Task for it. He creates a new Bug and gives it the title "The program freezes when the Log In button is clicked." For the description he adds "This needs to be fixed quickly!", he marks the Bug as High priority and gives it Critical severity. Since it is a new bug, it gets the Active status. The developer also assigns it to the senior developer in the team. To be able to fix the bug, the senior developer needs to know how to reproduce it, so the developer who logged the bug adds a list of steps to reproduce: "1. Open the application; 2. Click "Log In"; 3. The application freezes!" The bug is saved to the application and is ready to be fixed.
 
 Commands:
 
@@ -91,4 +91,46 @@ Commands:
 
 
 
+----------------------------------------------------------------------------------------------------
+COMMANDS LISTS:
+----------------------------------------------------------------------------------------------------
 
+ShowAllTeams		-
+ShowAllUsers		-
+ShowAllTasks		-
+ShowTeamUsers		{TEAM_NAME}
+ShowTeamBoards		{TEAM_NAME}
+ShowTaskComments	{TASK_ID}
+ShowTaskDetails		{TASK_ID}
+
+ShowTeamActivity	{TEAM_NAME}
+ShowUserActivity	{USER_NAME}
+ShowTaskActivity	{TASK_ID}
+ShowBoardActivity	{TEAM_NAME}		{BOARD_NAME}
+
+CreateTeam			{TEAM_NAME}
+CreateUser			{USER_NAME}
+CreateBoard			{BOARD_NAME}	{TEAM_NAME}
+AddUserToTeam		{USER_NAME}		{TEAM_NAME}
+ASSIGN_TASK:
+
+CreateBug			{AUTHOR_NAME}	{TEAM_NAME}	{BOARD_NAME}	{TITLE}	{DESCRIPTION}	{STEPS;SEPARETED;BY;COLUMN}	{PRIORITY} {SEVERITY} {ASSIGNEE}
+CreateFeedback		{AUTHOR_NAME}	{TEAM_NAME}	{BOARD_NAME}	{TITLE}	{DESCRIPTION}	{RATING}
+CreateStory			{AUTHOR_NAME}	{TEAM_NAME}	{BOARD_NAME}	{TITLE}	{DESCRIPTION}	{PRIORITY}					{SIZE} 		{ASSIGNEE}
+
+ChangeBug			{AUTHOR_NAME}	{TASK_ID}	{PRIORITY/SEVERITY/STATUS}				{NEW_VALUE}
+ChangeStory         {AUTHOR_NAME}	{TASK_ID}	{RATING/STATUS}							{NEW_VALUE}
+ChangeFeedback      {AUTHOR_NAME}	{TASK_ID}	{PRIORITY/SIZE/STATUS}					{NEW_VALUE}
+AddCommentToTask	{AUTHOR_NAME}	{TASK_ID}	{COMMENT_CONTENT}
+
+FilterAllTasks						{TITLE:VALUE}
+FilterAssignableTasks				{TITLE:VALUE}				{ASSIGNEE:VALUE}
+FilterBugs							{STATUS:VALUE}				{ASSIGNEE:VALUE}
+FilterFeedbacks						{STATUS:VALUE}
+FilterStories						{STATUS:VALUE}				{ASSIGNEE:VALUE}
+
+SortAllTasks						-
+SortAssignableTasks					-
+SortBugs							{TITLE/PRIORITY/SEVERITY}
+SortFeedbacks						{TITLE/RATING}
+SortStories							{TITLE/PRIORITY/SIZE}
