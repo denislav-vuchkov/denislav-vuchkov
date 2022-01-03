@@ -95,11 +95,11 @@ Commands:
 COMMANDS LISTS:
 ----------------------------------------------------------------------------------------------------
 
-ShowAllTeams		-
+ShowAllTeams
 
-ShowAllUsers		-
+ShowAllUsers
 
-ShowAllTasks		-
+ShowAllTasks
 
 ShowTeamUsers		{TEAM_NAME}
 
@@ -127,7 +127,7 @@ AddUserToTeam		{USER_NAME}		{TEAM_NAME}
 
 ASSIGN_TASK:
 
-CreateBug			{AUTHOR_NAME}	{TEAM_NAME}	{BOARD_NAME}	{TITLE}	{DESCRIPTION}	{STEPS;SEPARETED;BY;COLUMN}	{PRIORITY} {SEVERITY} {ASSIGNEE}
+CreateBug			{AUTHOR_NAME}	{TEAM_NAME}	{BOARD_NAME}	{TITLE}	{DESCRIPTION}	{STEPS;SPLIT;BY;COLUMN}	{PRIORITY} {SEVERITY} {ASSIGNEE}
 
 CreateFeedback		{AUTHOR_NAME}	{TEAM_NAME}	{BOARD_NAME}	{TITLE}	{DESCRIPTION}	{RATING}
 
