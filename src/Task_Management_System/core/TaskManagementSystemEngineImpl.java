@@ -72,7 +72,7 @@ public class TaskManagementSystemEngineImpl implements TaskManagementSystemEngin
 
     /**
      * Receives a full line and extracts the parameters that are needed for the command to execute.
-     * For example, if the input line is "AddUserToTeam John BestTeam",
+     * For example, if the input line is "AddUserToTeam {John} {BestTeam}",
      * the method will return a list of ["John", "BestTeam"].
      *
      * @param inputLine A complete input line

@@ -24,7 +24,6 @@ public class CommandFactoryImpl implements CommandFactory {
         CommandType commandType = ParsingHelpers.tryParseCommand(commandTypeAsString, CommandType.class);
 
         switch (commandType) {
-
             case SHOW_ALL_TEAMS:
                 return new ShowAllTeams(taskManagementSystemRepository);
             case SHOW_ALL_USERS:
